@@ -1,9 +1,10 @@
-import 'package:clinic/layers/presentation/customes/custom_button.dart';
-import 'package:clinic/layers/presentation/styles/fonts.dart';
+
+import 'package:clinic/features/sign_up/presentation/styles/fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'customes/custom_button.dart';
 import 'customes/custom_text_form_field.dart';
 
 class SignUp extends StatefulWidget{
