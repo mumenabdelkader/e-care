@@ -1,6 +1,10 @@
+import 'package:clinic/features/authentication/presentation/login.dart';
 import 'package:flutter/material.dart';
 
-import 'features/sign_up/presentation/sign_up.dart';
+import 'features/authentication/presentation/sign_up.dart';
+
+
+
 
 
 
@@ -16,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SignUp(),
+      home: Login(),
     );
   }
 }

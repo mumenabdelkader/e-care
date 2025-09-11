@@ -1,11 +1,19 @@
 
-import 'package:clinic/features/sign_up/presentation/styles/fonts.dart';
+
+import 'package:clinic/features/authentication/presentation/customes/custom_signup_google.dart';
+import 'package:clinic/features/authentication/presentation/login.dart';
+import 'package:clinic/features/authentication/presentation/styles/fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'customes/custom_button.dart';
+import 'customes/custom_divider.dart';
 import 'customes/custom_text_form_field.dart';
+
+
+
+
 
 class SignUp extends StatefulWidget{
   @override
@@ -23,7 +31,10 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leading: Icon(Icons.arrow_back_ios_new),),
+      appBar: AppBar(leading: IconButton(onPressed: (){
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Login(),));
+
+      }, icon: Icon(Icons.arrow_back_ios_new)),),
       body: Padding(
         padding: const EdgeInsets.only(left: 20.0,right: 20,top: 30),
         child: SingleChildScrollView(
@@ -34,48 +45,9 @@ class _SignUpState extends State<SignUp> {
               SizedBox(height: 8,),
               Text("Create account and enjoy all services",style: FontStyles.style17,),
               SizedBox(height: 25,),
-              Container(
-                height: 48,
-                width: double.infinity,
-                alignment: Alignment.center,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                       Image.asset("assets/images/google 1.png"),
-                       SizedBox(width: 15,),
-                       Text("Sign in with Google",style: TextStyle(fontSize:14,fontWeight: FontWeight.w600,color: Color.fromRGBO(43, 52, 83, 1)) ),
-                  ],
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(width: 1,color: Color.fromRGBO(233, 236, 242, 1)),
-                  borderRadius: BorderRadius.circular(7),
-              ),
-
-              ),
+              CustomSignUpGoogle(),
               SizedBox(height: 17,),
-              Row(
-                children: [
-                  Expanded(
-                    child: Divider(
-                      color: Color.fromRGBO(233, 236, 242, 1),
-                      thickness: 2,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(
-                      "OR",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Color.fromRGBO(128, 141, 158, 1)),
-                    ),
-                  ),
-                  Expanded(
-                    child: Divider(
-                      color: Color.fromRGBO(233, 236, 242, 1),
-                      thickness: 2,
-                    ),
-                  ),
-                ],
-              ),
+              CustomDivider(),
               Form(child:Column(
                 children: [
                   CustomTextFormField(
@@ -119,13 +91,17 @@ class _SignUpState extends State<SignUp> {
                 ],
               ),
               SizedBox(height: 42,),
-              CustomButton(),
+              CustomButton(lable: "sign Up",onTap: (){},),
               SizedBox(height: 58,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(" Have an account? ",style:  TextStyle(color: Color.fromRGBO(128, 141, 158, 1)),),
-                  GestureDetector(child: Text("Sign In",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 14,color: Color.fromRGBO(37, 124, 255, 1)))),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Login(),));
+                    },
+                      child: Text("Sign In",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 14,color: Color.fromRGBO(37, 124, 255, 1)))),
                 ],
               )
 
