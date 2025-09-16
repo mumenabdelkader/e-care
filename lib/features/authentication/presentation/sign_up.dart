@@ -1,15 +1,15 @@
 
 
-import 'package:clinic/features/authentication/presentation/customes/custom_signup_google.dart';
+import 'package:clinic/features/authentication/presentation/widgets/custom_signup_google.dart';
 import 'package:clinic/features/authentication/presentation/login.dart';
-import 'package:clinic/features/authentication/presentation/styles/fonts.dart';
+import 'package:clinic/core/styles/fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'customes/custom_button.dart';
-import 'customes/custom_divider.dart';
-import 'customes/custom_text_form_field.dart';
+import 'widgets/custom_button.dart';
+import 'widgets/custom_divider.dart';
+import 'widgets/custom_text_form_field.dart';
 
 
 
