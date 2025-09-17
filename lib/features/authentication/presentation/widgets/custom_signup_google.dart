@@ -24,7 +24,7 @@ class CustomSignUpGoogle extends StatelessWidget {
           children: [
             Image.asset(AppAssets.googleLogo),
             const HorizontalSpacing(15),
-            Text("Sign in with Google", style: AppStyles.font14W600),
+            Text("Sign in with Google", style: AppStyles.font14W600Black),
           ],
         ),
       ),
