@@ -46,7 +46,7 @@ class _SignUpState extends State<SignUp> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Sign Up", style: AppStyles.font24W700),
+              Text("Sign Up", style: AppStyles.font24W700Black),
               VerticalSpacing(8),
               Text(
                 "Create account and enjoy all services",
@@ -96,11 +96,11 @@ class _SignUpState extends State<SignUp> {
                     child: RichText(
                       text: TextSpan(
                         text: "I agree to the ",
-                        style: AppStyles.font14W400LightGrey,
+                        style: AppStyles.font14W600Black,
                         children: [
                           TextSpan(
                             text: "Terms of Service ",
-                            style: AppStyles.font14W400,
+                            style: AppStyles.font14W400Black,
                           ),
                           TextSpan(
                             text: "and \n",
@@ -108,7 +108,7 @@ class _SignUpState extends State<SignUp> {
                           ),
                           TextSpan(
                             text: "Privacy Policy",
-                            style: AppStyles.font14W400,
+                            style: AppStyles.font14W400Black,
                           ),
                         ],
                       ),
@@ -119,25 +119,27 @@ class _SignUpState extends State<SignUp> {
               VerticalSpacing(42),
               CustomButton(lable: "sign Up", onTap: () {}),
               VerticalSpacing(58),
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: " Have an account? ",
-                      style: AppStyles.font14W400LightGrey,
-                    ),
-                    WidgetSpan(
-                      child: GestureDetector(
-                        onTap: () {
-                          context.pop();
-                        },
-                        child: Text(
-                          "Sign In",
-                          style: AppStyles.font14W600Primary,
+              Center(
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: " Have an account? ",
+                        style: AppStyles.font14W400Black,
+                      ),
+                      WidgetSpan(
+                        child: GestureDetector(
+                          onTap: () {
+                            context.pop();
+                          },
+                          child: Text(
+                            "Sign In",
+                            style: AppStyles.font14W600Primary,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],

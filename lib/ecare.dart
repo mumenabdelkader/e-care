@@ -1,4 +1,5 @@
-import 'package:clinic/features/authentication/presentation/login.dart';
+import 'package:clinic/core/routing/app_router.dart';
+import 'package:clinic/core/routing/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -11,7 +12,8 @@ class ECare extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         // theme: AppTheme.lightTheme,
-        home: Login(),
+        initialRoute: Routes.login,
+        onGenerateRoute: AppRouter.onGenerateRoute,
       ),
     );
   }
