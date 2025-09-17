@@ -1,4 +1,7 @@
+import 'package:clinic/core/styles/app_styles.dart';
+import 'package:clinic/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String label;
@@ -21,26 +24,14 @@ class CustomTextFormField extends StatelessWidget {
       controller: controller,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-        //rgba(126, 140, 160, 1) rgba(126, 140, 160, 1)
-        prefixIcon: Icon(
-          prefixIcon,
-          size: 25,
-          color: Color.fromRGBO(126, 140, 160, 1),
-        ),
-        label: Text(
-          "Type your $label",
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w400,
-            color: Color.fromRGBO(126, 140, 160, 1),
-          ),
-        ),
+        prefixIcon: Icon(prefixIcon, size: 25.sp, color: AppColors.lightGrey),
+        label: Text(label, style: AppStyles.font12W400LightGrey),
         border: UnderlineInputBorder(
-          borderSide: BorderSide(color: Color.fromRGBO(126, 140, 160, 1)),
+          borderSide: BorderSide(color: AppColors.lightGrey),
         ),
         suffixIcon:
             suffixIcon != null
-                ? Icon(suffixIcon, color: Color.fromRGBO(126, 140, 160, 1))
+                ? Icon(suffixIcon, color: AppColors.lightGrey)
                 : null,
       ),
     );

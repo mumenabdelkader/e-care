@@ -1,6 +1,9 @@
-import 'package:clinic/core/styles/fonts.dart';
-import 'package:clinic/features/authentication/presentation/sign_up.dart';
+import 'package:clinic/core/extension/navigation.dart';
+import 'package:clinic/core/extension/spacing.dart';
+import 'package:clinic/core/routing/routes.dart';
+import 'package:clinic/core/styles/app_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'widgets/custom_button.dart';
@@ -23,17 +26,17 @@ class _LoginState extends State<Login> {
     return Scaffold(
       appBar: AppBar(leading: Container()),
       body: Padding(
-        padding: const EdgeInsets.only(left: 20.0, right: 20, top: 30),
+        padding: EdgeInsets.only(left: 20.0.w, right: 20.w, top: 30.h),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Welcome Back!", style: FontStyles.style24),
-              SizedBox(height: 8),
-              Text("Sign In to your account", style: FontStyles.style17),
-              SizedBox(height: 25),
+              Text("Welcome Back!", style: AppStyles.font24W700),
+              VerticalSpacing(8),
+              Text("Sign In to your account", style: AppStyles.font16W400Grey),
+              VerticalSpacing(25),
               CustomSignUpGoogle(),
-              SizedBox(height: 17),
+              VerticalSpacing(17),
               CustomDivider(),
               Form(
                 child: Column(
@@ -43,7 +46,7 @@ class _LoginState extends State<Login> {
                       label: "email",
                       prefixIcon: FontAwesomeIcons.envelope,
                     ),
-                    SizedBox(height: 10),
+                    VerticalSpacing(10),
                     CustomTextFormField(
                       controller: passwordController,
                       label: "password",
@@ -53,46 +56,36 @@ class _LoginState extends State<Login> {
                   ],
                 ),
               ),
-              SizedBox(height: 16),
+              VerticalSpacing(16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    "Forgot Password?",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(37, 124, 255, 1),
-                    ),
-                  ),
+                  Text("Forgot Password?", style: AppStyles.font14W700Primary),
                 ],
               ),
-              SizedBox(height: 42),
+              VerticalSpacing(42),
               CustomButton(lable: "login", onTap: () {}),
-              SizedBox(height: 58),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    " Don't have account? ",
-                    style: TextStyle(color: Color.fromRGBO(128, 141, 158, 1)),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => SignUp()),
-                      );
-                    },
-                    child: Text(
-                      "Sign Up ",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        color: Color.fromRGBO(37, 124, 255, 1),
+              VerticalSpacing(58),
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: " Don't have account? ",
+                      style: AppStyles.font14W400LightGrey,
+                    ),
+                    WidgetSpan(
+                      child: GestureDetector(
+                        onTap: () {
+                          context.pushNamed(Routes.register);
+                        },
+                        child: Text(
+                          "Sign Up ",
+                          style: AppStyles.font14W600Primary,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

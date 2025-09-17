@@ -1,31 +1,27 @@
+import 'package:clinic/core/styles/app_styles.dart';
+import 'package:clinic/core/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomButton extends StatelessWidget {
   final String lable;
   final GestureTapCallback onTap;
-  const CustomButton({super.key,
-   required this.lable,
-    required this.onTap
-    });
+  const CustomButton({super.key, required this.lable, required this.onTap});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 48,
+        height: 48.h,
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Color.fromRGBO(37, 124, 255, 1), //rgba(37, 124, 255, 1)
-          borderRadius: BorderRadius.circular(7),
+          color: AppColors.primary,
+          borderRadius: BorderRadius.circular(7.r),
         ),
         child: Text(
           lable,
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w700,
-            color: Color.fromRGBO(255, 255, 255, 1),
-          ),
+          style:AppStyles.font14W700White,
         ),
       ),
     );
