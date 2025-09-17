@@ -1,0 +1,13 @@
+flutter_native_splash:
+  image: assets/images/splash.png
+
+  # Android 12+ specific settings
+  android_12:
+    image: assets/images/splash.png
+    color: "#ffffff"
+
+  # Light & dark mode colors for iOS
+  color_ios: "#ffffff"
+
+  # Background images for Android & iOS
+  background_image_android: "assets/images/splash.png"

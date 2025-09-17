@@ -1,5 +1,6 @@
 import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/features/authentication/presentation/login.dart';
+import 'package:clinic/features/authentication/presentation/sign_up.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
@@ -15,12 +16,7 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => Login(), settings: settings);
 
       case Routes.register:
-        return MaterialPageRoute(
-          builder: (_) => Scaffold(),
-          // RegisterScreen(),
-
-          // settings: settings,
-        );
+        return MaterialPageRoute(builder: (_) => SignUp(), settings: settings);
 
       default:
         return MaterialPageRoute(

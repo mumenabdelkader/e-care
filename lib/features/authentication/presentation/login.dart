@@ -31,7 +31,7 @@ class _LoginState extends State<Login> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Welcome Back!", style: AppStyles.font24W700),
+              Text("Welcome Back!", style: AppStyles.font24W700Black),
               VerticalSpacing(8),
               Text("Sign In to your account", style: AppStyles.font16W400Grey),
               VerticalSpacing(25),
@@ -66,25 +66,27 @@ class _LoginState extends State<Login> {
               VerticalSpacing(42),
               CustomButton(lable: "login", onTap: () {}),
               VerticalSpacing(58),
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: " Don't have account? ",
-                      style: AppStyles.font14W400LightGrey,
-                    ),
-                    WidgetSpan(
-                      child: GestureDetector(
-                        onTap: () {
-                          context.pushNamed(Routes.register);
-                        },
-                        child: Text(
-                          "Sign Up ",
-                          style: AppStyles.font14W600Primary,
+              Center(
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: " Don't have account? ",
+                        style: AppStyles.font14W400Black,
+                      ),
+                      WidgetSpan(
+                        child: GestureDetector(
+                          onTap: () {
+                            context.pushNamed(Routes.register);
+                          },
+                          child: Text(
+                            "Sign Up ",
+                            style: AppStyles.font14W600Primary,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
