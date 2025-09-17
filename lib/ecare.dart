@@ -1,4 +1,3 @@
-import 'package:clinic/core/theme/app_theme.dart';
 import 'package:clinic/features/authentication/presentation/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +10,7 @@ class ECare extends StatelessWidget {
       designSize: const Size(375, 812),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
+        // theme: AppTheme.lightTheme,
         home: Login(),
       ),
     );
