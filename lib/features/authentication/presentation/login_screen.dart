@@ -11,14 +11,14 @@ import 'widgets/custom_divider.dart';
 import 'widgets/custom_signup_google.dart';
 import 'widgets/custom_text_form_field.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   @override

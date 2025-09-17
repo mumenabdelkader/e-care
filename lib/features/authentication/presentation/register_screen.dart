@@ -2,7 +2,7 @@ import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/spacing.dart';
 import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
-import 'package:clinic/features/authentication/presentation/login.dart';
+import 'package:clinic/features/authentication/presentation/login_screen.dart';
 import 'package:clinic/features/authentication/presentation/widgets/custom_signup_google.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,14 +12,14 @@ import 'widgets/custom_button.dart';
 import 'widgets/custom_divider.dart';
 import 'widgets/custom_text_form_field.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController emailController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
@@ -33,9 +33,9 @@ class _SignUpState extends State<SignUp> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.of(
-              context,
-            ).pushReplacement(MaterialPageRoute(builder: (context) => Login()));
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+            );
           },
           icon: Icon(Icons.arrow_back_ios_new),
         ),
