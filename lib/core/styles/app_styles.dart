@@ -17,6 +17,12 @@ abstract class AppStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.grey,
   );
+  static TextStyle font16W400White = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w400,
+    color: AppColors.white,
+  );
 
   static TextStyle font16W700Grey = TextStyle(
     fontFamily: fontFamily,
@@ -60,5 +66,11 @@ abstract class AppStyles {
     fontSize: 14.sp,
     fontWeight: FontWeight.w400,
     color: AppColors.black,
+  );
+  static TextStyle font32W700White = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 32.sp,
+    fontWeight: FontWeight.w700,
+    color: AppColors.white,
   );
 }

@@ -1,16 +1,24 @@
 import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/features/authentication/presentation/login_screen.dart';
 import 'package:clinic/features/authentication/presentation/register_screen.dart';
+import 'package:clinic/features/onboarding/get_started_screen.dart';
+import 'package:clinic/features/onboarding/on_boarding_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
-      // case Routes.onboarding:
-      //   return MaterialPageRoute(
-      //     builder: (_) => OnBoardingScreen(),
-      //     settings: settings,
-      //   );
+      case Routes.onboarding:
+        return MaterialPageRoute(
+          builder: (_) => OnBoardingScreen(),
+          settings: settings,
+        );
+
+      case Routes.getStarted:
+        return MaterialPageRoute(
+          builder: (_) => GetStartedScreen(),
+          settings: settings,
+        );
 
       case Routes.login:
         return MaterialPageRoute(
