@@ -20,8 +20,9 @@ class OnBoardingScreen extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [Colors.blue.shade200, Colors.blue.shade50],
+            end: Alignment.centerLeft,
+            colors: [Colors.blue.shade200, Colors.white],
+            stops: const [0.1, 0.9],
           ),
         ),
         child: Column(

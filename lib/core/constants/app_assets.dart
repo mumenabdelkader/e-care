@@ -4,4 +4,5 @@ class AppAssets {
   static const String appLogo = "$_imagePath/logo.png";
 
   static const String onboardingCover = "$_imagePath/onboarding_cover.png";
+  static const String getStartedCover = "$_imagePath/get_started_cover.png";
 }

@@ -1,6 +1,5 @@
 import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/spacing.dart';
-import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/styles/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -64,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               VerticalSpacing(42),
-              CustomButton(lable: "login", onTap: () {}),
+              CustomButton(lable: "login", onPressed: () {}),
               VerticalSpacing(58),
               Center(
                 child: RichText(
@@ -77,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       WidgetSpan(
                         child: GestureDetector(
                           onTap: () {
-                            context.pushNamed(Routes.register);
+                            context.pop();
                           },
                           child: Text(
                             "Sign Up ",
