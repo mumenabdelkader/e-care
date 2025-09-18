@@ -1,9 +1,9 @@
 import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/spacing.dart';
 import 'package:clinic/core/styles/app_styles.dart';
+import 'package:clinic/core/utils/validation_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'widgets/custom_button.dart';
 import 'widgets/custom_divider.dart';
@@ -43,14 +43,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     CustomTextFormField(
                       controller: emailController,
                       label: "email",
-                      prefixIcon: FontAwesomeIcons.envelope,
+                      prefixIcon: Icons.email_outlined,
+                      validator: (String? value) {
+                        return ValidationUtils.getEmailValidationMessage(value);
+                      },
                     ),
                     VerticalSpacing(10),
                     CustomTextFormField(
                       controller: passwordController,
                       label: "password",
                       prefixIcon: Icons.lock_outline_sharp,
-                      suffixIcon: FontAwesomeIcons.eyeSlash,
+                      suffixIcon: Icons.visibility_off,
+                      validator: (String? value) {
+                        return ValidationUtils.getEmailValidationMessage(value);
+                      },
                     ),
                   ],
                 ),

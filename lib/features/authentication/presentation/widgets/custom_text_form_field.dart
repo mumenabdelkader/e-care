@@ -9,6 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final IconData prefixIcon;
   final IconData? suffixIcon;
   final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
 
   const CustomTextFormField({
     super.key,
@@ -17,17 +18,32 @@ class CustomTextFormField extends StatelessWidget {
     required this.prefixIcon,
     this.suffixIcon,
     this.keyboardType,
+    this.validator,
   });
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
       keyboardType: TextInputType.emailAddress,
+      validator: validator,
+
       decoration: InputDecoration(
         prefixIcon: Icon(prefixIcon, size: 25.sp, color: AppColors.softGrey),
         label: Text(label, style: AppStyles.font12W400LightGrey),
         border: UnderlineInputBorder(
           borderSide: BorderSide(color: AppColors.softGrey),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: AppColors.primary, width: 2.w),
+        ),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: AppColors.softGrey),
+        ),
+        errorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: AppColors.red, width: 2.w),
+        ),
+        focusedErrorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: AppColors.red, width: 2.w),
         ),
         suffixIcon:
             suffixIcon != null

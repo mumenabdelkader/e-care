@@ -3,10 +3,10 @@ import 'package:clinic/core/extension/spacing.dart';
 import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
+import 'package:clinic/core/utils/validation_utils.dart';
 import 'package:clinic/features/authentication/presentation/widgets/custom_signup_google.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'widgets/custom_button.dart';
 import 'widgets/custom_divider.dart';
@@ -53,19 +53,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       controller: nameController,
                       label: "name",
                       prefixIcon: Icons.person_outline,
+                      validator: (String? value) {
+                        return ValidationUtils.getNameValidationMessage(value);
+                      },
                     ),
                     VerticalSpacing(10),
                     CustomTextFormField(
                       controller: emailController,
                       label: "email",
-                      prefixIcon: FontAwesomeIcons.envelope,
+                      prefixIcon: Icons.email_outlined,
+                      validator: (String? value) {
+                        return ValidationUtils.getEmailValidationMessage(value);
+                      },
                     ),
                     VerticalSpacing(10),
                     CustomTextFormField(
                       controller: passwordController,
                       label: "password",
                       prefixIcon: Icons.lock_outline_sharp,
-                      suffixIcon: FontAwesomeIcons.eyeSlash,
+                      suffixIcon: Icons.visibility_off,
+                      validator: (String? value) {
+                        return ValidationUtils.getBasicPasswordValidationMessage(
+                          value,
+                        );
+                      },
                     ),
                   ],
                 ),
