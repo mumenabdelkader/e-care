@@ -1,21 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'register_reqsuest_body.dart';
+part of 'register_reqsuest_body_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-RegisterReqsuestBody _$RegisterReqsuestBodyFromJson(
+RegisterReqsuestBodyModel _$RegisterReqsuestBodyModelFromJson(
   Map<String, dynamic> json,
-) => RegisterReqsuestBody(
+) => RegisterReqsuestBodyModel(
   userName: json['userName'] as String,
   email: json['email'] as String,
   password: json['password'] as String,
 );
 
-Map<String, dynamic> _$RegisterReqsuestBodyToJson(
-  RegisterReqsuestBody instance,
+Map<String, dynamic> _$RegisterReqsuestBodyModelToJson(
+  RegisterReqsuestBodyModel instance,
 ) => <String, dynamic>{
   'userName': instance.userName,
   'email': instance.email,

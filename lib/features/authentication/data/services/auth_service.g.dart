@@ -20,15 +20,15 @@ class _AuthService implements AuthService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<RegisterResponseBody> register({
-    required RegisterReqsuestBody body,
+  Future<RegisterResponseBodyModel> register({
+    required RegisterReqsuestBodyModel body,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
-    final _options = _setStreamType<RegisterResponseBody>(
+    final _options = _setStreamType<RegisterResponseBodyModel>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -39,9 +39,9 @@ class _AuthService implements AuthService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late RegisterResponseBody _value;
+    late RegisterResponseBodyModel _value;
     try {
-      _value = RegisterResponseBody.fromJson(_result.data!);
+      _value = RegisterResponseBodyModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

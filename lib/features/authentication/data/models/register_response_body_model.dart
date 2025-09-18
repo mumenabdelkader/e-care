@@ -3,17 +3,17 @@ import 'package:json_annotation/json_annotation.dart';
 part 'register_response_body.g.dart';
 
 @JsonSerializable()
-class RegisterResponseBody {
+class RegisterResponseBodyModel {
   final bool success;
   final String? message;
   final dynamic errors;
 
-  RegisterResponseBody({
+  RegisterResponseBodyModel({
     required this.success,
     required this.message,
     required this.errors,
   });
-  factory RegisterResponseBody.fromJson(Map<String, dynamic> json) =>
-      _$RegisterResponseBodyFromJson(json);
-  Map<String, dynamic> toJson() => _$RegisterResponseBodyToJson(this);
+  factory RegisterResponseBodyModel.fromJson(Map<String, dynamic> json) =>
+      _$RegisterResponseBodyModelFromJson(json);
+  Map<String, dynamic> toJson() => _$RegisterResponseBodyModelToJson(this);
 }
