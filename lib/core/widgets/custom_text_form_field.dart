@@ -7,9 +7,10 @@ class CustomTextFormField extends StatelessWidget {
   final String label;
   final TextEditingController controller;
   final IconData prefixIcon;
-  final IconData? suffixIcon;
+  final Widget? suffixIcon;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
+  final bool? obscureText;
 
   const CustomTextFormField({
     super.key,
@@ -19,17 +20,21 @@ class CustomTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.keyboardType,
     this.validator,
+    this.obscureText,
   });
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
       keyboardType: TextInputType.emailAddress,
+      obscureText: obscureText ?? false,
       validator: validator,
-
+      onTapOutside: (event) {
+        FocusScope.of(context).unfocus();
+      },
       decoration: InputDecoration(
-        prefixIcon: Icon(prefixIcon, size: 25.sp, color: AppColors.softGrey),
-        label: Text(label, style: AppStyles.font12W400LightGrey),
+        prefixIcon: Icon(prefixIcon, size: 25.sp, color: AppColors.grey),
+        label: Text(label, style: AppStyles.font12W400Grey),
         border: UnderlineInputBorder(
           borderSide: BorderSide(color: AppColors.softGrey),
         ),
@@ -47,7 +52,10 @@ class CustomTextFormField extends StatelessWidget {
         ),
         suffixIcon:
             suffixIcon != null
-                ? Icon(suffixIcon, color: AppColors.softGrey)
+                ? Padding(
+                  padding: EdgeInsets.only(right: 10.w),
+                  child: suffixIcon,
+                )
                 : null,
       ),
     );

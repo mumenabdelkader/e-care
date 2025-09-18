@@ -1,14 +1,15 @@
 import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/spacing.dart';
 import 'package:clinic/core/styles/app_styles.dart';
+import 'package:clinic/core/theme/app_colors.dart';
 import 'package:clinic/core/utils/validation_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'widgets/custom_button.dart';
+import '../../../core/widgets/custom_button.dart';
+import '../../../core/widgets/custom_text_form_field.dart';
 import 'widgets/custom_divider.dart';
 import 'widgets/custom_signup_google.dart';
-import 'widgets/custom_text_form_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,6 +21,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool obscureText = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +55,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: passwordController,
                       label: "password",
                       prefixIcon: Icons.lock_outline_sharp,
-                      suffixIcon: Icons.visibility_off,
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            obscureText = !obscureText;
+                          });
+                        },
+                        icon: Icon(
+                          obscureText ? Icons.visibility_off : Icons.visibility,
+                          color: AppColors.grey,
+                        ),
+                      ),
                       validator: (String? value) {
                         return ValidationUtils.getEmailValidationMessage(value);
                       },

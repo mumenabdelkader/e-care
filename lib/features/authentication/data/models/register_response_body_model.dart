@@ -1,12 +1,12 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'register_response_body.g.dart';
+part 'register_response_body_model.g.dart';
 
 @JsonSerializable()
 class RegisterResponseBodyModel {
   final bool success;
   final String? message;
-  final dynamic errors;
+  final List errors;
 
   RegisterResponseBodyModel({
     required this.success,

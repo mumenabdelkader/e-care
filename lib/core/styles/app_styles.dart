@@ -43,11 +43,11 @@ abstract class AppStyles {
     fontWeight: FontWeight.w600,
     color: AppColors.black,
   );
-  static TextStyle font12W400LightGrey = TextStyle(
+  static TextStyle font12W400Grey = TextStyle(
     fontFamily: fontFamily,
     fontSize: 12.sp,
     fontWeight: FontWeight.w400,
-    color: AppColors.softGrey,
+    color: AppColors.grey,
   );
   static TextStyle font14W700Primary = TextStyle(
     fontFamily: fontFamily,
