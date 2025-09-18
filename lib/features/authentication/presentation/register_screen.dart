@@ -1,8 +1,8 @@
 import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/spacing.dart';
+import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
-import 'package:clinic/features/authentication/presentation/login_screen.dart';
 import 'package:clinic/features/authentication/presentation/widgets/custom_signup_google.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,18 +30,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => LoginScreen()),
-            );
-          },
-          icon: Icon(Icons.arrow_back_ios_new),
-        ),
-      ),
       body: Padding(
-        padding: EdgeInsets.only(left: 20.0.w, right: 20.w, top: 30.h),
+        padding: EdgeInsets.only(left: 20.0.w, right: 20.w, top: 70.h),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,7 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         checkedValue = value!;
                       });
                     },
-                    activeColor: Color.fromRGBO(37, 117, 250, 1.0),
+                    activeColor: AppColors.primary,
                   ),
                   Expanded(
                     child: RichText(
@@ -104,7 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           TextSpan(
                             text: "and \n",
-                            style: TextStyle(color: AppColors.lightGrey),
+                            style: AppStyles.font14W400Black,
                           ),
                           TextSpan(
                             text: "Privacy Policy",
@@ -117,7 +107,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ],
               ),
               VerticalSpacing(42),
-              CustomButton(lable: "sign Up", onTap: () {}),
+              CustomButton(lable: "sign Up", onPressed: () {}),
               VerticalSpacing(58),
               Center(
                 child: RichText(
@@ -130,7 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       WidgetSpan(
                         child: GestureDetector(
                           onTap: () {
-                            context.pop();
+                            context.pushNamed(Routes.login);
                           },
                           child: Text(
                             "Sign In",

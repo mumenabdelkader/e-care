@@ -24,14 +24,14 @@ class CustomTextFormField extends StatelessWidget {
       controller: controller,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-        prefixIcon: Icon(prefixIcon, size: 25.sp, color: AppColors.lightGrey),
+        prefixIcon: Icon(prefixIcon, size: 25.sp, color: AppColors.softGrey),
         label: Text(label, style: AppStyles.font12W400LightGrey),
         border: UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.lightGrey),
+          borderSide: BorderSide(color: AppColors.softGrey),
         ),
         suffixIcon:
             suffixIcon != null
-                ? Icon(suffixIcon, color: AppColors.lightGrey)
+                ? Icon(suffixIcon, color: AppColors.softGrey)
                 : null,
       ),
     );
