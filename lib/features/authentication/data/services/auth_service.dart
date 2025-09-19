@@ -1,6 +1,8 @@
 import 'package:clinic/core/networking/api_constant.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_response_body_model.dart';
+import 'package:clinic/features/authentication/data/models/verify_register_otp_reposne_body_model.dart';
+import 'package:clinic/features/authentication/data/models/verify_register_otp_request_body_model.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -15,6 +17,8 @@ abstract class AuthService {
     @Body() required RegisterReqsuestBodyModel body,
   });
 
-  // Future<void> signIn(String email, String password);
-  // Future<void> signOut();
+  @POST(ApiConstant.verifyRegisterOtpEP)
+  Future<VerifyRegisterOtpReposneBodyModel> verifyRegisterOtp({
+    @Body() required VerifyRegisterOtpRequestBodyModel body,
+  });
 }

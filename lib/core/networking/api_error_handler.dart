@@ -1,4 +1,3 @@
-// api_error_handler.dart
 import 'package:clinic/core/networking/api_error_factory.dart';
 import 'package:clinic/core/networking/api_error_model.dart';
 import 'package:clinic/core/networking/dio_exception_type_extension.dart';
@@ -52,23 +51,27 @@ class ApiErrorHandler {
                 errors: const [],
               ),
           badResponse: () {
-            final allErrors =
-                e.response?.data["errors"] as Map<String, dynamic>?;
-            final errorsList = <String>[];
-            if (allErrors != null) {
-              allErrors.forEach((key, value) {
-                for (var e in (value as List)) {
-                  final String singleErrMessage = "$key: $e";
-                  errorsList.add(singleErrMessage);
-                }
-              });
+            final data = e.response?.data;
+
+            if (data is Map<String, dynamic>) {
+              return ApiErrorModel.fromJson(
+                data,
+                statusCode: e.response?.statusCode,
+              );
             }
-            return ApiErrorModel(
-              statusCode: e.response?.statusCode,
-              message: e.response?.data["message"],
-              errors: errorsList,
-              icon: Icons.error,
-            );
+
+            if (data is List) {
+              // backend returned a list of errors directly
+              final parsedErrors = data.map((e) => e.toString()).toList();
+              return ApiErrorModel(
+                statusCode: e.response?.statusCode,
+                message: parsedErrors.join('\n'),
+                errors: parsedErrors,
+                icon: Icons.error,
+              );
+            }
+
+            return ApiErrorFactory.defaultError;
           },
           cancel:
               () => ApiErrorModel(
