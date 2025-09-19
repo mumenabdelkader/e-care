@@ -11,6 +11,7 @@ RegisterReqsuestBodyModel _$RegisterReqsuestBodyModelFromJson(
 ) => RegisterReqsuestBodyModel(
   userName: json['userName'] as String,
   email: json['email'] as String,
+  phoneNumber: json['phoneNumber'] as String,
   password: json['password'] as String,
 );
 
@@ -19,5 +20,6 @@ Map<String, dynamic> _$RegisterReqsuestBodyModelToJson(
 ) => <String, dynamic>{
   'userName': instance.userName,
   'email': instance.email,
+  'phoneNumber': instance.phoneNumber,
   'password': instance.password,
 };

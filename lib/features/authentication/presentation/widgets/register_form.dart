@@ -21,10 +21,10 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   final TextEditingController emailController = TextEditingController();
-
   final TextEditingController passwordController = TextEditingController();
-
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
   bool policyCheckedValue = false;
 
@@ -38,6 +38,7 @@ class _RegisterFormState extends State<RegisterForm> {
             children: [
               CustomTextFormField(
                 controller: nameController,
+                keyboardType: TextInputType.name,
                 label: "username",
                 prefixIcon: Icons.person_outline,
                 validator: (String? value) {
@@ -46,9 +47,24 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
               VerticalSpacing(10),
               CustomTextFormField(
+                controller: phoneController,
+                label: "phone number",
+                prefixIcon: Icons.phone_outlined,
+                prefixText: "+20 ",
+                maxLength: 11,
+                keyboardType: TextInputType.phone,
+                validator: (String? value) {
+                  return ValidationUtils.getValidPhoneNumberValidationMessage(
+                    value,
+                  );
+                },
+              ),
+              VerticalSpacing(10),
+              CustomTextFormField(
                 controller: emailController,
                 label: "email",
                 prefixIcon: Icons.email_outlined,
+                keyboardType: TextInputType.emailAddress,
                 validator: (String? value) {
                   return ValidationUtils.getEmailValidationMessage(value);
                 },
@@ -117,9 +133,10 @@ class _RegisterFormState extends State<RegisterForm> {
                         if (_formKey.currentState!.validate()) {
                           context.read<AuthCubit>().register(
                             RegisterReqsuestBodyModel(
-                              userName: nameController.text,
-                              email: emailController.text,
-                              password: passwordController.text,
+                              userName: nameController.text.trim(),
+                              email: emailController.text.trim(),
+                              phoneNumber: phoneController.text.trim(),
+                              password: passwordController.text.trim(),
                             ),
                           );
                         }

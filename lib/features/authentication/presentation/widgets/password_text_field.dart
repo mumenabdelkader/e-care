@@ -79,6 +79,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
         CustomTextFormField(
           controller: widget.passwordController,
           obscureText: obscureText,
+          keyboardType: TextInputType.visiblePassword,
           label: "Password",
           prefixIcon: Icons.lock_outline_sharp,
           suffixIcon: IconButton(
