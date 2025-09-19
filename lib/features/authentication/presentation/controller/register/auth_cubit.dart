@@ -1,6 +1,6 @@
 import 'package:clinic/core/networking/api_error_model.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
-import 'package:clinic/features/authentication/data/models/register_response_body_model.dart';
+import 'package:clinic/features/authentication/data/models/verify_register_otp_request_body_model.dart';
 import 'package:clinic/features/authentication/data/repos/auth_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +16,20 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authRepo.register(body);
     result.when(
       onSuccess: (data) {
-        emit(AuthSuccess(response: data));
+        emit(AuthSuccess(data: data));
+      },
+      onError: (error) {
+        emit(AuthFailure(errorModel: error));
+      },
+    );
+  }
+
+  Future<void> verifyRegisterOtp(VerifyRegisterOtpRequestBodyModel body) async {
+    emit(AuthLoading());
+    final result = await authRepo.verifyRegisterOtp(body);
+    result.when(
+      onSuccess: (data) {
+        emit(AuthSuccess(data: data));
       },
       onError: (error) {
         emit(AuthFailure(errorModel: error));

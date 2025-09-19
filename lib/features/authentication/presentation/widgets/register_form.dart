@@ -117,7 +117,7 @@ class _RegisterFormState extends State<RegisterForm> {
             }
             if (state is AuthSuccess) {
               context.showSnackBar(
-                state.response.message ?? "Registered successfully",
+                state.data.message ?? "Registered successfully",
                 backgroundColor: Colors.green,
               );
               context.pushNamed(
