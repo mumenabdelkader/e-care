@@ -1,10 +1,6 @@
 import 'package:clinic/core/routing/routes.dart';
-import 'package:clinic/core/utils/di.dart';
-import 'package:clinic/features/authentication/presentation/controller/register/auth_cubit.dart';
-import 'package:clinic/features/authentication/presentation/login_screen.dart';
-import 'package:clinic/features/authentication/presentation/register_screen.dart';
-import 'package:clinic/features/onboarding/get_started_screen.dart';
-import 'package:clinic/features/onboarding/on_boarding_screen.dart';
+import 'package:clinic/features/authentication/presentation/login.dart';
+import 'package:clinic/features/authentication/presentation/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,24 +20,10 @@ class AppRouter {
         );
 
       case Routes.login:
-        return MaterialPageRoute(
-          builder:
-              (_) => BlocProvider.value(
-                value: getIt<AuthCubit>(),
-                child: LoginScreen(),
-              ),
-          settings: settings,
-        );
+        return MaterialPageRoute(builder: (_) => Login(), settings: settings);
 
       case Routes.register:
-        return MaterialPageRoute(
-          builder:
-              (_) => BlocProvider.value(
-                value: getIt<AuthCubit>(),
-                child: RegisterScreen(),
-              ),
-          settings: settings,
-        );
+        return MaterialPageRoute(builder: (_) => SignUp(), settings: settings);
 
       default:
         return MaterialPageRoute(
