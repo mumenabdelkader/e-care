@@ -27,7 +27,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder:
               (_) => BlocProvider.value(
-                value: getIt<AuthCubit>(),
+                value: getIt <AuthCubit>(),
                 child: LoginScreen(),
               ),
           settings: settings,
