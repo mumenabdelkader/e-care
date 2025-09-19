@@ -3,6 +3,7 @@ import 'package:clinic/core/utils/di.dart';
 import 'package:clinic/features/authentication/presentation/controller/register/auth_cubit.dart';
 import 'package:clinic/features/authentication/presentation/login_screen.dart';
 import 'package:clinic/features/authentication/presentation/register_screen.dart';
+import 'package:clinic/features/authentication/presentation/verify_register_otp_screen.dart';
 import 'package:clinic/features/onboarding/get_started_screen.dart';
 import 'package:clinic/features/onboarding/on_boarding_screen.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder:
               (_) => BlocProvider.value(
-                value: getIt <AuthCubit>(),
+                value: getIt<AuthCubit>(),
                 child: LoginScreen(),
               ),
           settings: settings,
@@ -40,6 +41,13 @@ class AppRouter {
                 value: getIt<AuthCubit>(),
                 child: RegisterScreen(),
               ),
+          settings: settings,
+        );
+      case Routes.verifyRegisterOtp:
+        //TODO uncomment
+        // final email = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (_) => VerifyRegisterOtpScreen(email: 'sdafaf@dfklsd.com'),
           settings: settings,
         );
 
