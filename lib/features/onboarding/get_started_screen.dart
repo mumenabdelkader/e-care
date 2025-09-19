@@ -3,7 +3,7 @@ import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/spacing.dart';
 import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/styles/app_styles.dart';
-import 'package:clinic/features/authentication/presentation/widgets/custom_button.dart';
+import 'package:clinic/core/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -49,7 +49,10 @@ class GetStartedScreen extends StatelessWidget {
                     ),
                     VerticalSpacing(35),
                     CustomButton(
-                      lable: 'Get Started',
+                      lable: Text(
+                        "Get Started",
+                        style: AppStyles.font14W700White,
+                      ),
                       onPressed: () {
                         context.pushNamed(Routes.register);
                       },
