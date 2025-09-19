@@ -49,7 +49,10 @@ class GetStartedScreen extends StatelessWidget {
                     ),
                     VerticalSpacing(35),
                     CustomButton(
-                      lable: 'Get Started',
+                      lable: Text(
+                        "Get Started",
+                        style: AppStyles.font14W700White,
+                      ),
                       onPressed: () {
                         context.pushNamed(Routes.register);
                       },

@@ -1,6 +1,5 @@
 class ApiConstant {
-  static const String baseUrl =
-      "http://ecareclinic.runasp.net/swagger/index.html/api/v1/";
+  static const String baseUrl = "http://ecareclinic.runasp.net/api/v1/";
   static const String registerEp = "Account/Register";
   static const String loginEp = "Account/Login";
   static const String verifyRegisterOtpEP = "Account/Verify-register-otp";

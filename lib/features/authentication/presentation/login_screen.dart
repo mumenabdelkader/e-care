@@ -81,7 +81,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               VerticalSpacing(42),
-              CustomButton(lable: "login", onPressed: () {}),
+              CustomButton(
+                lable: Text("Log In", style: AppStyles.font14W700White),
+                onPressed: () {},
+              ),
               VerticalSpacing(58),
               Center(
                 child: RichText(

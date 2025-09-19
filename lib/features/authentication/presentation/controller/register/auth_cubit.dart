@@ -4,22 +4,22 @@ import 'package:clinic/features/authentication/data/models/register_response_bod
 import 'package:clinic/features/authentication/data/repos/auth_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'register_state.dart';
+part 'auth_state.dart';
 
-class RegisterCubit extends Cubit<RegisterState> {
-  RegisterCubit(this.authRepo) : super(RegisterInitial());
+class AuthCubit extends Cubit<AuthState> {
+  AuthCubit(this.authRepo) : super(AuthInitial());
   final AuthRepo authRepo;
 
   Future<void> register(RegisterReqsuestBodyModel body) async {
-    emit(RegisterLoading());
+    emit(AuthLoading());
 
     final result = await authRepo.register(body);
     result.when(
       onSuccess: (data) {
-        emit(RegisterSuccess(response: data));
+        emit(AuthSuccess(response: data));
       },
       onError: (error) {
-        emit(RegisterFailure(errorMessage: error));
+        emit(AuthFailure(errorModel: error));
       },
     );
   }

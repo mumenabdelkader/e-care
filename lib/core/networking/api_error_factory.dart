@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 class ApiErrorFactory {
   static ApiErrorModel get defaultError => ApiErrorModel(
-        message: "Something went wrong",
-        icon: Icons.error,
-        statusCode: LocalStatusCodes.defaultError,
-        errors: ["Error Occured!"]
-      );
+    message: "Something went wrong",
+    icon: Icons.error,
+    statusCode: LocalStatusCodes.defaultError,
+    errors: ["Error occurred!"],
+  );
 }

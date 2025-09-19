@@ -4,7 +4,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class DioFactory {
   final Dio _dio;
-  Dio get dio=>_dio;
+  Dio get dio => _dio;
 
   DioFactory() : _dio = Dio() {
     _dio.options

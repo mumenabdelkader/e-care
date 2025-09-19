@@ -6,7 +6,7 @@ part 'register_response_body_model.g.dart';
 class RegisterResponseBodyModel {
   final bool success;
   final String? message;
-  final List errors;
+  final List? errors;
 
   RegisterResponseBodyModel({
     required this.success,

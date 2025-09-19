@@ -11,7 +11,7 @@ RegisterResponseBodyModel _$RegisterResponseBodyModelFromJson(
 ) => RegisterResponseBodyModel(
   success: json['success'] as bool,
   message: json['message'] as String?,
-  errors: json['errors'] as List<dynamic>,
+  errors: json['errors'] as List<dynamic>?,
 );
 
 Map<String, dynamic> _$RegisterResponseBodyModelToJson(

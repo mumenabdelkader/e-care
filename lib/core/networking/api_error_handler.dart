@@ -1,3 +1,4 @@
+// api_error_handler.dart
 import 'package:clinic/core/networking/api_error_factory.dart';
 import 'package:clinic/core/networking/api_error_model.dart';
 import 'package:clinic/core/networking/dio_exception_type_extension.dart';
@@ -14,7 +15,7 @@ class ApiErrorHandler {
               () => ApiErrorModel(
                 message:
                     "No internet connection. Please check your Wi-Fi or mobile data.",
-                errors: [],
+                errors: const [],
                 icon: Icons.wifi_off,
                 statusCode: LocalStatusCodes.connectionError,
               ),
@@ -24,7 +25,7 @@ class ApiErrorHandler {
                     "The connection took too long. Try checking your internet or try again later.",
                 icon: Icons.timer_off,
                 statusCode: LocalStatusCodes.connectionTimeout,
-                errors: [],
+                errors: const [],
               ),
           sendTimeout:
               () => ApiErrorModel(
@@ -32,7 +33,7 @@ class ApiErrorHandler {
                     "Request timed out while sending data. Please try again.",
                 icon: Icons.send,
                 statusCode: LocalStatusCodes.sendTimeout,
-                errors: [],
+                errors: const [],
               ),
           receiveTimeout:
               () => ApiErrorModel(
@@ -40,7 +41,7 @@ class ApiErrorHandler {
                     "Server took too long to respond. Please try again later.",
                 icon: Icons.downloading,
                 statusCode: LocalStatusCodes.receiveTimeout,
-                errors: [],
+                errors: const [],
               ),
           badCertificate:
               () => ApiErrorModel(
@@ -48,7 +49,7 @@ class ApiErrorHandler {
                     "Security issue detected with the server. Connection not secure.",
                 icon: Icons.security,
                 statusCode: LocalStatusCodes.badCertificate,
-                errors: [],
+                errors: const [],
               ),
           badResponse: () {
             final allErrors =
@@ -74,7 +75,7 @@ class ApiErrorHandler {
                 message: "The request was cancelled. Please try again.",
                 icon: Icons.cancel,
                 statusCode: LocalStatusCodes.cancel,
-                errors: [],
+                errors: const [],
               ),
           unknown:
               () => ApiErrorModel(
@@ -82,7 +83,7 @@ class ApiErrorHandler {
                     "Something went wrong. Please check your connection and try again.",
                 icon: Icons.error_outline,
                 statusCode: LocalStatusCodes.unknown,
-                errors: [],
+                errors: const [],
               ),
         );
       }
