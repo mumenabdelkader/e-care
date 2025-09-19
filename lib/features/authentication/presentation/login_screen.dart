@@ -3,6 +3,7 @@ import 'package:clinic/core/extension/spacing.dart';
 import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
 import 'package:clinic/core/utils/validation_utils.dart';
+import 'package:clinic/features/authentication/presentation/widgets/login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -21,7 +22,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  bool obscureText = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,40 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomSignUpGoogle(),
               VerticalSpacing(17),
               CustomDivider(),
-              Form(
-                child: Column(
-                  children: [
-                    CustomTextFormField(
-                      controller: emailController,
-                      label: "email",
-                      prefixIcon: Icons.email_outlined,
-                      validator: (String? value) {
-                        return ValidationUtils.getEmailValidationMessage(value);
-                      },
-                    ),
-                    VerticalSpacing(10),
-                    CustomTextFormField(
-                      controller: passwordController,
-                      label: "password",
-                      prefixIcon: Icons.lock_outline_sharp,
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            obscureText = !obscureText;
-                          });
-                        },
-                        icon: Icon(
-                          obscureText ? Icons.visibility_off : Icons.visibility,
-                          color: AppColors.grey,
-                        ),
-                      ),
-                      validator: (String? value) {
-                        return ValidationUtils.getEmailValidationMessage(value);
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              LoginForm(),
               VerticalSpacing(16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -80,11 +47,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text("Forgot Password?", style: AppStyles.font14W700Primary),
                 ],
               ),
-              VerticalSpacing(42),
-              CustomButton(
-                lable: Text("Log In", style: AppStyles.font14W700White),
-                onPressed: () {},
-              ),
+
+
               VerticalSpacing(58),
               Center(
                 child: RichText(

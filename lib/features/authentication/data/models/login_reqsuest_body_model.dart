@@ -6,6 +6,10 @@ class LoginReqsuestBodyModel {
   String? password;
 
   LoginReqsuestBodyModel({this.email, this.password});
+  /// factory.
+  factory LoginReqsuestBodyModel.fromJson(Map<String, dynamic> json) => _$LoginReqsuestBodyModelFromJson(json);
 
+  /// Connect the generated [_$PersonToJson] function to the `toJson` method.
+  Map<String, dynamic> toJson() => _$LoginReqsuestBodyModelToJson(this);
 
 }

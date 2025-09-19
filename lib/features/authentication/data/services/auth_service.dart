@@ -1,4 +1,6 @@
 import 'package:clinic/core/networking/api_constant.dart';
+import 'package:clinic/features/authentication/data/models/login_reqsuest_body_model.dart';
+import 'package:clinic/features/authentication/data/models/login_respons_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_response_body_model.dart';
 import 'package:dio/dio.dart';
@@ -14,7 +16,10 @@ abstract class AuthService {
   Future<RegisterResponseBodyModel> register({
     @Body() required RegisterReqsuestBodyModel body,
   });
+  @POST(ApiConstant.loginEp)
+  Future<LoginResponseBodyModel> login({
+    @Body() required LoginReqsuestBodyModel body,
+  });
 
-  // Future<void> signIn(String email, String password);
   // Future<void> signOut();
 }
