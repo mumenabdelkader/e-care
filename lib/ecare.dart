@@ -12,7 +12,7 @@ class ECare extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         // theme: AppTheme.lightTheme,
-        initialRoute: Routes.login,
+        initialRoute: Routes.register,
         onGenerateRoute: AppRouter.onGenerateRoute,
       ),
     );

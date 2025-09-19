@@ -8,7 +8,7 @@ class ValidationUtils {
   ).hasMatch(password);
 
   static bool isValidName(String name) =>
-      RegExp(r"^[a-zA-Z\s\-']+$").hasMatch(name.trim()) &&
+      RegExp(r"^[A-Za-z0-9\s\-\_.']+$").hasMatch(name.trim()) &&
       name.trim().length >= 2;
 
   static String? getEmailValidationMessage(String? email) {

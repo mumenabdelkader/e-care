@@ -16,7 +16,7 @@ class CustomSignUpGoogle extends StatelessWidget {
         width: double.infinity,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          border: Border.all(width: 1.w, color: AppColors.lightGrey),
+          border: Border.all(width: 1.w, color: AppColors.softGrey),
           borderRadius: BorderRadius.circular(7.r),
         ),
         child: Row(
