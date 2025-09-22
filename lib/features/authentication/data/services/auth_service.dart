@@ -1,4 +1,6 @@
 import 'package:clinic/core/networking/api_constant.dart';
+import 'package:clinic/features/authentication/data/models/forgot-password_body_model.dart';
+import 'package:clinic/features/authentication/data/models/forgot_password_respons_body_model.dart';
 import 'package:clinic/features/authentication/data/models/login_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/login_respons_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
@@ -19,6 +21,10 @@ abstract class AuthService {
   @POST(ApiConstant.loginEp)
   Future<LoginResponseBodyModel> login({
     @Body() required LoginReqsuestBodyModel body,
+  });
+  @POST(ApiConstant.forgotPasswordEmailEP)
+  Future<ForgotPasswordResponseBodyModel> forgotPassword({
+    @Body() required String email,
   });
 
   // Future<void> signOut();

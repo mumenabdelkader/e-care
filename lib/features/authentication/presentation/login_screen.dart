@@ -1,5 +1,6 @@
 import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/spacing.dart';
+import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
 import 'package:clinic/core/utils/validation_utils.dart';
@@ -44,7 +45,12 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("Forgot Password?", style: AppStyles.font14W700Primary),
+                  GestureDetector(
+                      onTap: () {
+                        // Navigate to Forgot Password screen
+                        context.pushNamed(Routes.forgotPassword);
+                      },
+                      child: Text("Forgot Password?", style: AppStyles.font14W700Primary)),
                 ],
               ),
 
