@@ -41,7 +41,7 @@ class _RegisterFormState extends State<RegisterForm> {
               CustomTextFormField(
                 controller: nameController,
                 keyboardType: TextInputType.name,
-                label: "username",
+                label: Text("username", style: AppStyles.font12W400Grey),
                 prefixIcon: Icons.person_outline,
                 validator: (String? value) {
                   return ValidationUtils.getNameValidationMessage(value);
@@ -50,7 +50,7 @@ class _RegisterFormState extends State<RegisterForm> {
               VerticalSpacing(10),
               CustomTextFormField(
                 controller: phoneController,
-                label: "phone number",
+                label: Text("phone number", style: AppStyles.font12W400Grey),
                 prefixIcon: Icons.phone_outlined,
                 prefixText: "+20 ",
                 maxLength: 11,
@@ -64,7 +64,7 @@ class _RegisterFormState extends State<RegisterForm> {
               VerticalSpacing(10),
               CustomTextFormField(
                 controller: emailController,
-                label: "email",
+                label: Text("email", style: AppStyles.font12W400Grey),
                 prefixIcon: Icons.email_outlined,
                 keyboardType: TextInputType.emailAddress,
                 validator: (String? value) {

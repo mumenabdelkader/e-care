@@ -2,6 +2,7 @@ import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/utils/di.dart';
 import 'package:clinic/features/authentication/presentation/controller/register/auth_cubit.dart';
 import 'package:clinic/features/authentication/presentation/login_screen.dart';
+import 'package:clinic/features/authentication/presentation/patient_information_screen.dart';
 import 'package:clinic/features/authentication/presentation/register_screen.dart';
 import 'package:clinic/features/authentication/presentation/verify_register_otp_screen.dart';
 import 'package:clinic/features/home/home_screen.dart';
@@ -59,6 +60,12 @@ class AppRouter {
       case Routes.home:
         return MaterialPageRoute(
           builder: (_) => HomeScreen(),
+          settings: settings,
+        );
+        
+      case Routes.patientInfo:
+        return MaterialPageRoute(
+          builder: (_) => PatientInformationScreen(),
           settings: settings,
         );
 
