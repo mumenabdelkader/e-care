@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       WidgetSpan(
                         child: GestureDetector(
                           onTap: () {
-                            context.pop();
+                            context.pushNamed(Routes.register);
                           },
                           child: Text(
                             "Sign Up ",

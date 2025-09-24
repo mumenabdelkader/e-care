@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ApiErrorModel {
   final int? statusCode;
   final String? message;
-  final List<dynamic>? errors;
+  final List<String> errors;
   final IconData? icon;
 
   ApiErrorModel({
@@ -13,46 +13,21 @@ class ApiErrorModel {
     required this.icon,
   });
 
-  /// Factory constructor to build from JSON (robust to different shapes)
+  /// Factory constructor to build from JSON
   factory ApiErrorModel.fromJson(Map<String, dynamic> json, {int? statusCode}) {
-    // extract message if present
-    String? message =
-        (json['message'] is String) ? json['message'] as String : null;
+    final List<String> parsedErrors =
+        (json['errors'] as List?)?.map((e) => e.toString()).toList() ?? [];
 
-    // normalize errors into a List<String>
-    List<String> parsedErrors = [];
-
-    final rawErrors = json['errors'] ?? json['error'] ?? json['errors_map'];
-
-    if (rawErrors is List) {
-      parsedErrors =
-          rawErrors
-              .map((e) => e?.toString() ?? '')
-              .where((s) => s.isNotEmpty)
-              .toList();
-    } else if (rawErrors is Map) {
-      // map of field -> [errors]
-      parsedErrors =
-          rawErrors.values
-              .expand((v) {
-                if (v is List) return v.map((e) => e?.toString() ?? '');
-                return [v?.toString() ?? ''];
-              })
-              .where((s) => s.isNotEmpty)
-              .toList();
-    } else if (rawErrors != null) {
-      parsedErrors = [rawErrors.toString()];
-    }
-
-    // fallback message: prefer explicit message, otherwise join errors, otherwise null
-    final fallbackMessage =
-        message ?? (parsedErrors.isNotEmpty ? parsedErrors.join('\n') : null);
+    // fallback message: prefer "message", fallback to joined errors
+    final String? resolvedMessage =
+        (json['message'] as String?) ??
+        (parsedErrors.isNotEmpty ? parsedErrors.join('\n') : null);
 
     return ApiErrorModel(
       statusCode: statusCode,
-      message: fallbackMessage,
+      message: resolvedMessage,
       errors: parsedErrors,
-      icon: Icons.error, // default icon; can be overridden by handler if needed
+      icon: Icons.error,
     );
   }
 }

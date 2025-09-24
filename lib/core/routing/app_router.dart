@@ -3,13 +3,17 @@ import 'package:clinic/core/utils/di.dart';
 import 'package:clinic/features/authentication/presentation/controller/register/auth_cubit.dart';
 import 'package:clinic/features/authentication/presentation/forgot_password_screen.dart';
 import 'package:clinic/features/authentication/presentation/login_screen.dart';
+import 'package:clinic/features/authentication/presentation/new_password_screen.dart';
 import 'package:clinic/features/authentication/presentation/register_screen.dart';
+import 'package:clinic/features/authentication/presentation/verify_register_otp_screen.dart';
+import 'package:clinic/features/home/home_screen.dart';
 import 'package:clinic/features/onboarding/get_started_screen.dart';
 import 'package:clinic/features/onboarding/on_boarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../features/authentication/presentation/reset_password_screen.dart';
+import '../../features/authentication/presentation/reset_password_otp_screen.dart';
+import '../../features/authentication/presentation/verfiy_password_otp.dart';
 
 class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -30,7 +34,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder:
               (_) => BlocProvider.value(
-                value: getIt <AuthCubit>(),
+                value: getIt<AuthCubit>(),
                 child: LoginScreen(),
               ),
           settings: settings,
@@ -45,6 +49,7 @@ class AppRouter {
               ),
           settings: settings,
         );
+
       case Routes.forgotPassword:
         return MaterialPageRoute(
           builder:
@@ -63,6 +68,46 @@ class AppRouter {
           ),
           settings: settings,
         );
+
+
+      case Routes.verifyRegisterOtp:
+        final email = settings.arguments as String;
+        return MaterialPageRoute(
+          builder:
+              (_) => BlocProvider.value(
+                value: getIt<AuthCubit>(),
+                child: VerifyRegisterOtpScreen(email: email),
+              ),
+          settings: settings,
+        );
+
+      case Routes.verifyPasswordRestOtp:
+        final email = settings.arguments as String;
+        return MaterialPageRoute(
+          builder:
+              (_) => BlocProvider.value(
+            value: getIt<AuthCubit>(),
+            child: verifyPasswordRestOtpScreen(email: email),
+          ),
+          settings: settings,
+        );
+      case Routes.newPassword:
+        final email = settings.arguments as String;
+        return MaterialPageRoute(
+          builder:
+              (_) => BlocProvider.value(
+            value: getIt<AuthCubit>(),
+            child: NewPasswordScreen(email: email),
+          ),
+          settings: settings,
+        );
+      case Routes.home:
+        return MaterialPageRoute(
+          builder: (_) => HomeScreen(),
+          settings: settings,
+        );
+
+
       default:
         return MaterialPageRoute(
           builder:

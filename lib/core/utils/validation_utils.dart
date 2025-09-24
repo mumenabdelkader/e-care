@@ -11,6 +11,19 @@ class ValidationUtils {
       RegExp(r"^[A-Za-z0-9\s\-\_.']+$").hasMatch(name.trim()) &&
       name.trim().length >= 2;
 
+  static bool isValidEgyptianPhoneNumber(String phoneNumber) =>
+      RegExp(r'^(010|011|012|015)[0-9]{8}$').hasMatch(phoneNumber.trim());
+
+  static String? getValidPhoneNumberValidationMessage(String? phoneNumber) {
+    if (phoneNumber == null || phoneNumber.isEmpty) {
+      return 'Phone number is required';
+    }
+    if (!isValidEgyptianPhoneNumber(phoneNumber)) {
+      return 'Please enter a valid Egyptian phone number';
+    }
+    return null;
+  }
+
   static String? getEmailValidationMessage(String? email) {
     if (email == null || email.isEmpty) {
       return 'Email is required';

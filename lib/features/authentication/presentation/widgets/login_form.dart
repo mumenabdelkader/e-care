@@ -79,7 +79,7 @@ class _LoginFormState extends State<LoginForm> {
             }
             if (state is AuthSuccess) {
               context.showSnackBar(
-                state.response.message ?? "Login successfully",
+                state.data.message ?? "Login successfully",
                 backgroundColor: Colors.green,
               );
             }

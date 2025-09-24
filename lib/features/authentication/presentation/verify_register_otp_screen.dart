@@ -9,7 +9,6 @@ import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
 import 'package:clinic/core/widgets/app_dialog.dart';
 import 'package:clinic/core/widgets/custom_button.dart';
-import 'package:clinic/features/authentication/data/models/verify_forgot_otp_request.dart';
 import 'package:clinic/features/authentication/data/models/verify_register_otp_request_body_model.dart';
 import 'package:clinic/features/authentication/presentation/controller/register/auth_cubit.dart';
 import 'package:flutter/material.dart';
@@ -19,16 +18,16 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 
-class verifyPasswordRestOtpScreen extends StatefulWidget {
-  const verifyPasswordRestOtpScreen({super.key, required this.email});
+class VerifyRegisterOtpScreen extends StatefulWidget {
+  const VerifyRegisterOtpScreen({super.key, required this.email});
   final String email;
 
   @override
-  State<verifyPasswordRestOtpScreen> createState() =>
-      _verifyPasswordRestOtpScreenState();
+  State<VerifyRegisterOtpScreen> createState() =>
+      _VerifyRegisterOtpScreenState();
 }
 
-class _verifyPasswordRestOtpScreenState extends State<verifyPasswordRestOtpScreen> {
+class _VerifyRegisterOtpScreenState extends State<VerifyRegisterOtpScreen> {
   final OtpFieldController _controller = OtpFieldController();
   String _otp = '';
 
@@ -111,35 +110,35 @@ class _verifyPasswordRestOtpScreenState extends State<verifyPasswordRestOtpScree
                       alignment: PlaceholderAlignment.middle,
                       child: GestureDetector(
                         onTap: //TODO refactor this logic
-                        // _remainingSeconds == 0
-                        //     ? () {
-                        //       if (_otp.length != 4) {
-                        //         _startTimer();
-                        //         context.showSnackBar(
-                        //           'Please enter all 4 digits',
-                        //           backgroundColor: AppColors.grey,
-                        //         );
-                        //         return;
-                        //       }
-                        //       context.read<AuthCubit>().register(
-                        //         RegisterReqsuestBodyModel(
-                        //           userName: 'da',
-                        //           email: "sdfa",
-                        //           password: "sf",
-                        //           phoneNumber: "",
-                        //         ),
-                        //       );
-                        //     }
-                        //     : null,
+                            // _remainingSeconds == 0
+                            //     ? () {
+                            //       if (_otp.length != 4) {
+                            //         _startTimer();
+                            //         context.showSnackBar(
+                            //           'Please enter all 4 digits',
+                            //           backgroundColor: AppColors.grey,
+                            //         );
+                            //         return;
+                            //       }
+                            //       context.read<AuthCubit>().register(
+                            //         RegisterReqsuestBodyModel(
+                            //           userName: 'da',
+                            //           email: "sdfa",
+                            //           password: "sf",
+                            //           phoneNumber: "",
+                            //         ),
+                            //       );
+                            //     }
+                            //     : null,
                             () {},
                         child: Text(
                           _remainingSeconds == 0 ? "Resend" : formattedTime,
                           style:
-                          _remainingSeconds == 0
-                              ? AppStyles.font16W700Primary.copyWith(
-                            decoration: TextDecoration.underline,
-                          )
-                              : AppStyles.font16W700Primary,
+                              _remainingSeconds == 0
+                                  ? AppStyles.font16W700Primary.copyWith(
+                                    decoration: TextDecoration.underline,
+                                  )
+                                  : AppStyles.font16W700Primary,
                         ),
                       ),
                     ),
@@ -160,8 +159,7 @@ class _verifyPasswordRestOtpScreenState extends State<verifyPasswordRestOtpScree
                     backgroundColor: AppColors.green,
                   );
                   context.pushAndRemoveUntil(
-                    Routes.newPassword,
-                    arguments: widget.email,
+                    Routes.home,
                     predicate: (route) => false,
                   );
                 }
@@ -169,27 +167,27 @@ class _verifyPasswordRestOtpScreenState extends State<verifyPasswordRestOtpScree
               builder: (context, state) {
                 return CustomButton(
                   lable:
-                  state is AuthLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : Text('Continue', style: AppStyles.font14W700White),
+                      state is AuthLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : Text('Continue', style: AppStyles.font14W700White),
                   onPressed:
-                  state is AuthLoading
-                      ? null
-                      : () {
-                    if (_otp.length != 4) {
-                      context.showSnackBar(
-                        'Please enter all 4 digits',
-                        backgroundColor: AppColors.grey,
-                      );
-                      return;
-                    }
-                    context.read<AuthCubit>().verifyPasswordRestOtp(
-                      VerifyForgotOTpRequestModel(
-                        email: widget.email,
-                        otpCode: _otp,
-                      ),
-                    );
-                  },
+                      state is AuthLoading
+                          ? null
+                          : () {
+                            if (_otp.length != 4) {
+                              context.showSnackBar(
+                                'Please enter all 4 digits',
+                                backgroundColor: AppColors.grey,
+                              );
+                              return;
+                            }
+                            context.read<AuthCubit>().verifyRegisterOtp(
+                              VerifyRegisterOtpRequestBodyModel(
+                                email: widget.email,
+                                otpCode: _otp,
+                              ),
+                            );
+                          },
                 );
               },
             ),

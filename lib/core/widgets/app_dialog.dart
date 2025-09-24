@@ -82,7 +82,7 @@ void showApiError(BuildContext context, ApiErrorModel error) {
                         ],
                       ),
                       const VerticalSpacing(8),
-                      ...error.errors!.map((d) {
+                      ...error.errors.map((d) {
                         return Text(
                           d,
                           style: TextStyle(

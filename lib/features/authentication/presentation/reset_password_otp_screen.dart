@@ -1,4 +1,6 @@
+import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/show_snack_bar.dart';
+import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/widgets/custom_button.dart';
 import 'package:clinic/core/widgets/custom_text_form_field.dart';
 import 'package:clinic/features/authentication/data/models/forgot-password_body_model.dart';
@@ -51,9 +53,12 @@ class ResetPasswordScreen extends StatelessWidget{
                   showApiError(context, state.errorModel);
                 }
                 if (state is AuthSuccess) {
-                  context.showSnackBar(
-                    state.response.message ?? "reset successfully",
-                    backgroundColor: Colors.green,
+                  // context.showSnackBar(
+                  //   state.data.message ?? "reset successfully",
+                  //   backgroundColor: Colors.green,
+                  // );
+                  context.pushNamed(Routes.verifyPasswordRestOtp,arguments:
+                   emailController.text
                   );
                 }
               },
@@ -69,9 +74,11 @@ class ResetPasswordScreen extends StatelessWidget{
                       : () {
                     if (_formKey.currentState!.validate()) {
                       context.read<AuthCubit>().forgotPassword(
-                          emailController.text
+                         " \"" +emailController.text+"\" "
                       );
+
                     }
+
                   },
                 );
               },

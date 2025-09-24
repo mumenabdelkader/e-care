@@ -11,6 +11,8 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final bool? obscureText;
+  final String? prefixText;
+  final int? maxLength;
 
   const CustomTextFormField({
     super.key,
@@ -21,19 +23,24 @@ class CustomTextFormField extends StatelessWidget {
     this.keyboardType,
     this.validator,
     this.obscureText,
+    this.prefixText,
+    this.maxLength,
   });
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: keyboardType,
       obscureText: obscureText ?? false,
       validator: validator,
+      maxLength: maxLength,
       onTapOutside: (event) {
         FocusScope.of(context).unfocus();
       },
       decoration: InputDecoration(
         prefixIcon: Icon(prefixIcon, size: 25.sp, color: AppColors.grey),
+        prefixText: prefixText,
+
         label: Text(label, style: AppStyles.font12W400Grey),
         border: UnderlineInputBorder(
           borderSide: BorderSide(color: AppColors.softGrey),
