@@ -1,9 +1,10 @@
+import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/spacing.dart';
 import 'package:clinic/core/networking/api_error_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void showApiError(BuildContext context, ApiErrorModel error) {
+void showErrorDialog(BuildContext context, ApiErrorModel error) {
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -82,7 +83,7 @@ void showApiError(BuildContext context, ApiErrorModel error) {
                         ],
                       ),
                       const VerticalSpacing(8),
-                      ...error.errors!.map((d) {
+                      ...error.errors.map((d) {
                         return Text(
                           d,
                           style: TextStyle(
@@ -103,7 +104,11 @@ void showApiError(BuildContext context, ApiErrorModel error) {
                 children: [
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () {
+                        while (Navigator.of(context).canPop()) {
+                          context.pop();
+                        }
+                      },
                       style: OutlinedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 12.h),
                         shape: RoundedRectangleBorder(

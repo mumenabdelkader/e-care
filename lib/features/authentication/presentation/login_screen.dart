@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     CustomTextFormField(
                       controller: emailController,
-                      label: "email",
+                      label: Text("email", style: AppStyles.font12W400Grey),
                       prefixIcon: Icons.email_outlined,
                       validator: (String? value) {
                         return ValidationUtils.getEmailValidationMessage(value);
@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     VerticalSpacing(10),
                     CustomTextFormField(
                       controller: passwordController,
-                      label: "password",
+                      label: Text("password", style: AppStyles.font12W400Grey) ,
                       prefixIcon: Icons.lock_outline_sharp,
                       suffixIcon: IconButton(
                         onPressed: () {

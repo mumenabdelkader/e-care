@@ -6,9 +6,19 @@ final class AuthInitial extends AuthState {}
 
 final class AuthLoading extends AuthState {}
 
-final class AuthSuccess extends AuthState {
-  final RegisterResponseBodyModel response;
-  AuthSuccess({required this.response});
+class AuthRegisterSuccess extends AuthState {
+  final RegisterResponseBodyModel data;
+  AuthRegisterSuccess(this.data);
+}
+
+class AuthVerifyOtpSuccess extends AuthState {
+  final VerifyRegisterOtpReposneBodyModel data;
+  AuthVerifyOtpSuccess(this.data);
+}
+
+class AuthCreatePatientProfileSuccess extends AuthState {
+  final PatientResponseBodyModel data;
+  AuthCreatePatientProfileSuccess(this.data);
 }
 
 final class AuthFailure extends AuthState {

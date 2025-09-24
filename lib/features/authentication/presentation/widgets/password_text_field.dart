@@ -1,4 +1,5 @@
 import 'package:clinic/core/extension/spacing.dart';
+import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
 import 'package:clinic/core/utils/validation_utils.dart';
 import 'package:clinic/core/widgets/custom_text_form_field.dart';
@@ -79,7 +80,8 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
         CustomTextFormField(
           controller: widget.passwordController,
           obscureText: obscureText,
-          label: "Password",
+          keyboardType: TextInputType.visiblePassword,
+          label: Text("Password", style: AppStyles.font12W400Grey),
           prefixIcon: Icons.lock_outline_sharp,
           suffixIcon: IconButton(
             onPressed: () {
