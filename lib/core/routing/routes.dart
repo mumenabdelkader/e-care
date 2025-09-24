@@ -7,4 +7,5 @@ class Routes {
   static const String verifyRegisterOtp = 'verifyRegisterOtp';
   static const String forgotPassword = 'forgotPassword';
   static const String resetPassword = 'resetPassword';
+  static const String patientInfo = 'patientInfo';
 }
