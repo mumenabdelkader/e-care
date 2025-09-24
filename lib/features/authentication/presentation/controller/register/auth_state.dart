@@ -6,13 +6,21 @@ final class AuthInitial extends AuthState {}
 
 final class AuthLoading extends AuthState {}
 
-/// ✅ Success State عام لأي نوع Response
-final class AuthSuccess<T> extends AuthState {
-  final T data;
-  AuthSuccess({required this.data});
+class AuthRegisterSuccess extends AuthState {
+  final RegisterResponseBodyModel data;
+  AuthRegisterSuccess(this.data);
 }
 
-/// ✅ Failure State عام لأي Error
+class AuthVerifyOtpSuccess extends AuthState {
+  final VerifyRegisterOtpReposneBodyModel data;
+  AuthVerifyOtpSuccess(this.data);
+}
+
+class AuthCreatePatientProfileSuccess extends AuthState {
+  final PatientResponseBodyModel data;
+  AuthCreatePatientProfileSuccess(this.data);
+}
+
 final class AuthFailure extends AuthState {
   final ApiErrorModel errorModel;
   AuthFailure({required this.errorModel});

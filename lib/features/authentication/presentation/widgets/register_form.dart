@@ -29,6 +29,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   final _formKey = GlobalKey<FormState>();
   bool policyCheckedValue = false;
+  late RegisterReqsuestBodyModel registerData;
 
   @override
   Widget build(BuildContext context) {
@@ -113,16 +114,16 @@ class _RegisterFormState extends State<RegisterForm> {
         BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthFailure) {
-              showApiError(context, state.errorModel);
+              showErrorDialog(context, state.errorModel);
             }
-            if (state is AuthSuccess) {
+            if (state is AuthRegisterSuccess) {
               context.showSnackBar(
                 state.data.message ?? "Registered successfully",
                 backgroundColor: Colors.green,
               );
               context.pushNamed(
                 Routes.verifyRegisterOtp,
-                arguments: emailController.text.trim(),
+                arguments: registerData,
               );
             }
           },
@@ -137,14 +138,13 @@ class _RegisterFormState extends State<RegisterForm> {
                       ? null
                       : () {
                         if (_formKey.currentState!.validate()) {
-                          context.read<AuthCubit>().register(
-                            RegisterReqsuestBodyModel(
-                              userName: nameController.text.trim(),
-                              email: emailController.text.trim(),
-                              phoneNumber: phoneController.text.trim(),
-                              password: passwordController.text.trim(),
-                            ),
+                          registerData = RegisterReqsuestBodyModel(
+                            userName: nameController.text.trim(),
+                            email: emailController.text.trim(),
+                            phoneNumber: phoneController.text.trim(),
+                            password: passwordController.text.trim(),
                           );
+                          context.read<AuthCubit>().register(registerData);
                         }
                       },
             );

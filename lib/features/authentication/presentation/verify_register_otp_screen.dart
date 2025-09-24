@@ -1,14 +1,16 @@
 import 'dart:async';
-import 'dart:developer';
 
+import 'package:clinic/core/constants/cache_constants.dart';
 import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/show_snack_bar.dart';
 import 'package:clinic/core/extension/spacing.dart';
 import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
+import 'package:clinic/core/utils/cache_helper.dart';
 import 'package:clinic/core/widgets/app_dialog.dart';
 import 'package:clinic/core/widgets/custom_button.dart';
+import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_register_otp_request_body_model.dart';
 import 'package:clinic/features/authentication/presentation/controller/register/auth_cubit.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +21,8 @@ import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 
 class VerifyRegisterOtpScreen extends StatefulWidget {
-  const VerifyRegisterOtpScreen({super.key, required this.email});
-  final String email;
+  const VerifyRegisterOtpScreen({super.key, required this.registerData});
+  final RegisterReqsuestBodyModel registerData;
 
   @override
   State<VerifyRegisterOtpScreen> createState() =>
@@ -65,7 +67,7 @@ class _VerifyRegisterOtpScreenState extends State<VerifyRegisterOtpScreen> {
                     style: AppStyles.font16W400Grey,
                   ),
                   TextSpan(
-                    text: widget.email,
+                    text: widget.registerData.email,
                     style: AppStyles.font14W600Black,
                   ),
                   TextSpan(
@@ -93,7 +95,6 @@ class _VerifyRegisterOtpScreenState extends State<VerifyRegisterOtpScreen> {
               keyboardType: TextInputType.number,
               onChanged: (pin) {
                 setState(() => _otp = pin);
-                log(_otp.length.toString());
               },
               onCompleted: (pin) => setState(() => _otp = pin),
             ),
@@ -109,36 +110,15 @@ class _VerifyRegisterOtpScreenState extends State<VerifyRegisterOtpScreen> {
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
                       child: GestureDetector(
-                        onTap: //TODO refactor this logic
-                            // _remainingSeconds == 0
-                            //     ? () {
-                            //       if (_otp.length != 4) {
-                            //         _startTimer();
-                            //         context.showSnackBar(
-                            //           'Please enter all 4 digits',
-                            //           backgroundColor: AppColors.grey,
-                            //         );
-                            //         return;
-                            //       }
-                            //       context.read<AuthCubit>().register(
-                            //         RegisterReqsuestBodyModel(
-                            //           userName: 'da',
-                            //           email: "sdfa",
-                            //           password: "sf",
-                            //           phoneNumber: "",
-                            //         ),
-                            //       );
-                            //     }
-                            //     : null,
-                            () {},
+                        onTap:
+                            _remainingSeconds == 0
+                                ? () {
+                                  _resendOtp(context);
+                                }
+                                : null,
                         child: Text(
-                          _remainingSeconds == 0 ? "Resend" : formattedTime,
-                          style:
-                              _remainingSeconds == 0
-                                  ? AppStyles.font16W700Primary.copyWith(
-                                    decoration: TextDecoration.underline,
-                                  )
-                                  : AppStyles.font16W700Primary,
+                          _remainingSeconds == 0 ? "Resend" : _formattedTime,
+                          style: AppStyles.font16W700Primary,
                         ),
                       ),
                     ),
@@ -150,18 +130,15 @@ class _VerifyRegisterOtpScreenState extends State<VerifyRegisterOtpScreen> {
             BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) {
                 if (state is AuthFailure && _otp.length >= 4) {
-                  log('There is errorrrrrrrr');
-                  showApiError(context, state.errorModel);
+                  showErrorDialog(context, state.errorModel);
                 }
-                if (state is AuthSuccess) {
+                if (state is AuthVerifyOtpSuccess) {
                   context.showSnackBar(
-                    state.data.message,
+                    state.data.message ?? "No Message",
                     backgroundColor: AppColors.green,
                   );
-                  context.pushAndRemoveUntil(
-                    Routes.home,
-                    predicate: (route) => false,
-                  );
+                  _cacheData(state);
+                  context.pushNamed(Routes.patientInfo);
                 }
               },
               builder: (context, state) {
@@ -183,7 +160,7 @@ class _VerifyRegisterOtpScreenState extends State<VerifyRegisterOtpScreen> {
                             }
                             context.read<AuthCubit>().verifyRegisterOtp(
                               VerifyRegisterOtpRequestBodyModel(
-                                email: widget.email,
+                                email: widget.registerData.email,
                                 otpCode: _otp,
                               ),
                             );
@@ -195,6 +172,25 @@ class _VerifyRegisterOtpScreenState extends State<VerifyRegisterOtpScreen> {
         ),
       ),
     );
+  }
+
+  void _resendOtp(BuildContext context) {
+    _startTimer();
+
+    context.read<AuthCubit>().register(widget.registerData);
+  }
+
+  Future<void> _cacheData(AuthVerifyOtpSuccess state) async {
+    if (state.data.token != null && state.data.refreshToken != null) {
+      await CacheHelper.setSecureData(
+        key: CacheConstants.accessToken,
+        value: state.data.token!,
+      );
+      await CacheHelper.setSecureData(
+        key: CacheConstants.refreshToken,
+        value: state.data.refreshToken!,
+      );
+    }
   }
 
   void _startTimer() {
@@ -209,7 +205,7 @@ class _VerifyRegisterOtpScreenState extends State<VerifyRegisterOtpScreen> {
     });
   }
 
-  String get formattedTime {
+  String get _formattedTime {
     final minutes = (_remainingSeconds ~/ 60).toString().padLeft(2, '0');
     final seconds = (_remainingSeconds % 60).toString().padLeft(2, '0');
     return "$minutes:$seconds";

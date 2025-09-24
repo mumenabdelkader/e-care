@@ -1,5 +1,10 @@
+import 'package:clinic/core/networking/api_error_handler.dart';
 import 'package:clinic/core/networking/api_error_model.dart';
+import 'package:clinic/features/authentication/data/models/patient_request_body_model.dart';
+import 'package:clinic/features/authentication/data/models/patient_response_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
+import 'package:clinic/features/authentication/data/models/register_response_body_model.dart';
+import 'package:clinic/features/authentication/data/models/verify_register_otp_reposne_body_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_register_otp_request_body_model.dart';
 import 'package:clinic/features/authentication/data/repos/auth_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +21,7 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authRepo.register(body);
     result.when(
       onSuccess: (data) {
-        emit(AuthSuccess(data: data));
+        emit(AuthRegisterSuccess(data));
       },
       onError: (error) {
         emit(AuthFailure(errorModel: error));
@@ -29,11 +34,24 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authRepo.verifyRegisterOtp(body);
     result.when(
       onSuccess: (data) {
-        emit(AuthSuccess(data: data));
+        emit(AuthVerifyOtpSuccess(data));
       },
       onError: (error) {
         emit(AuthFailure(errorModel: error));
       },
     );
+  }
+
+  Future<void> createPatientPprofile(PatientRequestBodyModel body) async {
+    emit(AuthLoading());
+    try {
+      final result = await authRepo.createPatientPprofile(body);
+      result.when(
+        onSuccess: (data) => emit(AuthCreatePatientProfileSuccess(data)),
+        onError: (error) => emit(AuthFailure(errorModel: error)),
+      );
+    } catch (e) {
+      emit(AuthFailure(errorModel: ApiErrorHandler.handle(e)));
+    }
   }
 }
