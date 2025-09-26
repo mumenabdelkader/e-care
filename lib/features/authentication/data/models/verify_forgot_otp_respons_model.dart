@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'verify_forgot_otp_respons.g.dart';
+part 'verify_forgot_otp_respons_model.g.dart';
 
 @JsonSerializable()
 class VerifyForgotOTpRespons {
