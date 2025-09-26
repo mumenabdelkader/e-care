@@ -37,7 +37,7 @@ class _LoginFormState extends State<LoginForm> {
             children: [
               CustomTextFormField(
                 controller: emailController,
-                label: "email",
+                label: Text("email", style: AppStyles.font12W400Grey),
                 prefixIcon: Icons.email_outlined,
                 validator: (String? value) {
                   return ValidationUtils.getEmailValidationMessage(value);
@@ -47,7 +47,7 @@ class _LoginFormState extends State<LoginForm> {
               CustomTextFormField(
                 controller: passwordController,
                 obscureText: obscureText,
-                label: "password",
+                label: Text("password", style: AppStyles.font12W400Grey),
                 prefixIcon: Icons.lock_outline_sharp,
                 suffixIcon: IconButton(
                   onPressed: () {
@@ -74,9 +74,9 @@ class _LoginFormState extends State<LoginForm> {
         BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthFailure) {
-              showApiError(context, state.errorModel);
+              showErrorDialog(context, state.errorModel);
             }
-            if (state is AuthSuccess) {
+            if (state is AuthLoginSuccess) {
               context.showSnackBar(
                 state.data.message ?? "Login successfully",
                 backgroundColor: Colors.green,

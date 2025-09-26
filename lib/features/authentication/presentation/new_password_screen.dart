@@ -2,13 +2,13 @@ import 'package:clinic/core/extension/show_snack_bar.dart';
 import 'package:clinic/core/extension/spacing.dart';
 import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
+import 'package:clinic/core/widgets/app_dialog.dart';
 import 'package:clinic/core/widgets/custom_text_form_field.dart';
 import 'package:clinic/features/authentication/data/models/reset_password_request_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/validation_utils.dart';
-import '../../../core/widgets/app_dialog.dart';
 import '../../../core/widgets/custom_button.dart';
 import 'controller/register/auth_cubit.dart';
 
@@ -59,7 +59,10 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     CustomTextFormField(
                       controller: newPasswordController,
                       obscureText: newObscureText,
-                      label: "new password",
+                      label: Text(
+                        "new password",
+                        style: AppStyles.font12W400Grey,
+                      ),
                       prefixIcon: Icons.lock_outline_sharp,
                       suffixIcon: IconButton(
                         onPressed: () {
@@ -84,7 +87,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     CustomTextFormField(
                       controller: confirmPasswordController,
                       obscureText: confirmObscureText,
-                      label: "confirm password",
+                      label: Text("confirm password"),
                       prefixIcon: Icons.lock_outline_sharp,
                       suffixIcon: IconButton(
                         onPressed: () {
@@ -112,9 +115,9 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
                   if (state is AuthFailure) {
-                    showApiError(context, state.errorModel);
+                    showErrorDialog(context, state.errorModel);
                   }
-                  if (state is AuthSuccess) {
+                  if (state is RestPasswordSuccess) {
                     context.showSnackBar(
                       state.data.message ?? "Login successfully",
                       backgroundColor: Colors.green,

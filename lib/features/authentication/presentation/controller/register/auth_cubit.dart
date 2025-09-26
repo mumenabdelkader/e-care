@@ -1,13 +1,14 @@
 import 'package:clinic/core/networking/api_error_handler.dart';
 import 'package:clinic/core/networking/api_error_model.dart';
 import 'package:clinic/features/authentication/data/models/login_reqsuest_body_model.dart';
-import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
-import 'package:clinic/features/authentication/data/models/reset_password_request_model.dart';
-import 'package:clinic/features/authentication/data/models/verify_forgot_otp_request_model.dart';
+import 'package:clinic/features/authentication/data/models/login_respons_body_model.dart';
 import 'package:clinic/features/authentication/data/models/patient_request_body_model.dart';
 import 'package:clinic/features/authentication/data/models/patient_response_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_response_body_model.dart';
+import 'package:clinic/features/authentication/data/models/reset_password_request_model.dart';
+import 'package:clinic/features/authentication/data/models/reset_password_response_model.dart';
+import 'package:clinic/features/authentication/data/models/verify_forgot_otp_request_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_register_otp_reposne_body_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_register_otp_request_body_model.dart';
 import 'package:clinic/features/authentication/data/repos/auth_repo.dart';
@@ -51,7 +52,7 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authRepo.verifyPasswordRestOtp(body);
     result.when(
       onSuccess: (data) {
-        emit(AuthSuccess(data: data));
+        emit(VerifyPasswordRestOtpSuccess(data));
       },
       onError: (error) {
         emit(AuthFailure(errorModel: error));
@@ -65,7 +66,7 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authRepo.login(body);
     result.when(
       onSuccess: (data) {
-        emit(AuthSuccess(data: data));
+        emit(AuthLoginSuccess(data));
       },
       onError: (error) {
         emit(AuthFailure(errorModel: error));
@@ -79,7 +80,7 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authRepo.forgotPassword(email);
     result.when(
       onSuccess: (data) {
-        emit(AuthSuccess(data: data));
+        emit(ForgotPasswordSuccess(data));
       },
       onError: (error) {
         emit(AuthFailure(errorModel: error));
@@ -93,12 +94,14 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authRepo.restPassword(body);
     result.when(
       onSuccess: (data) {
-        emit(AuthSuccess(data: data));
+        emit(RestPasswordSuccess(data));
       },
       onError: (error) {
         emit(AuthFailure(errorModel: error));
       },
     );
+  }
+
   Future<void> createPatientPprofile(PatientRequestBodyModel body) async {
     emit(AuthLoading());
     try {

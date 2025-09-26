@@ -1,5 +1,6 @@
 import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/routing/routes.dart';
+import 'package:clinic/core/widgets/app_dialog.dart';
 import 'package:clinic/core/widgets/custom_button.dart';
 import 'package:clinic/core/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/extension/spacing.dart';
 import '../../../core/styles/app_styles.dart';
 import '../../../core/utils/validation_utils.dart';
-import '../../../core/widgets/app_dialog.dart';
 import 'controller/register/auth_cubit.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
@@ -41,7 +41,7 @@ class ResetPasswordScreen extends StatelessWidget {
               key: _formKey,
               child: CustomTextFormField(
                 controller: emailController,
-                label: "Type your email",
+                label: Text("Type your email", style: AppStyles.font12W400Grey),
                 prefixIcon: Icons.email_outlined,
                 validator: (String? value) {
                   return ValidationUtils.getEmailValidationMessage(value);
@@ -52,9 +52,9 @@ class ResetPasswordScreen extends StatelessWidget {
             BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) {
                 if (state is AuthFailure) {
-                  showApiError(context, state.errorModel);
+                  showErrorDialog(context, state.errorModel);
                 }
-                if (state is AuthSuccess) {
+                if (state is RestPasswordSuccess) {
                   // context.showSnackBar(
                   //   state.data.message ?? "reset successfully",
                   //   backgroundColor: Colors.green,

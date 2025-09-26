@@ -150,11 +150,11 @@ class _VerfiyPasswordOtpState extends State<VerfiyPasswordOtp> {
               listener: (context, state) {
                 if (state is AuthFailure && _otp.length >= 4) {
                   log('There is errorrrrrrrr');
-                  showApiError(context, state.errorModel);
+                  showErrorDialog(context, state.errorModel);
                 }
-                if (state is AuthSuccess) {
+                if (state is AuthVerifyOtpSuccess) {
                   context.showSnackBar(
-                    state.data.message,
+                    state.data.message ?? "Verified Successfully",
                     backgroundColor: AppColors.green,
                   );
                   context.pushAndRemoveUntil(

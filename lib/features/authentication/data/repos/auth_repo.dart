@@ -1,9 +1,9 @@
 import 'package:clinic/core/constants/cache_constants.dart';
 import 'package:clinic/core/networking/api_result.dart';
+import 'package:clinic/core/utils/cache_helper.dart';
 import 'package:clinic/features/authentication/data/models/forgot_password_respons_body_model.dart';
 import 'package:clinic/features/authentication/data/models/login_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/login_respons_body_model.dart';
-import 'package:clinic/core/utils/cache_helper.dart';
 import 'package:clinic/features/authentication/data/models/patient_request_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_response_body_model.dart';
@@ -107,7 +107,7 @@ class AuthRepoImpl implements AuthRepo {
         key: CacheConstants.accessToken,
       );
 
-      final response = await authService.createPatientPprofile(
+      final response = await authService.createPatientProfile(
         token: "Bearer $token",
         body: body,
       );

@@ -11,6 +11,26 @@ class AuthRegisterSuccess extends AuthState {
   AuthRegisterSuccess(this.data);
 }
 
+class AuthLoginSuccess extends AuthState {
+  final LoginResponseBodyModel data;
+  AuthLoginSuccess(this.data);
+}
+
+class VerifyPasswordRestOtpSuccess extends AuthState {
+  final VerifyForgotOTpRequestModel data;
+  VerifyPasswordRestOtpSuccess(this.data);
+}
+
+class ForgotPasswordSuccess extends AuthState {
+  final String data;
+  ForgotPasswordSuccess(this.data);
+}
+
+class RestPasswordSuccess extends AuthState {
+  final ResetPasswordResponseModel data;
+  RestPasswordSuccess(this.data);
+}
+
 class AuthVerifyOtpSuccess extends AuthState {
   final VerifyRegisterOtpReposneBodyModel data;
   AuthVerifyOtpSuccess(this.data);
