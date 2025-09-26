@@ -32,7 +32,7 @@ class RegisterScreen extends StatelessWidget {
               VerticalSpacing(17),
               CustomDivider(),
               RegisterForm(),
-              VerticalSpacing(58),
+              VerticalSpacing(15),
               Center(
                 child: RichText(
                   text: TextSpan(

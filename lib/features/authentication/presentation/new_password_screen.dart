@@ -1,5 +1,7 @@
+import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/show_snack_bar.dart';
 import 'package:clinic/core/extension/spacing.dart';
+import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
 import 'package:clinic/core/widgets/app_dialog.dart';
@@ -117,10 +119,14 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   if (state is AuthFailure) {
                     showErrorDialog(context, state.errorModel);
                   }
-                  if (state is RestPasswordSuccess) {
+                  if (state is AuthRestPasswordSuccess) {
                     context.showSnackBar(
                       state.data.message ?? "Login successfully",
                       backgroundColor: Colors.green,
+                    );
+                    context.pushAndRemoveUntil(
+                      Routes.login,
+                      predicate: (route) => false,
                     );
                   }
                 },

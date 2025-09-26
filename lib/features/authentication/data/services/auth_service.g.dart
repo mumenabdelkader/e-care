@@ -139,7 +139,7 @@ class _AuthService implements AuthService {
   }
 
   @override
-  Future<VerifyForgotOTpRespons> verifyPasswordRestOtp({
+  Future<VerifyForgotOtpResponseBodyModel> verifyPasswordRestOtp({
     required VerifyForgotOTpRequestModel body,
   }) async {
     final _extra = <String, dynamic>{};
@@ -147,7 +147,7 @@ class _AuthService implements AuthService {
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body.toJson());
-    final _options = _setStreamType<VerifyForgotOTpRespons>(
+    final _options = _setStreamType<VerifyForgotOtpResponseBodyModel>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -158,9 +158,9 @@ class _AuthService implements AuthService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late VerifyForgotOTpRespons _value;
+    late VerifyForgotOtpResponseBodyModel _value;
     try {
-      _value = VerifyForgotOTpRespons.fromJson(_result.data!);
+      _value = VerifyForgotOtpResponseBodyModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

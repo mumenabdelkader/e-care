@@ -18,15 +18,17 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 
-class VerfiyPasswordOtp extends StatefulWidget {
-  const VerfiyPasswordOtp({super.key, required this.email});
+class VerfiyForgotPasswordOtpScreen extends StatefulWidget {
+  const VerfiyForgotPasswordOtpScreen({super.key, required this.email});
   final String email;
 
   @override
-  State<VerfiyPasswordOtp> createState() => _VerfiyPasswordOtpState();
+  State<VerfiyForgotPasswordOtpScreen> createState() =>
+      _VerfiyForgotPasswordOtpScreenState();
 }
 
-class _VerfiyPasswordOtpState extends State<VerfiyPasswordOtp> {
+class _VerfiyForgotPasswordOtpScreenState
+    extends State<VerfiyForgotPasswordOtpScreen> {
   final OtpFieldController _controller = OtpFieldController();
   String _otp = '';
 
@@ -152,15 +154,14 @@ class _VerfiyPasswordOtpState extends State<VerfiyPasswordOtp> {
                   log('There is errorrrrrrrr');
                   showErrorDialog(context, state.errorModel);
                 }
-                if (state is AuthVerifyOtpSuccess) {
+                if (state is AuthVerifyPasswordRestOtpSuccess) {
                   context.showSnackBar(
                     state.data.message ?? "Verified Successfully",
                     backgroundColor: AppColors.green,
                   );
-                  context.pushAndRemoveUntil(
+                  context.pushNamed(
                     Routes.newPassword,
                     arguments: widget.email,
-                    predicate: (route) => false,
                   );
                 }
               },

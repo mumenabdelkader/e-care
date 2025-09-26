@@ -1,4 +1,5 @@
 import 'package:clinic/core/extension/navigation.dart';
+import 'package:clinic/core/extension/show_snack_bar.dart';
 import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/widgets/app_dialog.dart';
 import 'package:clinic/core/widgets/custom_button.dart';
@@ -54,11 +55,11 @@ class ResetPasswordScreen extends StatelessWidget {
                 if (state is AuthFailure) {
                   showErrorDialog(context, state.errorModel);
                 }
-                if (state is RestPasswordSuccess) {
-                  // context.showSnackBar(
-                  //   state.data.message ?? "reset successfully",
-                  //   backgroundColor: Colors.green,
-                  // );
+                if (state is AuthForgotPasswordSuccess) {
+                  context.showSnackBar(
+                    state.data.message ?? "reset successfully",
+                    backgroundColor: Colors.green,
+                  );
                   context.pushNamed(
                     Routes.verifyPasswordRestOtp,
                     arguments: emailController.text,

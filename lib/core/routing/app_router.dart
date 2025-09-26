@@ -7,7 +7,7 @@ import 'package:clinic/features/authentication/presentation/login_screen.dart';
 import 'package:clinic/features/authentication/presentation/new_password_screen.dart';
 import 'package:clinic/features/authentication/presentation/patient_information_screen.dart';
 import 'package:clinic/features/authentication/presentation/register_screen.dart';
-import 'package:clinic/features/authentication/presentation/verfiy_password_otp.dart';
+import 'package:clinic/features/authentication/presentation/verfiy_forgot_password_otp_screen.dart';
 import 'package:clinic/features/authentication/presentation/verify_register_otp_screen.dart';
 import 'package:clinic/features/home/home_screen.dart';
 import 'package:clinic/features/onboarding/get_started_screen.dart';
@@ -88,7 +88,7 @@ class AppRouter {
           builder:
               (_) => BlocProvider.value(
                 value: getIt<AuthCubit>(),
-                child: VerfiyPasswordOtp(email: email),
+                child: VerfiyForgotPasswordOtpScreen(email: email),
               ),
           settings: settings,
         );

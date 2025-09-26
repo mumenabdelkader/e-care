@@ -16,19 +16,19 @@ class AuthLoginSuccess extends AuthState {
   AuthLoginSuccess(this.data);
 }
 
-class VerifyPasswordRestOtpSuccess extends AuthState {
-  final VerifyForgotOTpRequestModel data;
-  VerifyPasswordRestOtpSuccess(this.data);
+class AuthVerifyPasswordRestOtpSuccess extends AuthState {
+  final VerifyForgotOtpResponseBodyModel data;
+  AuthVerifyPasswordRestOtpSuccess(this.data);
 }
 
-class ForgotPasswordSuccess extends AuthState {
-  final String data;
-  ForgotPasswordSuccess(this.data);
+class AuthForgotPasswordSuccess extends AuthState {
+  final ForgotPasswordResponseBodyModel data;
+  AuthForgotPasswordSuccess(this.data);
 }
 
-class RestPasswordSuccess extends AuthState {
+class AuthRestPasswordSuccess extends AuthState {
   final ResetPasswordResponseModel data;
-  RestPasswordSuccess(this.data);
+  AuthRestPasswordSuccess(this.data);
 }
 
 class AuthVerifyOtpSuccess extends AuthState {

@@ -1,5 +1,6 @@
 import 'package:clinic/core/networking/api_error_handler.dart';
 import 'package:clinic/core/networking/api_error_model.dart';
+import 'package:clinic/features/authentication/data/models/forgot_password_respons_body_model.dart';
 import 'package:clinic/features/authentication/data/models/login_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/login_respons_body_model.dart';
 import 'package:clinic/features/authentication/data/models/patient_request_body_model.dart';
@@ -9,6 +10,7 @@ import 'package:clinic/features/authentication/data/models/register_response_bod
 import 'package:clinic/features/authentication/data/models/reset_password_request_model.dart';
 import 'package:clinic/features/authentication/data/models/reset_password_response_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_forgot_otp_request_model.dart';
+import 'package:clinic/features/authentication/data/models/verify_forgot_otp_response_body_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_register_otp_reposne_body_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_register_otp_request_body_model.dart';
 import 'package:clinic/features/authentication/data/repos/auth_repo.dart';
@@ -52,7 +54,7 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authRepo.verifyPasswordRestOtp(body);
     result.when(
       onSuccess: (data) {
-        emit(VerifyPasswordRestOtpSuccess(data));
+        emit(AuthVerifyPasswordRestOtpSuccess(data));
       },
       onError: (error) {
         emit(AuthFailure(errorModel: error));
@@ -80,7 +82,7 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authRepo.forgotPassword(email);
     result.when(
       onSuccess: (data) {
-        emit(ForgotPasswordSuccess(data));
+        emit(AuthForgotPasswordSuccess(data));
       },
       onError: (error) {
         emit(AuthFailure(errorModel: error));
@@ -94,7 +96,7 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await authRepo.restPassword(body);
     result.when(
       onSuccess: (data) {
-        emit(RestPasswordSuccess(data));
+        emit(AuthRestPasswordSuccess(data));
       },
       onError: (error) {
         emit(AuthFailure(errorModel: error));

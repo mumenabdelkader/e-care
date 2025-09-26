@@ -9,7 +9,7 @@ import 'package:clinic/features/authentication/data/models/register_response_bod
 import 'package:clinic/features/authentication/data/models/reset_password_request_model.dart';
 import 'package:clinic/features/authentication/data/models/reset_password_response_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_forgot_otp_request_model.dart';
-import 'package:clinic/features/authentication/data/models/verify_forgot_otp_respons_model.dart';
+import 'package:clinic/features/authentication/data/models/verify_forgot_otp_response_body_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_register_otp_reposne_body_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_register_otp_request_body_model.dart';
 import 'package:dio/dio.dart';
@@ -42,9 +42,10 @@ abstract class AuthService {
   });
 
   @POST(ApiConstant.verifyPasswordRestOtpEP)
-  Future<VerifyForgotOTpRespons> verifyPasswordRestOtp({
+  Future<VerifyForgotOtpResponseBodyModel> verifyPasswordRestOtp({
     @Body() required VerifyForgotOTpRequestModel body,
   });
+
   @POST(ApiConstant.restPasswordEP)
   Future<ResetPasswordResponseModel> restPassword({
     @Body() required ResetPasswordRequestModel body,

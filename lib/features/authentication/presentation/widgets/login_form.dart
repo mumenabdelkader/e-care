@@ -1,5 +1,7 @@
+import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/show_snack_bar.dart';
 import 'package:clinic/core/extension/spacing.dart';
+import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
 import 'package:clinic/core/utils/validation_utils.dart';
@@ -81,6 +83,7 @@ class _LoginFormState extends State<LoginForm> {
                 state.data.message ?? "Login successfully",
                 backgroundColor: Colors.green,
               );
+              context.pushNamed(Routes.home);
             }
           },
           builder: (context, state) {
