@@ -7,9 +7,7 @@ import 'package:clinic/core/widgets/app_dialog.dart';
 import 'package:clinic/core/widgets/custom_button.dart';
 import 'package:clinic/core/widgets/custom_text_form_field.dart';
 import 'package:clinic/features/authentication/data/models/login_reqsuest_body_model.dart';
-import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/presentation/controller/register/auth_cubit.dart';
-import 'package:clinic/features/authentication/presentation/widgets/password_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -63,8 +61,9 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
                 validator: (String? value) {
-
-                  return ValidationUtils.getBasicPasswordValidationMessage(value);
+                  return ValidationUtils.getBasicPasswordValidationMessage(
+                    value,
+                  );
                 },
               ),
             ],
@@ -87,22 +86,22 @@ class _LoginFormState extends State<LoginForm> {
           builder: (context, state) {
             return CustomButton(
               lable:
-              state is AuthLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : Text("login", style: AppStyles.font14W700White),
+                  state is AuthLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : Text("login", style: AppStyles.font14W700White),
               onPressed:
-              state is AuthLoading
-                  ? null
-                  : () {
-                if (_formKey.currentState!.validate()) {
-                  context.read<AuthCubit>().login(
-                    LoginReqsuestBodyModel(
-                      email: emailController.text,
-                      password: passwordController.text,
-                    ),
-                  );
-                }
-              },
+                  state is AuthLoading
+                      ? null
+                      : () {
+                        if (_formKey.currentState!.validate()) {
+                          context.read<AuthCubit>().login(
+                            LoginReqsuestBodyModel(
+                              email: emailController.text,
+                              password: passwordController.text,
+                            ),
+                          );
+                        }
+                      },
             );
           },
         ),

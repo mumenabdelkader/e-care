@@ -1,13 +1,11 @@
 import 'package:clinic/core/networking/api_result.dart';
-import 'package:clinic/features/authentication/data/models/forgot-password_body_model.dart';
 import 'package:clinic/features/authentication/data/models/forgot_password_respons_body_model.dart';
 import 'package:clinic/features/authentication/data/models/login_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/login_respons_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_response_body_model.dart';
 import 'package:clinic/features/authentication/data/models/reset_password_request_model.dart';
-import 'package:clinic/features/authentication/data/models/reset_password_respond_model.dart';
-import 'package:clinic/features/authentication/data/models/verify_forgot_otp_request.dart';
+import 'package:clinic/features/authentication/data/models/verify_forgot_otp_request_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_register_otp_request_body_model.dart';
 import 'package:clinic/features/authentication/data/services/auth_service.dart';
 
@@ -20,7 +18,6 @@ abstract class AuthRepo {
   Future<ApiResult> verifyRegisterOtp(VerifyRegisterOtpRequestBodyModel body);
   Future<ApiResult> verifyPasswordRestOtp(VerifyForgotOTpRequestModel body);
   Future<ApiResult> restPassword(ResetPasswordRequestModel body);
-
 }
 
 class AuthRepoImpl implements AuthRepo {
@@ -37,10 +34,11 @@ class AuthRepoImpl implements AuthRepo {
       return ApiResult.error(e);
     }
   }
+
   @override
   Future<ApiResult<LoginResponseBodyModel>> login(
-      LoginReqsuestBodyModel body,
-      ) async {
+    LoginReqsuestBodyModel body,
+  ) async {
     try {
       final response = await authService.login(body: body);
       return ApiResult.success(response);
@@ -48,6 +46,7 @@ class AuthRepoImpl implements AuthRepo {
       return ApiResult.error(e);
     }
   }
+
   @override
   Future<ApiResult> verifyRegisterOtp(
     VerifyRegisterOtpRequestBodyModel body,
@@ -63,8 +62,8 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<ApiResult<ForgotPasswordResponseBodyModel>> forgotPassword(
-      String email,
-      ) async {
+    String email,
+  ) async {
     try {
       final response = await authService.forgotPassword(email: email);
       return ApiResult.success(response);
@@ -75,8 +74,8 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<ApiResult> verifyPasswordRestOtp(
-      VerifyForgotOTpRequestModel body,
-      ) async {
+    VerifyForgotOTpRequestModel body,
+  ) async {
     try {
       final response = await authService.verifyPasswordRestOtp(body: body);
 
@@ -85,9 +84,9 @@ class AuthRepoImpl implements AuthRepo {
       return ApiResult.error(e);
     }
   }
-  Future<ApiResult> restPassword(
-      ResetPasswordRequestModel body,
-      ) async {
+
+  @override
+  Future<ApiResult> restPassword(ResetPasswordRequestModel body) async {
     try {
       final response = await authService.restPassword(body: body);
 
@@ -97,6 +96,3 @@ class AuthRepoImpl implements AuthRepo {
     }
   }
 }
-
-
-

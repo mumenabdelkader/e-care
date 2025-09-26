@@ -2,27 +2,16 @@ import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/spacing.dart';
 import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/styles/app_styles.dart';
-import 'package:clinic/core/theme/app_colors.dart';
-import 'package:clinic/core/utils/validation_utils.dart';
 import 'package:clinic/features/authentication/presentation/widgets/login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/widgets/custom_button.dart';
-import '../../../core/widgets/custom_text_form_field.dart';
 import 'widgets/custom_divider.dart';
 import 'widgets/custom_signup_google.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,14 +35,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GestureDetector(
-                      onTap: () {
-                        // Navigate to Forgot Password screen
-                        context.pushNamed(Routes.forgotPassword);
-                      },
-                      child: Text("Forgot Password?", style: AppStyles.font14W700Primary)),
+                    onTap: () {
+                      // Navigate to Forgot Password screen
+                      context.pushNamed(Routes.forgotPassword);
+                    },
+                    child: Text(
+                      "Forgot Password?",
+                      style: AppStyles.font14W700Primary,
+                    ),
+                  ),
                 ],
               ),
-
 
               VerticalSpacing(58),
               Center(

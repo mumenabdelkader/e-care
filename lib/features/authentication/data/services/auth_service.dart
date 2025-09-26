@@ -6,8 +6,8 @@ import 'package:clinic/features/authentication/data/models/register_reqsuest_bod
 import 'package:clinic/features/authentication/data/models/register_response_body_model.dart';
 import 'package:clinic/features/authentication/data/models/reset_password_request_model.dart';
 import 'package:clinic/features/authentication/data/models/reset_password_respond_model.dart';
-import 'package:clinic/features/authentication/data/models/verify_forgot_otp_request.dart';
-import 'package:clinic/features/authentication/data/models/verify_forgot_otp_respons.dart';
+import 'package:clinic/features/authentication/data/models/verify_forgot_otp_request_model.dart';
+import 'package:clinic/features/authentication/data/models/verify_forgot_otp_respons_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_register_otp_reposne_body_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_register_otp_request_body_model.dart';
 import 'package:dio/dio.dart';

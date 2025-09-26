@@ -1,9 +1,8 @@
 import 'package:clinic/core/networking/api_error_model.dart';
-import 'package:clinic/features/authentication/data/models/forgot-password_body_model.dart';
 import 'package:clinic/features/authentication/data/models/login_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/reset_password_request_model.dart';
-import 'package:clinic/features/authentication/data/models/verify_forgot_otp_request.dart';
+import 'package:clinic/features/authentication/data/models/verify_forgot_otp_request_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_register_otp_request_body_model.dart';
 import 'package:clinic/features/authentication/data/repos/auth_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,6 +39,7 @@ class AuthCubit extends Cubit<AuthState> {
       },
     );
   }
+
   Future<void> verifyPasswordRestOtp(VerifyForgotOTpRequestModel body) async {
     emit(AuthLoading());
     final result = await authRepo.verifyPasswordRestOtp(body);
@@ -52,6 +52,7 @@ class AuthCubit extends Cubit<AuthState> {
       },
     );
   }
+
   Future<void> login(LoginReqsuestBodyModel body) async {
     emit(AuthLoading());
 
@@ -65,6 +66,7 @@ class AuthCubit extends Cubit<AuthState> {
       },
     );
   }
+
   Future<void> forgotPassword(String email) async {
     emit(AuthLoading());
 
@@ -78,6 +80,7 @@ class AuthCubit extends Cubit<AuthState> {
       },
     );
   }
+
   Future<void> restPassword(ResetPasswordRequestModel body) async {
     emit(AuthLoading());
 

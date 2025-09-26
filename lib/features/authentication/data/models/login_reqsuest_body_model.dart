@@ -1,15 +1,15 @@
 import 'package:json_annotation/json_annotation.dart';
+
 part 'login_reqsuest_body_model.g.dart';
+
 @JsonSerializable()
 class LoginReqsuestBodyModel {
-  String? email;
-  String? password;
+  final String email;
+  final String password;
 
-  LoginReqsuestBodyModel({this.email, this.password});
-  /// factory.
-  factory LoginReqsuestBodyModel.fromJson(Map<String, dynamic> json) => _$LoginReqsuestBodyModelFromJson(json);
+  const LoginReqsuestBodyModel({required this.email, required this.password});
 
-  /// Connect the generated [_$PersonToJson] function to the `toJson` method.
+  factory LoginReqsuestBodyModel.fromJson(Map<String, dynamic> json) =>
+      _$LoginReqsuestBodyModelFromJson(json);
   Map<String, dynamic> toJson() => _$LoginReqsuestBodyModelToJson(this);
-
 }
