@@ -123,7 +123,11 @@ class _RegisterFormState extends State<RegisterForm> {
               );
               context.pushNamed(
                 Routes.verifyRegisterOtp,
-                arguments: registerData,
+                arguments: {
+                  'isNewRegister': true,
+                  'registerData': registerData,
+                  'forgotPasswordData': null,
+                },
               );
             }
           },

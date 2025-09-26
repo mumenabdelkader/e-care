@@ -7,15 +7,14 @@ import 'package:clinic/features/authentication/presentation/login_screen.dart';
 import 'package:clinic/features/authentication/presentation/new_password_screen.dart';
 import 'package:clinic/features/authentication/presentation/patient_information_screen.dart';
 import 'package:clinic/features/authentication/presentation/register_screen.dart';
-import 'package:clinic/features/authentication/presentation/verfiy_forgot_password_otp_screen.dart';
-import 'package:clinic/features/authentication/presentation/verify_register_otp_screen.dart';
+import 'package:clinic/features/authentication/presentation/verify_otp_screen.dart';
 import 'package:clinic/features/home/home_screen.dart';
 import 'package:clinic/features/onboarding/get_started_screen.dart';
 import 'package:clinic/features/onboarding/on_boarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../features/authentication/presentation/reset_password_otp_screen.dart';
+import '../../features/authentication/presentation/reset_password_screen.dart';
 
 class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -54,13 +53,10 @@ class AppRouter {
 
       case Routes.forgotPassword:
         return MaterialPageRoute(
-          builder:
-              (_) => BlocProvider.value(
-                value: getIt<AuthCubit>(),
-                child: ForgotPassowrdScreen(),
-              ),
+          builder: (_) => ForgotPassowrdScreen(),
           settings: settings,
         );
+
       case Routes.resetPassword:
         return MaterialPageRoute(
           builder:
@@ -71,27 +67,44 @@ class AppRouter {
           settings: settings,
         );
 
+      //?????????
       case Routes.verifyRegisterOtp:
-        final registerData = settings.arguments as RegisterReqsuestBodyModel;
+        final args = settings.arguments as Map<String, dynamic>;
+        final isNewRegister = args['isNewRegister'] as bool;
+        final registerData = args['registerData'] as RegisterReqsuestBodyModel?;
+        final forgotPasswordData = args['forgotPasswordData'] as String?;
         return MaterialPageRoute(
           builder:
               (_) => BlocProvider.value(
                 value: getIt<AuthCubit>(),
-                child: VerifyRegisterOtpScreen(registerData: registerData),
+                child: VerifyOtpScreen(
+                  isNewRegister: isNewRegister,
+                  registerData: registerData,
+                  forgotPasswordData: forgotPasswordData,
+                ),
               ),
           settings: settings,
         );
 
+      //?????????
       case Routes.verifyPasswordRestOtp:
-        final email = settings.arguments as String;
+        final args = settings.arguments as Map<String, dynamic>;
+        final isNewRegister = args['isNewRegister'] as bool;
+        final registerData = args['registerData'] as RegisterReqsuestBodyModel?;
+        final forgotPasswordData = args['forgotPasswordData'] as String?;
         return MaterialPageRoute(
           builder:
               (_) => BlocProvider.value(
                 value: getIt<AuthCubit>(),
-                child: VerfiyForgotPasswordOtpScreen(email: email),
+                child: VerifyOtpScreen(
+                  isNewRegister: isNewRegister,
+                  registerData: registerData,
+                  forgotPasswordData: forgotPasswordData,
+                ),
               ),
           settings: settings,
         );
+
       case Routes.newPassword:
         final email = settings.arguments as String;
         return MaterialPageRoute(
@@ -102,6 +115,7 @@ class AppRouter {
               ),
           settings: settings,
         );
+
       case Routes.home:
         return MaterialPageRoute(
           builder: (_) => HomeScreen(),

@@ -6,6 +6,7 @@ import 'package:clinic/core/widgets/custom_button.dart';
 import 'package:clinic/core/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/extension/spacing.dart';
 import '../../../core/styles/app_styles.dart';
@@ -20,14 +21,9 @@ class ResetPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
+      appBar: AppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -57,12 +53,17 @@ class ResetPasswordScreen extends StatelessWidget {
                 }
                 if (state is AuthForgotPasswordSuccess) {
                   context.showSnackBar(
-                    state.data.message ?? "reset successfully",
+                    state.data.message ?? "Code Send successfully",
                     backgroundColor: Colors.green,
                   );
                   context.pushNamed(
                     Routes.verifyPasswordRestOtp,
-                    arguments: emailController.text,
+                    arguments: {
+                      'isNewRegister': false,
+                      'registerData': null,
+                      'forgotPasswordData': emailController.text.trim(),
+                      // "\"${emailController.text.trim()}\"",
+                    },
                   );
                 }
               },
@@ -71,14 +72,14 @@ class ResetPasswordScreen extends StatelessWidget {
                   lable:
                       state is AuthLoading
                           ? Center(child: CircularProgressIndicator())
-                          : Text("Send Link", style: AppStyles.font14W700White),
+                          : Text("Send Code", style: AppStyles.font14W700White),
                   onPressed:
                       state is AuthLoading
                           ? null
                           : () {
                             if (_formKey.currentState!.validate()) {
                               context.read<AuthCubit>().forgotPassword(
-                                " \"${emailController.text}\" ",
+                                "\"${emailController.text.trim()}\"",
                               );
                             }
                           },

@@ -105,9 +105,7 @@ void showErrorDialog(BuildContext context, ApiErrorModel error) {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () {
-                        while (Navigator.of(context).canPop()) {
-                          context.pop();
-                        }
+                        context.pop();
                       },
                       style: OutlinedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 12.h),

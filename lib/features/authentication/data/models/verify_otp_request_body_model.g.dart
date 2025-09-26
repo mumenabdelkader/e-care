@@ -1,18 +1,18 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'verify_forgot_otp_request_model.dart';
+part of 'verify_otp_request_body_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-VerifyForgotOTpRequestModel _$VerifyForgotOTpRequestModelFromJson(
+VerifyOtpRequestBodyModel _$VerifyOtpRequestBodyModelFromJson(
   Map<String, dynamic> json,
-) => VerifyForgotOTpRequestModel(
+) => VerifyOtpRequestBodyModel(
   email: json['email'] as String,
   otpCode: json['otpCode'] as String,
 );
 
-Map<String, dynamic> _$VerifyForgotOTpRequestModelToJson(
-  VerifyForgotOTpRequestModel instance,
+Map<String, dynamic> _$VerifyOtpRequestBodyModelToJson(
+  VerifyOtpRequestBodyModel instance,
 ) => <String, dynamic>{'email': instance.email, 'otpCode': instance.otpCode};

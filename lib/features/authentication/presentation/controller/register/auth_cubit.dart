@@ -9,10 +9,9 @@ import 'package:clinic/features/authentication/data/models/register_reqsuest_bod
 import 'package:clinic/features/authentication/data/models/register_response_body_model.dart';
 import 'package:clinic/features/authentication/data/models/reset_password_request_model.dart';
 import 'package:clinic/features/authentication/data/models/reset_password_response_model.dart';
-import 'package:clinic/features/authentication/data/models/verify_forgot_otp_request_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_forgot_otp_response_body_model.dart';
+import 'package:clinic/features/authentication/data/models/verify_otp_request_body_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_register_otp_reposne_body_model.dart';
-import 'package:clinic/features/authentication/data/models/verify_register_otp_request_body_model.dart';
 import 'package:clinic/features/authentication/data/repos/auth_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,12 +35,12 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future<void> verifyRegisterOtp(VerifyRegisterOtpRequestBodyModel body) async {
+  Future<void> verifyRegisterOtp(VerifyOtpRequestBodyModel body) async {
     emit(AuthLoading());
     final result = await authRepo.verifyRegisterOtp(body);
     result.when(
       onSuccess: (data) {
-        emit(AuthVerifyOtpSuccess(data));
+        emit(AuthVerifyRegisterOtpSuccess(data));
       },
       onError: (error) {
         emit(AuthFailure(errorModel: error));
@@ -49,12 +48,12 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future<void> verifyPasswordRestOtp(VerifyForgotOTpRequestModel body) async {
+  Future<void> verifyPasswordRestOtp(VerifyOtpRequestBodyModel body) async {
     emit(AuthLoading());
     final result = await authRepo.verifyPasswordRestOtp(body);
     result.when(
       onSuccess: (data) {
-        emit(AuthVerifyPasswordRestOtpSuccess(data));
+        emit(AuthVerifyForgotPasswordOtpSuccess(data));
       },
       onError: (error) {
         emit(AuthFailure(errorModel: error));

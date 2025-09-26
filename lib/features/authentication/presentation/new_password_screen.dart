@@ -9,6 +9,7 @@ import 'package:clinic/core/widgets/custom_text_form_field.dart';
 import 'package:clinic/features/authentication/data/models/reset_password_request_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/utils/validation_utils.dart';
 import '../../../core/widgets/custom_button.dart';
@@ -35,17 +36,12 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
+      appBar: AppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
         child: SingleChildScrollView(
           child: Column(
-            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text("New Password", style: AppStyles.font24W700Black),
               VerticalSpacing(8),
@@ -62,7 +58,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       controller: newPasswordController,
                       obscureText: newObscureText,
                       label: Text(
-                        "new password",
+                        "New password",
                         style: AppStyles.font12W400Grey,
                       ),
                       prefixIcon: Icons.lock_outline_sharp,
@@ -89,7 +85,10 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     CustomTextFormField(
                       controller: confirmPasswordController,
                       obscureText: confirmObscureText,
-                      label: Text("confirm password"),
+                      label: Text(
+                        "confirm password",
+                        style: AppStyles.font12W400Grey,
+                      ),
                       prefixIcon: Icons.lock_outline_sharp,
                       suffixIcon: IconButton(
                         onPressed: () {

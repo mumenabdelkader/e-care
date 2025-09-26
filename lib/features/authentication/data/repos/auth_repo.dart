@@ -8,8 +8,7 @@ import 'package:clinic/features/authentication/data/models/patient_request_body_
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_response_body_model.dart';
 import 'package:clinic/features/authentication/data/models/reset_password_request_model.dart';
-import 'package:clinic/features/authentication/data/models/verify_forgot_otp_request_model.dart';
-import 'package:clinic/features/authentication/data/models/verify_register_otp_request_body_model.dart';
+import 'package:clinic/features/authentication/data/models/verify_otp_request_body_model.dart';
 import 'package:clinic/features/authentication/data/services/auth_service.dart';
 
 abstract class AuthRepo {
@@ -18,8 +17,8 @@ abstract class AuthRepo {
   Future<ApiResult> login(LoginReqsuestBodyModel body);
   Future<ApiResult> forgotPassword(String email);
 
-  Future<ApiResult> verifyRegisterOtp(VerifyRegisterOtpRequestBodyModel body);
-  Future<ApiResult> verifyPasswordRestOtp(VerifyForgotOTpRequestModel body);
+  Future<ApiResult> verifyRegisterOtp(VerifyOtpRequestBodyModel body);
+  Future<ApiResult> verifyPasswordRestOtp(VerifyOtpRequestBodyModel body);
   Future<ApiResult> restPassword(ResetPasswordRequestModel body);
   Future<ApiResult> createPatientPprofile(PatientRequestBodyModel body);
 }
@@ -45,6 +44,14 @@ class AuthRepoImpl implements AuthRepo {
   ) async {
     try {
       final response = await authService.login(body: body);
+      await CacheHelper.setSecureData(
+        key: CacheConstants.accessToken,
+        value: response.token!,
+      );
+      await CacheHelper.setSecureData(
+        key: CacheConstants.refreshToken,
+        value: response.refreshToken!,
+      );
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.error(e);
@@ -52,9 +59,7 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<ApiResult> verifyRegisterOtp(
-    VerifyRegisterOtpRequestBodyModel body,
-  ) async {
+  Future<ApiResult> verifyRegisterOtp(VerifyOtpRequestBodyModel body) async {
     try {
       final response = await authService.verifyRegisterOtp(body: body);
 
@@ -78,7 +83,7 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<ApiResult> verifyPasswordRestOtp(
-    VerifyForgotOTpRequestModel body,
+    VerifyOtpRequestBodyModel body,
   ) async {
     try {
       final response = await authService.verifyPasswordRestOtp(body: body);

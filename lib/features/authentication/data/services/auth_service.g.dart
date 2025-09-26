@@ -110,7 +110,7 @@ class _AuthService implements AuthService {
 
   @override
   Future<VerifyRegisterOtpReposneBodyModel> verifyRegisterOtp({
-    required VerifyRegisterOtpRequestBodyModel body,
+    required VerifyOtpRequestBodyModel body,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -140,7 +140,7 @@ class _AuthService implements AuthService {
 
   @override
   Future<VerifyForgotOtpResponseBodyModel> verifyPasswordRestOtp({
-    required VerifyForgotOTpRequestModel body,
+    required VerifyOtpRequestBodyModel body,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

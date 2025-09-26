@@ -11,7 +11,7 @@ import 'package:clinic/core/utils/cache_helper.dart';
 import 'package:clinic/core/widgets/app_dialog.dart';
 import 'package:clinic/core/widgets/custom_button.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
-import 'package:clinic/features/authentication/data/models/verify_register_otp_request_body_model.dart';
+import 'package:clinic/features/authentication/data/models/verify_otp_request_body_model.dart';
 import 'package:clinic/features/authentication/presentation/controller/register/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,16 +20,21 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 
-class VerifyRegisterOtpScreen extends StatefulWidget {
-  const VerifyRegisterOtpScreen({super.key, required this.registerData});
-  final RegisterReqsuestBodyModel registerData;
-
+class VerifyOtpScreen extends StatefulWidget {
+  const VerifyOtpScreen({
+    super.key,
+    required this.isNewRegister,
+    required this.registerData,
+    required this.forgotPasswordData,
+  });
+  final bool isNewRegister;
+  final RegisterReqsuestBodyModel? registerData;
+  final String? forgotPasswordData;
   @override
-  State<VerifyRegisterOtpScreen> createState() =>
-      _VerifyRegisterOtpScreenState();
+  State<VerifyOtpScreen> createState() => _VerifyOtpScreenState();
 }
 
-class _VerifyRegisterOtpScreenState extends State<VerifyRegisterOtpScreen> {
+class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
   final OtpFieldController _controller = OtpFieldController();
   String _otp = '';
 
@@ -67,7 +72,8 @@ class _VerifyRegisterOtpScreenState extends State<VerifyRegisterOtpScreen> {
                     style: AppStyles.font16W400Grey,
                   ),
                   TextSpan(
-                    text: widget.registerData.email,
+                    text:
+                        widget.registerData?.email ?? widget.forgotPasswordData,
                     style: AppStyles.font14W600Black,
                   ),
                   TextSpan(
@@ -132,13 +138,30 @@ class _VerifyRegisterOtpScreenState extends State<VerifyRegisterOtpScreen> {
                 if (state is AuthFailure && _otp.length >= 4) {
                   showErrorDialog(context, state.errorModel);
                 }
-                if (state is AuthVerifyOtpSuccess) {
+                if (state is AuthVerifyRegisterOtpSuccess) {
                   context.showSnackBar(
                     state.data.message ?? "No Message",
                     backgroundColor: AppColors.green,
                   );
                   _cacheData(state);
-                  context.pushNamed(Routes.patientInfo);
+                  context.pushNamed(
+                    Routes.patientInfo,
+                    arguments: {
+                      'isNewRegister': true,
+                      'registerData': widget.registerData,
+                      'forgotEmail': widget.forgotPasswordData,
+                    },
+                  );
+                }
+                if (state is AuthVerifyForgotPasswordOtpSuccess) {
+                  context.showSnackBar(
+                    state.data.message ?? "Verified Successfully",
+                    backgroundColor: AppColors.green,
+                  );
+                  context.pushNamed(
+                    Routes.newPassword,
+                    arguments: widget.forgotPasswordData,
+                  );
                 }
               },
               builder: (context, state) {
@@ -158,12 +181,21 @@ class _VerifyRegisterOtpScreenState extends State<VerifyRegisterOtpScreen> {
                               );
                               return;
                             }
-                            context.read<AuthCubit>().verifyRegisterOtp(
-                              VerifyRegisterOtpRequestBodyModel(
-                                email: widget.registerData.email,
-                                otpCode: _otp,
-                              ),
-                            );
+                            widget.isNewRegister && widget.registerData != null
+                                ? context.read<AuthCubit>().verifyRegisterOtp(
+                                  VerifyOtpRequestBodyModel(
+                                    email: widget.registerData!.email,
+                                    otpCode: _otp,
+                                  ),
+                                )
+                                : context
+                                    .read<AuthCubit>()
+                                    .verifyPasswordRestOtp(
+                                      VerifyOtpRequestBodyModel(
+                                        email: widget.forgotPasswordData!,
+                                        otpCode: _otp,
+                                      ),
+                                    );
                           },
                 );
               },
@@ -177,10 +209,22 @@ class _VerifyRegisterOtpScreenState extends State<VerifyRegisterOtpScreen> {
   void _resendOtp(BuildContext context) {
     _startTimer();
 
-    context.read<AuthCubit>().register(widget.registerData);
+    widget.isNewRegister
+        ? context.read<AuthCubit>().verifyRegisterOtp(
+          VerifyOtpRequestBodyModel(
+            email: widget.registerData!.email,
+            otpCode: _otp,
+          ),
+        )
+        : context.read<AuthCubit>().verifyPasswordRestOtp(
+          VerifyOtpRequestBodyModel(
+            email: widget.forgotPasswordData!,
+            otpCode: _otp,
+          ),
+        );
   }
 
-  Future<void> _cacheData(AuthVerifyOtpSuccess state) async {
+  Future<void> _cacheData(AuthVerifyRegisterOtpSuccess state) async {
     if (state.data.token != null && state.data.refreshToken != null) {
       await CacheHelper.setSecureData(
         key: CacheConstants.accessToken,

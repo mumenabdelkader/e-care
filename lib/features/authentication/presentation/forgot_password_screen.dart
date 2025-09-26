@@ -1,7 +1,7 @@
-import 'package:clinic/core/constants/app_assets.dart';
 import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/spacing.dart';
 import 'package:clinic/core/styles/app_styles.dart';
+import 'package:clinic/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,12 +13,7 @@ class ForgotPassowrdScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
+      appBar: AppBar(),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
         child: Column(
@@ -45,8 +40,16 @@ class ForgotPassowrdScreen extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset(AppAssets.emailFrame),
-                    HorizontalSpacing(2),
+                    Container(
+                      width: 40.w,
+                      height: 40.h,
+                      decoration: BoxDecoration(
+                        color: AppColors.softGrey,
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Icon(Icons.email_outlined, size: 20.sp),
+                    ),
+                    HorizontalSpacing(16),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
