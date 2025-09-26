@@ -50,6 +50,65 @@ class _AuthService implements AuthService {
   }
 
   @override
+  Future<LoginResponseBodyModel> login({
+    required LoginReqsuestBodyModel body,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _options = _setStreamType<LoginResponseBodyModel>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'Account/Login',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late LoginResponseBodyModel _value;
+    try {
+      _value = LoginResponseBodyModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ForgotPasswordResponseBodyModel> forgotPassword({
+    required String email,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = email;
+    final _options = _setStreamType<ForgotPasswordResponseBodyModel>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'Account/forgot-password-by-email',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ForgotPasswordResponseBodyModel _value;
+    try {
+      _value = ForgotPasswordResponseBodyModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
   Future<VerifyRegisterOtpReposneBodyModel> verifyRegisterOtp({
     required VerifyRegisterOtpRequestBodyModel body,
   }) async {
@@ -80,6 +139,19 @@ class _AuthService implements AuthService {
   }
 
   @override
+  Future<VerifyForgotOTpRespons> verifyPasswordRestOtp({
+    required VerifyForgotOTpRequestModel body,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _options = _setStreamType<VerifyForgotOTpRespons>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'Account/verify-password-reset-otp',
   Future<PatientResponseBodyModel> createPatientPprofile({
     required String token,
     required PatientRequestBodyModel body,
@@ -101,6 +173,39 @@ class _AuthService implements AuthService {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late VerifyForgotOTpRespons _value;
+    try {
+      _value = VerifyForgotOTpRespons.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ResetPasswordRespondModel> restPassword({
+    required ResetPasswordRequestModel body,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _options = _setStreamType<ResetPasswordRespondModel>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'Account/reset-password',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ResetPasswordRespondModel _value;
+    try {
+      _value = ResetPasswordRespondModel.fromJson(_result.data!);
     late PatientResponseBodyModel _value;
     try {
       _value = PatientResponseBodyModel.fromJson(_result.data!);

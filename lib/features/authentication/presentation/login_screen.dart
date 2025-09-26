@@ -1,27 +1,17 @@
 import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/spacing.dart';
+import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/styles/app_styles.dart';
-import 'package:clinic/core/theme/app_colors.dart';
-import 'package:clinic/core/utils/validation_utils.dart';
+import 'package:clinic/features/authentication/presentation/widgets/login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/widgets/custom_button.dart';
-import '../../../core/widgets/custom_text_form_field.dart';
 import 'widgets/custom_divider.dart';
 import 'widgets/custom_signup_google.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  bool obscureText = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,52 +29,24 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomSignUpGoogle(),
               VerticalSpacing(17),
               CustomDivider(),
-              Form(
-                child: Column(
-                  children: [
-                    CustomTextFormField(
-                      controller: emailController,
-                      label: Text("email", style: AppStyles.font12W400Grey),
-                      prefixIcon: Icons.email_outlined,
-                      validator: (String? value) {
-                        return ValidationUtils.getEmailValidationMessage(value);
-                      },
-                    ),
-                    VerticalSpacing(10),
-                    CustomTextFormField(
-                      controller: passwordController,
-                      label: Text("password", style: AppStyles.font12W400Grey) ,
-                      prefixIcon: Icons.lock_outline_sharp,
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            obscureText = !obscureText;
-                          });
-                        },
-                        icon: Icon(
-                          obscureText ? Icons.visibility_off : Icons.visibility,
-                          color: AppColors.grey,
-                        ),
-                      ),
-                      validator: (String? value) {
-                        return ValidationUtils.getEmailValidationMessage(value);
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              LoginForm(),
               VerticalSpacing(16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("Forgot Password?", style: AppStyles.font14W700Primary),
+                  GestureDetector(
+                    onTap: () {
+                      // Navigate to Forgot Password screen
+                      context.pushNamed(Routes.forgotPassword);
+                    },
+                    child: Text(
+                      "Forgot Password?",
+                      style: AppStyles.font14W700Primary,
+                    ),
+                  ),
                 ],
               ),
-              VerticalSpacing(42),
-              CustomButton(
-                lable: Text("Log In", style: AppStyles.font14W700White),
-                onPressed: () {},
-              ),
+
               VerticalSpacing(58),
               Center(
                 child: RichText(
@@ -97,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       WidgetSpan(
                         child: GestureDetector(
                           onTap: () {
-                            context.pop();
+                            context.pushNamed(Routes.register);
                           },
                           child: Text(
                             "Sign Up ",

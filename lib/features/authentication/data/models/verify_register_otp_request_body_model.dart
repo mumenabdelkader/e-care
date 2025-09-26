@@ -7,7 +7,7 @@ class VerifyRegisterOtpRequestBodyModel {
   final String email;
   final String otpCode;
 
-  VerifyRegisterOtpRequestBodyModel({
+  const VerifyRegisterOtpRequestBodyModel({
     required this.email,
     required this.otpCode,
   });

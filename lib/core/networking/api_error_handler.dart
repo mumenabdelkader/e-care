@@ -12,44 +12,44 @@ class ApiErrorHandler {
         return e.when(
           connectionError:
               () => ApiErrorModel(
-                message:
-                    "No internet connection. Please check your Wi-Fi or mobile data.",
-                errors: const [],
-                icon: Icons.wifi_off,
-                statusCode: LocalStatusCodes.connectionError,
-              ),
+            message:
+            "No internet connection. Please check your Wi-Fi or mobile data.",
+            errors: const [],
+            icon: Icons.wifi_off,
+            statusCode: LocalStatusCodes.connectionError,
+          ),
           connectionTimeout:
               () => ApiErrorModel(
-                message:
-                    "The connection took too long. Try checking your internet or try again later.",
-                icon: Icons.timer_off,
-                statusCode: LocalStatusCodes.connectionTimeout,
-                errors: const [],
-              ),
+            message:
+            "The connection took too long. Try checking your internet or try again later.",
+            icon: Icons.timer_off,
+            statusCode: LocalStatusCodes.connectionTimeout,
+            errors: const [],
+          ),
           sendTimeout:
               () => ApiErrorModel(
-                message:
-                    "Request timed out while sending data. Please try again.",
-                icon: Icons.send,
-                statusCode: LocalStatusCodes.sendTimeout,
-                errors: const [],
-              ),
+            message:
+            "Request timed out while sending data. Please try again.",
+            icon: Icons.send,
+            statusCode: LocalStatusCodes.sendTimeout,
+            errors: const [],
+          ),
           receiveTimeout:
               () => ApiErrorModel(
-                message:
-                    "Server took too long to respond. Please try again later.",
-                icon: Icons.downloading,
-                statusCode: LocalStatusCodes.receiveTimeout,
-                errors: const [],
-              ),
+            message:
+            "Server took too long to respond. Please try again later.",
+            icon: Icons.downloading,
+            statusCode: LocalStatusCodes.receiveTimeout,
+            errors: const [],
+          ),
           badCertificate:
               () => ApiErrorModel(
-                message:
-                    "Security issue detected with the server. Connection not secure.",
-                icon: Icons.security,
-                statusCode: LocalStatusCodes.badCertificate,
-                errors: const [],
-              ),
+            message:
+            "Security issue detected with the server. Connection not secure.",
+            icon: Icons.security,
+            statusCode: LocalStatusCodes.badCertificate,
+            errors: const [],
+          ),
           badResponse: () {
             final data = e.response?.data;
 
@@ -75,19 +75,19 @@ class ApiErrorHandler {
           },
           cancel:
               () => ApiErrorModel(
-                message: "The request was cancelled. Please try again.",
-                icon: Icons.cancel,
-                statusCode: LocalStatusCodes.cancel,
-                errors: const [],
-              ),
+            message: "The request was cancelled. Please try again.",
+            icon: Icons.cancel,
+            statusCode: LocalStatusCodes.cancel,
+            errors: const [],
+          ),
           unknown:
               () => ApiErrorModel(
-                message:
-                    "Something went wrong. Please check your connection and try again.",
-                icon: Icons.error_outline,
-                statusCode: LocalStatusCodes.unknown,
-                errors: const [],
-              ),
+            message:
+            "Something went wrong. Please check your connection and try again.",
+            icon: Icons.error_outline,
+            statusCode: LocalStatusCodes.unknown,
+            errors: const [],
+          ),
         );
       }
     }

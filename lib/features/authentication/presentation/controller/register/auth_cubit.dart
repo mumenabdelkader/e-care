@@ -1,5 +1,9 @@
 import 'package:clinic/core/networking/api_error_handler.dart';
 import 'package:clinic/core/networking/api_error_model.dart';
+import 'package:clinic/features/authentication/data/models/login_reqsuest_body_model.dart';
+import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
+import 'package:clinic/features/authentication/data/models/reset_password_request_model.dart';
+import 'package:clinic/features/authentication/data/models/verify_forgot_otp_request_model.dart';
 import 'package:clinic/features/authentication/data/models/patient_request_body_model.dart';
 import 'package:clinic/features/authentication/data/models/patient_response_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
@@ -42,6 +46,59 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
+  Future<void> verifyPasswordRestOtp(VerifyForgotOTpRequestModel body) async {
+    emit(AuthLoading());
+    final result = await authRepo.verifyPasswordRestOtp(body);
+    result.when(
+      onSuccess: (data) {
+        emit(AuthSuccess(data: data));
+      },
+      onError: (error) {
+        emit(AuthFailure(errorModel: error));
+      },
+    );
+  }
+
+  Future<void> login(LoginReqsuestBodyModel body) async {
+    emit(AuthLoading());
+
+    final result = await authRepo.login(body);
+    result.when(
+      onSuccess: (data) {
+        emit(AuthSuccess(data: data));
+      },
+      onError: (error) {
+        emit(AuthFailure(errorModel: error));
+      },
+    );
+  }
+
+  Future<void> forgotPassword(String email) async {
+    emit(AuthLoading());
+
+    final result = await authRepo.forgotPassword(email);
+    result.when(
+      onSuccess: (data) {
+        emit(AuthSuccess(data: data));
+      },
+      onError: (error) {
+        emit(AuthFailure(errorModel: error));
+      },
+    );
+  }
+
+  Future<void> restPassword(ResetPasswordRequestModel body) async {
+    emit(AuthLoading());
+
+    final result = await authRepo.restPassword(body);
+    result.when(
+      onSuccess: (data) {
+        emit(AuthSuccess(data: data));
+      },
+      onError: (error) {
+        emit(AuthFailure(errorModel: error));
+      },
+    );
   Future<void> createPatientPprofile(PatientRequestBodyModel body) async {
     emit(AuthLoading());
     try {

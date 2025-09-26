@@ -9,8 +9,8 @@ part of 'login_reqsuest_body_model.dart';
 LoginReqsuestBodyModel _$LoginReqsuestBodyModelFromJson(
   Map<String, dynamic> json,
 ) => LoginReqsuestBodyModel(
-  email: json['email'] as String?,
-  password: json['password'] as String?,
+  email: json['email'] as String,
+  password: json['password'] as String,
 );
 
 Map<String, dynamic> _$LoginReqsuestBodyModelToJson(
