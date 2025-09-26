@@ -1,10 +1,16 @@
 import 'package:clinic/core/networking/api_constant.dart';
+import 'package:clinic/features/authentication/data/models/forgot_password_respons_body_model.dart';
+import 'package:clinic/features/authentication/data/models/login_reqsuest_body_model.dart';
+import 'package:clinic/features/authentication/data/models/login_respons_body_model.dart';
 import 'package:clinic/features/authentication/data/models/patient_request_body_model.dart';
 import 'package:clinic/features/authentication/data/models/patient_response_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_response_body_model.dart';
+import 'package:clinic/features/authentication/data/models/reset_password_request_model.dart';
+import 'package:clinic/features/authentication/data/models/reset_password_response_model.dart';
+import 'package:clinic/features/authentication/data/models/verify_forgot_otp_response_body_model.dart';
+import 'package:clinic/features/authentication/data/models/verify_otp_request_body_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_register_otp_reposne_body_model.dart';
-import 'package:clinic/features/authentication/data/models/verify_register_otp_request_body_model.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -19,13 +25,33 @@ abstract class AuthService {
     @Body() required RegisterReqsuestBodyModel body,
   });
 
+  @POST(ApiConstant.loginEp)
+  Future<LoginResponseBodyModel> login({
+    @Body() required LoginReqsuestBodyModel body,
+  });
+
+  @POST(ApiConstant.forgotPasswordEmailEP)
+  Future<ForgotPasswordResponseBodyModel> forgotPassword({
+    @Body() required String email,
+  });
+
   @POST(ApiConstant.verifyRegisterOtpEP)
   Future<VerifyRegisterOtpReposneBodyModel> verifyRegisterOtp({
-    @Body() required VerifyRegisterOtpRequestBodyModel body,
+    @Body() required VerifyOtpRequestBodyModel body,
+  });
+
+  @POST(ApiConstant.verifyPasswordRestOtpEP)
+  Future<VerifyForgotOtpResponseBodyModel> verifyPasswordRestOtp({
+    @Body() required VerifyOtpRequestBodyModel body,
+  });
+
+  @POST(ApiConstant.restPasswordEP)
+  Future<ResetPasswordResponseModel> restPassword({
+    @Body() required ResetPasswordRequestModel body,
   });
 
   @POST(ApiConstant.createPatientPprofileEP)
-  Future<PatientResponseBodyModel> createPatientPprofile({
+  Future<PatientResponseBodyModel> createPatientProfile({
     @Header("Authorization") required String token,
     @Body() required PatientRequestBodyModel body,
   });

@@ -11,9 +11,29 @@ class AuthRegisterSuccess extends AuthState {
   AuthRegisterSuccess(this.data);
 }
 
-class AuthVerifyOtpSuccess extends AuthState {
+class AuthLoginSuccess extends AuthState {
+  final LoginResponseBodyModel data;
+  AuthLoginSuccess(this.data);
+}
+
+class AuthVerifyForgotPasswordOtpSuccess extends AuthState {
+  final VerifyForgotOtpResponseBodyModel data;
+  AuthVerifyForgotPasswordOtpSuccess(this.data);
+}
+
+class AuthForgotPasswordSuccess extends AuthState {
+  final ForgotPasswordResponseBodyModel data;
+  AuthForgotPasswordSuccess(this.data);
+}
+
+class AuthRestPasswordSuccess extends AuthState {
+  final ResetPasswordResponseModel data;
+  AuthRestPasswordSuccess(this.data);
+}
+
+class AuthVerifyRegisterOtpSuccess extends AuthState {
   final VerifyRegisterOtpReposneBodyModel data;
-  AuthVerifyOtpSuccess(this.data);
+  AuthVerifyRegisterOtpSuccess(this.data);
 }
 
 class AuthCreatePatientProfileSuccess extends AuthState {

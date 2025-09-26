@@ -5,16 +5,16 @@ part 'verify_register_otp_reposne_body_model.g.dart';
 
 @JsonSerializable()
 class VerifyRegisterOtpReposneBodyModel {
-  String? token;
-  String? tokenExpiration;
-  String? refreshToken;
-  String? refreshTokenExpiration;
-  User? user;
-  bool? success;
-  String? message;
-  List? errors;
+  final String? token;
+  final String? tokenExpiration;
+  final String? refreshToken;
+  final String? refreshTokenExpiration;
+  final User? user;
+  final bool? success;
+  final String? message;
+  final List? errors;
 
-  VerifyRegisterOtpReposneBodyModel({
+  const VerifyRegisterOtpReposneBodyModel({
     this.token,
     this.tokenExpiration,
     this.refreshToken,
