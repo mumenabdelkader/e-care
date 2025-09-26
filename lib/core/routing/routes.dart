@@ -12,4 +12,5 @@ class Routes {
 
   static const String resetPassword = 'resetPassword';
   static const String newPassword = 'newPassword';
+  static const String patientInfo = 'patientInfo';
 }

@@ -152,6 +152,21 @@ class _AuthService implements AuthService {
           .compose(
             _dio.options,
             'Account/verify-password-reset-otp',
+  Future<PatientResponseBodyModel> createPatientPprofile({
+    required String token,
+    required PatientRequestBodyModel body,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _options = _setStreamType<PatientResponseBodyModel>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'Profile/create-patient-profile',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -191,6 +206,9 @@ class _AuthService implements AuthService {
     late ResetPasswordRespondModel _value;
     try {
       _value = ResetPasswordRespondModel.fromJson(_result.data!);
+    late PatientResponseBodyModel _value;
+    try {
+      _value = PatientResponseBodyModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

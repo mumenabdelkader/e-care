@@ -1,9 +1,11 @@
 import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/utils/di.dart';
+import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/presentation/controller/register/auth_cubit.dart';
 import 'package:clinic/features/authentication/presentation/forgot_password_screen.dart';
 import 'package:clinic/features/authentication/presentation/login_screen.dart';
 import 'package:clinic/features/authentication/presentation/new_password_screen.dart';
+import 'package:clinic/features/authentication/presentation/patient_information_screen.dart';
 import 'package:clinic/features/authentication/presentation/register_screen.dart';
 import 'package:clinic/features/authentication/presentation/verfiy_password_otp.dart';
 import 'package:clinic/features/authentication/presentation/verify_register_otp_screen.dart';
@@ -70,12 +72,12 @@ class AppRouter {
         );
 
       case Routes.verifyRegisterOtp:
-        final email = settings.arguments as String;
+        final registerData = settings.arguments as RegisterReqsuestBodyModel;
         return MaterialPageRoute(
           builder:
               (_) => BlocProvider.value(
                 value: getIt<AuthCubit>(),
-                child: VerifyRegisterOtpScreen(email: email),
+                child: VerifyRegisterOtpScreen(registerData: registerData),
               ),
           settings: settings,
         );
@@ -103,6 +105,16 @@ class AppRouter {
       case Routes.home:
         return MaterialPageRoute(
           builder: (_) => HomeScreen(),
+          settings: settings,
+        );
+
+      case Routes.patientInfo:
+        return MaterialPageRoute(
+          builder:
+              (_) => BlocProvider.value(
+                value: getIt<AuthCubit>(),
+                child: PatientInformationScreen(),
+              ),
           settings: settings,
         );
 

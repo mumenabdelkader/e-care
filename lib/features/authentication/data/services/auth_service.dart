@@ -2,6 +2,8 @@ import 'package:clinic/core/networking/api_constant.dart';
 import 'package:clinic/features/authentication/data/models/forgot_password_respons_body_model.dart';
 import 'package:clinic/features/authentication/data/models/login_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/login_respons_body_model.dart';
+import 'package:clinic/features/authentication/data/models/patient_request_body_model.dart';
+import 'package:clinic/features/authentication/data/models/patient_response_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_response_body_model.dart';
 import 'package:clinic/features/authentication/data/models/reset_password_request_model.dart';
@@ -23,21 +25,22 @@ abstract class AuthService {
   Future<RegisterResponseBodyModel> register({
     @Body() required RegisterReqsuestBodyModel body,
   });
+  
   @POST(ApiConstant.loginEp)
   Future<LoginResponseBodyModel> login({
     @Body() required LoginReqsuestBodyModel body,
   });
+  
   @POST(ApiConstant.forgotPasswordEmailEP)
   Future<ForgotPasswordResponseBodyModel> forgotPassword({
     @Body() required String email,
   });
 
-  // Future<void> signOut();
   @POST(ApiConstant.verifyRegisterOtpEP)
   Future<VerifyRegisterOtpReposneBodyModel> verifyRegisterOtp({
     @Body() required VerifyRegisterOtpRequestBodyModel body,
   });
-  // Future<void> signOut();
+
   @POST(ApiConstant.verifyPasswordRestOtpEP)
   Future<VerifyForgotOTpRespons> verifyPasswordRestOtp({
     @Body() required VerifyForgotOTpRequestModel body,
@@ -45,5 +48,10 @@ abstract class AuthService {
   @POST(ApiConstant.restPasswordEP)
   Future<ResetPasswordRespondModel> restPassword({
     @Body() required ResetPasswordRequestModel body,
+
+  @POST(ApiConstant.createPatientPprofileEP)
+  Future<PatientResponseBodyModel> createPatientPprofile({
+    @Header("Authorization") required String token,
+    @Body() required PatientRequestBodyModel body,
   });
 }
