@@ -1,4 +1,6 @@
+import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/spacing.dart';
+import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -25,29 +27,91 @@ class ProfileScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-          child: Column(children: [_profileInfo(), _profileServices()]),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _profileInfo(),
+            VerticalSpacing(24),
+            Text("General", style: AppStyles.font16W700Grey),
+
+            _profileSection(
+              title: "Account Information",
+              subtitle: "Change your account information",
+              icon: Icon(Icons.person, color: AppColors.primary, size: 25.sp),
+              onTap: () {
+                context.pushNamed(Routes.accountInformation);
+              },
+            ),
+            Divider(),
+
+            _profileSection(
+              title: "Insurance Detail",
+              subtitle: "Add your insurance info",
+              icon: Icon(Icons.payment, color: AppColors.green, size: 25.sp),
+            ),
+            Divider(),
+
+            _profileSection(
+              title: "Medical Records",
+              subtitle: "History about you medical records",
+              icon: Icon(
+                Icons.medication,
+                color: AppColors.yellow,
+                size: 25.sp,
+              ),
+            ),
+            Divider(),
+
+            _profileSection(
+              title: "Clinic Info",
+              subtitle: "Information about our Clinic",
+              icon: Icon(
+                Icons.medical_services,
+                color: Color(0xff8D43EC),
+                size: 25.sp,
+              ),
+            ),
+            Divider(),
+
+            _profileSection(
+              title: "Settings",
+              subtitle: "Manage & Settings",
+              icon: Icon(
+                Icons.settings,
+                color: AppColors.darkGrey,
+                size: 25.sp,
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  ListTile _profileSection(String title, String subtitle, Icon icon) {
-    return ListTile(
-      leading: Container(
-        width: 40.w,
-        height: 40.h,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: AppColors.softGrey,
+  Widget _profileSection({
+    required String title,
+    required String subtitle,
+    required Icon icon,
+    void Function()? onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: ListTile(
+        leading: Container(
+          width: 40.w,
+          height: 40.h,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: AppColors.softGrey,
+          ),
+          child: icon,
         ),
-        child: icon,
+        title: Text(title, style: AppStyles.font14W700Black),
+        subtitle: Text(subtitle, style: AppStyles.font12W400Grey),
+        trailing: Icon(Icons.chevron_right_sharp),
       ),
-      title: Text(title, style: AppStyles.font14W700Black),
-      subtitle: Text(subtitle, style: AppStyles.font12W400Grey),
-      trailing: Icon(Icons.chevron_right_sharp),
     );
   }
 
@@ -82,45 +146,6 @@ class ProfileScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _profileServices() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        VerticalSpacing(24),
-        Text("General", style: AppStyles.font16W700Grey),
-        _profileSection(
-          "Account Information",
-          "Change your account information",
-          Icon(Icons.person, color: AppColors.primary, size: 25.sp),
-        ),
-        Divider(),
-        _profileSection(
-          "Insurance Detail",
-          "Add your insurance info",
-          Icon(Icons.payment, color: AppColors.green, size: 25.sp),
-        ),
-        Divider(),
-        _profileSection(
-          "Medical Records",
-          "History about you medical records",
-          Icon(Icons.medication, color: AppColors.yellow, size: 25.sp),
-        ),
-        Divider(),
-        _profileSection(
-          "Clinic Info",
-          "Information about our Clinic",
-          Icon(Icons.medical_services, color: Color(0xff8D43EC), size: 25.sp),
-        ),
-        Divider(),
-        _profileSection(
-          "Settings",
-          "Manage & Settings",
-          Icon(Icons.settings, color: AppColors.darkGrey, size: 25.sp),
-        ),
-      ],
     );
   }
 }

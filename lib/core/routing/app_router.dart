@@ -11,6 +11,7 @@ import 'package:clinic/features/authentication/presentation/verify_otp_screen.da
 import 'package:clinic/features/home/home_screen.dart';
 import 'package:clinic/features/onboarding/get_started_screen.dart';
 import 'package:clinic/features/onboarding/on_boarding_screen.dart';
+import 'package:clinic/features/profile/presentation/account_information_screen.dart';
 import 'package:clinic/features/profile/presentation/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -136,6 +137,12 @@ class AppRouter {
       case Routes.profile:
         return MaterialPageRoute(
           builder: (_) => ProfileScreen(),
+          settings: settings,
+        );
+
+      case Routes.accountInformation:
+        return MaterialPageRoute(
+          builder: (_) => AccountInformationScreen(),
           settings: settings,
         );
 
