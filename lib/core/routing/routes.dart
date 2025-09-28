@@ -13,4 +13,5 @@ class Routes {
   static const String patientInfo = 'patientInfo';
   static const String profile = 'profile';
   static const String accountInformation = 'accountInformation';
+  static const String editAccount = 'editAccount';
 }

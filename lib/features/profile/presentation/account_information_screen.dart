@@ -1,4 +1,6 @@
+import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/spacing.dart';
+import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +24,9 @@ class AccountInformationScreen extends StatelessWidget {
               shape: BoxShape.circle,
               color: AppColors.softGrey,
             ),
-            child: const Icon(Icons.mode_edit_outline_outlined),
+            child: GestureDetector(
+              onTap: () => context.pushNamed(Routes.editAccount),
+              child: const Icon(Icons.mode_edit_outline_outlined)),
           ),
         ],
       ),
