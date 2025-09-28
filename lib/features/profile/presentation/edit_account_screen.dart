@@ -64,6 +64,13 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
     }
   }
 
+  void _pickProfilePhoto() {
+    // TODO: implement with image_picker / file picker
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Change profile photo tapped")),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,10 +83,49 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
         child: Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // ===== Profile Photo Section =====
+              Center(
+                child: Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 45.r,
+                      backgroundColor: AppColors.softGrey,
+                      backgroundImage: const NetworkImage(
+                        "https://via.placeholder.com/150", // replace with user photo
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: _pickProfilePhoto,
+                        child: Container(
+                          padding: EdgeInsets.all(6.w),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: AppColors.white, width: 2),
+                          ),
+                          child: Icon(
+                            Icons.camera_alt,
+                            size: 18.sp,
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              VerticalSpacing(24),
+
               // ===== Personal Section =====
-              Text("Personal", style: AppStyles.font16W700Grey),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Personal", style: AppStyles.font16W700Grey),
+              ),
               VerticalSpacing(16),
 
               _buildTextField("Ecare ID", _idController, readOnly: true),
@@ -88,7 +134,10 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
               _buildTextField("Last Name", _lastNameController),
 
               // Date of Birth
-              Text("Date of Birth", style: AppStyles.font12W400Grey),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Date of Birth", style: AppStyles.font12W400Grey),
+              ),
               VerticalSpacing(4),
               TextFormField(
                 controller: _dobController,
@@ -109,7 +158,10 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
               VerticalSpacing(16),
 
               // Gender
-              Text("Gender", style: AppStyles.font12W400Grey),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Gender", style: AppStyles.font12W400Grey),
+              ),
               Row(
                 children: [
                   Expanded(
@@ -133,7 +185,10 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
               VerticalSpacing(20),
 
               // ===== Contact Section =====
-              Text("Contact", style: AppStyles.font16W700Grey),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Contact", style: AppStyles.font16W700Grey),
+              ),
               VerticalSpacing(16),
 
               _buildTextField(
