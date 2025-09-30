@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'date_time_converter.dart';
+import '../../../authentication/data/models/date_time_converter.dart';
 
 part 'patient_request_body_model.g.dart';
 

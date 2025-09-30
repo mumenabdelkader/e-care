@@ -12,6 +12,7 @@ import 'package:clinic/features/home/home_screen.dart';
 import 'package:clinic/features/onboarding/get_started_screen.dart';
 import 'package:clinic/features/onboarding/on_boarding_screen.dart';
 import 'package:clinic/features/profile/presentation/account_information_screen.dart';
+import 'package:clinic/features/profile/presentation/controller/profile_cubit.dart';
 import 'package:clinic/features/profile/presentation/edit_account_screen.dart';
 import 'package:clinic/features/profile/presentation/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -70,26 +71,21 @@ class AppRouter {
           settings: settings,
         );
 
-      //?????????
       case Routes.verifyRegisterOtp:
         final args = settings.arguments as Map<String, dynamic>;
-        final isNewRegister = args['isNewRegister'] as bool;
-        final registerData = args['registerData'] as RegisterReqsuestBodyModel?;
-        final forgotPasswordData = args['forgotPasswordData'] as String?;
         return MaterialPageRoute(
           builder:
               (_) => BlocProvider.value(
                 value: getIt<AuthCubit>(),
                 child: VerifyOtpScreen(
-                  isNewRegister: isNewRegister,
-                  registerData: registerData,
-                  forgotPasswordData: forgotPasswordData,
+                  isNewRegister: args['isNewRegister'],
+                  registerData: args['registerData'],
+                  forgotPasswordData: args['forgotPasswordData'],
                 ),
               ),
           settings: settings,
         );
 
-      //?????????
       case Routes.verifyPasswordRestOtp:
         final args = settings.arguments as Map<String, dynamic>;
         final isNewRegister = args['isNewRegister'] as bool;
@@ -128,8 +124,8 @@ class AppRouter {
       case Routes.patientInfo:
         return MaterialPageRoute(
           builder:
-              (_) => BlocProvider.value(
-                value: getIt<AuthCubit>(),
+              (_) => BlocProvider(
+                create: (context) => getIt<ProfileCubit>(),
                 child: PatientInformationScreen(),
               ),
           settings: settings,
@@ -146,7 +142,7 @@ class AppRouter {
           builder: (_) => AccountInformationScreen(),
           settings: settings,
         );
-      
+
       case Routes.editAccount:
         return MaterialPageRoute(
           builder: (_) => EditAccountScreen(),

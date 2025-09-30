@@ -1,0 +1,26 @@
+import 'package:clinic/core/networking/api_constant.dart';
+import 'package:clinic/features/profile/data/models/patient_request_body_model.dart';
+import 'package:clinic/features/profile/data/models/patient_response_body_model.dart';
+import 'package:clinic/features/profile/data/models/updata_patient_profile_request_body_model.dart';
+import 'package:clinic/features/profile/data/models/updata_patient_profile_response_model.dart';
+import 'package:dio/dio.dart';
+import 'package:retrofit/error_logger.dart';
+import 'package:retrofit/http.dart';
+
+part 'profile_service.g.dart';
+
+@RestApi(baseUrl: ApiConstant.baseUrl)
+abstract class ProfileService {
+  factory ProfileService(Dio dio) = _ProfileService;
+
+  @POST(ApiConstant.createPatientPprofileEP)
+  Future<PatientResponseBodyModel> createPatientProfile({
+    // @Header("Authorization") required String token,
+    @Body() required PatientRequestBodyModel body,
+  });
+
+  @PUT(ApiConstant.updatePatientPprofileEP)
+  Future<UpdataPatientProfileResponseModel> updatePatientPprofile({
+    @Body() required UpdataPatientProfileRequestBodyModel body,
+  });
+}

@@ -36,11 +36,6 @@ class AuthVerifyRegisterOtpSuccess extends AuthState {
   AuthVerifyRegisterOtpSuccess(this.data);
 }
 
-class AuthCreatePatientProfileSuccess extends AuthState {
-  final PatientResponseBodyModel data;
-  AuthCreatePatientProfileSuccess(this.data);
-}
-
 final class AuthFailure extends AuthState {
   final ApiErrorModel errorModel;
   AuthFailure({required this.errorModel});

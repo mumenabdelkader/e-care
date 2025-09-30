@@ -144,14 +144,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                     backgroundColor: AppColors.green,
                   );
                   _cacheData(state);
-                  context.pushNamed(
-                    Routes.patientInfo,
-                    arguments: {
-                      'isNewRegister': true,
-                      'registerData': widget.registerData,
-                      'forgotEmail': widget.forgotPasswordData,
-                    },
-                  );
+                  context.pushNamed(Routes.patientInfo);
                 }
                 if (state is AuthVerifyForgotPasswordOtpSuccess) {
                   context.showSnackBar(

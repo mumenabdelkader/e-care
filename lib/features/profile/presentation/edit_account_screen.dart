@@ -106,7 +106,10 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                           decoration: BoxDecoration(
                             color: AppColors.primary,
                             shape: BoxShape.circle,
-                            border: Border.all(color: AppColors.white, width: 2),
+                            border: Border.all(
+                              color: AppColors.white,
+                              width: 2,
+                            ),
                           ),
                           child: Icon(
                             Icons.camera_alt,

@@ -40,7 +40,7 @@ class CustomTextFormField extends StatelessWidget {
     this.decoration,
     this.readOnly,
     this.onTap,
-    this.maxLines,
+    this.maxLines = 1,
   });
   @override
   Widget build(BuildContext context) {
