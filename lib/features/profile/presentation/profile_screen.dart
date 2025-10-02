@@ -1,9 +1,14 @@
 import 'package:clinic/core/extension/navigation.dart';
+import 'package:clinic/core/extension/show_snack_bar.dart';
 import 'package:clinic/core/extension/spacing.dart';
 import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
+import 'package:clinic/core/utils/di.dart';
+import 'package:clinic/core/widgets/app_dialog.dart';
+import 'package:clinic/features/authentication/presentation/controller/register/auth_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -86,9 +91,36 @@ class ProfileScreen extends StatelessWidget {
             ),
             Divider(),
             Align(
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text("Logout", style: AppStyles.font24W600Red),
+              child: BlocProvider.value(
+                value: getIt<AuthCubit>(),
+                child: BlocConsumer<AuthCubit, AuthState>(
+                  listener: (context, state) {
+                    if (state is AuthFailure) {
+                      showErrorDialog(context, state.errorModel);
+                    }
+                    if (state is AuthLogoutSuccess) {
+                      context.showSnackBar(
+                        state.data.message ?? 'Logout Successfuly',
+                        backgroundColor: AppColors.green,
+                      );
+                      context.pushAndRemoveUntil(
+                        Routes.login,
+                        predicate: (route) => false,
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    return ElevatedButton(
+                      onPressed:
+                          state is AuthLoading
+                              ? null
+                              : () {
+                                context.read<AuthCubit>().logout();
+                              },
+                      child: Text("Logout", style: AppStyles.font24W600Red),
+                    );
+                  },
+                ),
               ),
             ),
           ],

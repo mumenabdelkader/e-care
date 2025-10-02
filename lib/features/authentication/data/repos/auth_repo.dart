@@ -116,7 +116,7 @@ class AuthRepoImpl implements AuthRepo {
   Future<ApiResult> logout() async {
     try {
       final response = await authService.logout();
-      //TODO delete token from secure storage
+      await CacheHelper.deleteAllSecureData();      
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.error(e);
