@@ -6,10 +6,16 @@ final class ProfileInitial extends ProfileState {}
 
 final class ProfileLoading extends ProfileState {}
 
-final class ProfileCreatePatientProfileSuccess extends ProfileState {
+final class CreatedPatientProfileSuccess extends ProfileState {
   final PatientResponseBodyModel data;
 
-  ProfileCreatePatientProfileSuccess(this.data);
+  CreatedPatientProfileSuccess(this.data);
+}
+
+final class ProfileUpdatedPatientSuccess extends ProfileState {
+  final UpdataPatientProfileResponseModel data;
+
+  ProfileUpdatedPatientSuccess(this.data);
 }
 
 final class ProfileFailure extends ProfileState {

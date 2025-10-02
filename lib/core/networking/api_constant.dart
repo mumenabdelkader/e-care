@@ -4,6 +4,7 @@ class ApiConstant {
   //! Auth
   static const String registerEp = "Account/Register";
   static const String loginEp = "Account/Login";
+  static const String logoutEp = "Account/logout";
   static const String verifyRegisterOtpEP = "Account/Verify-register-otp";
   static const String forgotPasswordEmailEP =
       "Account/forgot-password-by-email";

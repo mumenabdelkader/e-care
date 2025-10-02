@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AccountInformationScreen extends StatelessWidget {
-  const AccountInformationScreen({super.key,  });
+  const AccountInformationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,8 @@ class AccountInformationScreen extends StatelessWidget {
             ),
             child: GestureDetector(
               onTap: () => context.pushNamed(Routes.editAccount),
-              child: const Icon(Icons.mode_edit_outline_outlined)),
+              child: const Icon(Icons.mode_edit_outline_outlined),
+            ),
           ),
         ],
       ),

@@ -84,6 +84,13 @@ class ProfileScreen extends StatelessWidget {
                 size: 25.sp,
               ),
             ),
+            Divider(),
+            Align(
+              child: ElevatedButton(
+                onPressed: () {},
+                child: Text("Logout", style: AppStyles.font24W600Red),
+              ),
+            ),
           ],
         ),
       ),

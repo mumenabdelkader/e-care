@@ -219,7 +219,7 @@ class _PatientInformationScreenState extends State<PatientInformationScreen> {
                       if (state is ProfileFailure) {
                         showErrorDialog(context, state.errorModel);
                       }
-                      if (state is ProfileCreatePatientProfileSuccess) {
+                      if (state is CreatedPatientProfileSuccess) {
                         context.showSnackBar(
                           state.data.message,
                           backgroundColor: AppColors.green,

@@ -8,13 +8,12 @@ import 'package:clinic/features/authentication/presentation/new_password_screen.
 import 'package:clinic/features/authentication/presentation/patient_information_screen.dart';
 import 'package:clinic/features/authentication/presentation/register_screen.dart';
 import 'package:clinic/features/authentication/presentation/verify_otp_screen.dart';
-import 'package:clinic/features/home/home_screen.dart';
+import 'package:clinic/features/home/root_screen.dart';
 import 'package:clinic/features/onboarding/get_started_screen.dart';
 import 'package:clinic/features/onboarding/on_boarding_screen.dart';
 import 'package:clinic/features/profile/presentation/account_information_screen.dart';
 import 'package:clinic/features/profile/presentation/controller/profile_cubit.dart';
 import 'package:clinic/features/profile/presentation/edit_account_screen.dart';
-import 'package:clinic/features/profile/presentation/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -117,35 +116,37 @@ class AppRouter {
 
       case Routes.home:
         return MaterialPageRoute(
-          builder: (_) => HomeScreen(),
+          builder: (_) => RootScreen(),
           settings: settings,
         );
 
       case Routes.patientInfo:
         return MaterialPageRoute(
           builder:
-              (_) => BlocProvider(
-                create: (context) => getIt<ProfileCubit>(),
+              (_) => BlocProvider.value(
+                value: getIt<ProfileCubit>(),
                 child: PatientInformationScreen(),
               ),
           settings: settings,
         );
 
-      case Routes.profile:
-        return MaterialPageRoute(
-          builder: (_) => ProfileScreen(),
-          settings: settings,
-        );
-
       case Routes.accountInformation:
         return MaterialPageRoute(
-          builder: (_) => AccountInformationScreen(),
+          builder:
+              (_) => BlocProvider.value(
+                value: getIt<ProfileCubit>(),
+                child: AccountInformationScreen(),
+              ),
           settings: settings,
         );
 
       case Routes.editAccount:
         return MaterialPageRoute(
-          builder: (_) => EditAccountScreen(),
+          builder:
+              (_) => BlocProvider.value(
+                value: getIt<ProfileCubit>(),
+                child: EditAccountScreen(),
+              ),
           settings: settings,
         );
 

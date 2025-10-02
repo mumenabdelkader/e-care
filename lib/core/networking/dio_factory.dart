@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:clinic/core/constants/cache_constants.dart';
 import 'package:clinic/core/utils/cache_helper.dart';
 import 'package:dio/dio.dart';
@@ -48,26 +50,30 @@ class DioFactory {
         },
         onError: (DioException error, handler) async {
           if (error.response?.statusCode == 401) {
-            try {
-              final newToken = await _refreshToken();
+            final tokensMap = await _refreshToken();
 
-              if (newToken != null) {
-                // Save new token
-                await CacheHelper.setSecureData(
-                  key: CacheConstants.accessToken,
-                  value: newToken,
-                );
+            if (tokensMap == null) {
+              return handler.reject(error); // or logout
+            }
 
-                // Retry request
-                final requestOptions = error.requestOptions;
-                requestOptions.headers['Authorization'] = 'Bearer $newToken';
+            final newToken = tokensMap["token"] as String?;
+            final refreshToken = tokensMap["refreshToken"] as String?;
 
-                final cloneReq = await _dio.fetch(requestOptions);
-                return handler.resolve(cloneReq);
-              }
-            } catch (e) {
-              debugPrint("❌ Refresh token failed: $e");
-              return handler.reject(error);
+            if (newToken != null && refreshToken != null) {
+              await CacheHelper.setSecureData(
+                key: CacheConstants.accessToken,
+                value: newToken,
+              );
+              await CacheHelper.setSecureData(
+                key: CacheConstants.refreshToken,
+                value: refreshToken,
+              );
+
+              final requestOptions = error.requestOptions;
+              requestOptions.headers['Authorization'] = 'Bearer $newToken';
+
+              final cloneReq = await _dio.fetch(requestOptions);
+              return handler.resolve(cloneReq);
             }
           }
           return handler.next(error);
@@ -95,24 +101,29 @@ class DioFactory {
   // ==================
   // Refresh Token Logic
   // ==================
-  Future<String?> _refreshToken() async {
+  Future<Map?> _refreshToken() async {
     try {
+      final token = await CacheHelper.getSecureData(
+        key: CacheConstants.accessToken,
+      );
       final refreshToken = await CacheHelper.getSecureData(
         key: CacheConstants.refreshToken,
       );
 
-      if (refreshToken == null) return null;
+      if (token == null && refreshToken == null) return null;
 
       final response = await _dio.post(
         ApiConstant.generateNewTokenEp,
-        data: {"refreshToken": refreshToken},
-        options: Options(extra: {"requiresToken": false}),
+        data: {"token": token, "refreshToken": refreshToken},
       );
 
       // ⚠️ تأكد من اسم الفيلد اللي راجع من الـ API
-      return response.data['token'] as String?;
+      return {
+        "token": response.data['token'],
+        "refreshToken": response.data['refreshToken'],
+      };
     } catch (e) {
-      debugPrint("❌ Error while refreshing token: $e");
+      log("❌ Error while refreshing token: $e");
       return null;
     }
   }

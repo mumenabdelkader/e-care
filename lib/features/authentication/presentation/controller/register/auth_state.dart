@@ -36,6 +36,11 @@ class AuthVerifyRegisterOtpSuccess extends AuthState {
   AuthVerifyRegisterOtpSuccess(this.data);
 }
 
+class AuthLogoutSuccess extends AuthState {
+  final LogoutResponseBodyModel data;
+  AuthLogoutSuccess(this.data);
+}
+
 final class AuthFailure extends AuthState {
   final ApiErrorModel errorModel;
   AuthFailure({required this.errorModel});

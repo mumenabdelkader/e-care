@@ -19,6 +19,7 @@ abstract class AuthRepo {
   Future<ApiResult> verifyRegisterOtp(VerifyOtpRequestBodyModel body);
   Future<ApiResult> verifyPasswordRestOtp(VerifyOtpRequestBodyModel body);
   Future<ApiResult> restPassword(ResetPasswordRequestModel body);
+  Future<ApiResult> logout();
 }
 
 class AuthRepoImpl implements AuthRepo {
@@ -61,6 +62,14 @@ class AuthRepoImpl implements AuthRepo {
     try {
       final response = await authService.verifyRegisterOtp(body: body);
 
+      await CacheHelper.setSecureData(
+        key: CacheConstants.accessToken,
+        value: response.token!,
+      );
+      await CacheHelper.setSecureData(
+        key: CacheConstants.refreshToken,
+        value: response.refreshToken!,
+      );
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.error(e);
@@ -97,6 +106,17 @@ class AuthRepoImpl implements AuthRepo {
     try {
       final response = await authService.restPassword(body: body);
 
+      return ApiResult.success(response);
+    } catch (e) {
+      return ApiResult.error(e);
+    }
+  }
+
+  @override
+  Future<ApiResult> logout() async {
+    try {
+      final response = await authService.logout();
+      //TODO delete token from secure storage
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.error(e);

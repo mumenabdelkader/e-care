@@ -1,9 +1,15 @@
+import 'package:clinic/core/extension/navigation.dart';
+import 'package:clinic/core/extension/show_snack_bar.dart';
 import 'package:clinic/core/extension/spacing.dart';
 import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
+import 'package:clinic/core/widgets/app_dialog.dart';
 import 'package:clinic/core/widgets/custom_button.dart';
 import 'package:clinic/core/widgets/custom_text_form_field.dart';
+import 'package:clinic/features/profile/data/models/updata_patient_profile_request_body_model.dart';
+import 'package:clinic/features/profile/presentation/controller/profile_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EditAccountScreen extends StatefulWidget {
@@ -33,10 +39,10 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
     text: "Feb 12, 1994",
   );
   final TextEditingController _phoneController = TextEditingController(
-    text: "+6282328277994",
+    text: "+201017480870",
   );
   final TextEditingController _emailController = TextEditingController(
-    text: "zhafira@gmail.com",
+    text: "ma8510007@gmail.com",
   );
   final TextEditingController _cityController = TextEditingController(
     text: "Bandung",
@@ -93,7 +99,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       radius: 45.r,
                       backgroundColor: AppColors.softGrey,
                       backgroundImage: const NetworkImage(
-                        "https://via.placeholder.com/150", // replace with user photo
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw0JfCLG0-cgSR4OxwJxYjDmaDNTFLzKYpNw&s", // replace with user photo
                       ),
                     ),
                     Positioned(
@@ -203,6 +209,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                 "Email",
                 _emailController,
                 keyboardType: TextInputType.emailAddress,
+                readOnly: true,
               ),
               _buildTextField("City", _cityController),
               _buildTextField("Province", _provinceController),
@@ -211,14 +218,55 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
               VerticalSpacing(24),
               SizedBox(
                 width: double.infinity,
-                child: CustomButton(
-                  lable: Text('Save Changes', style: AppStyles.font14W700White),
-                  onPressed: () {},
+                child: BlocConsumer<ProfileCubit, ProfileState>(
+                  listener: (context, state) {
+                    if (state is ProfileFailure) {
+                      showErrorDialog(context, state.errorModel);
+                    }
+                    if (state is ProfileUpdatedPatientSuccess) {
+                      context.showSnackBar(
+                        state.data.message ?? "Profile Updated Successfuly",
+                        backgroundColor: AppColors.green,
+                      );
+                      context.pop();
+                    }
+                  },
+                  builder: (context, state) {
+                    return CustomButton(
+                      lable:
+                          state is ProfileLoading
+                              ? Center(child: CircularProgressIndicator())
+                              : Text(
+                                'Save Changes',
+                                style: AppStyles.font14W700White,
+                              ),
+                      onPressed:
+                          state is ProfileLoading ? null : _updateProfile,
+                    );
+                  },
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _updateProfile() {
+    context.read<ProfileCubit>().updatePatientPprofile(
+      UpdataPatientProfileRequestBodyModel(
+        userName: _usernameController.text,
+        firstName: _firstNameController.text,
+        lastName: _lastNameController.text,
+        address: _addressController.text,
+        city: _cityController.text,
+        province: _provinceController.text,
+        //TODO recive dob from controller
+        dateOfBirth: DateTime(2000),
+        phoneNumber: _phoneController.text,
+
+        gender: _gender,
       ),
     );
   }

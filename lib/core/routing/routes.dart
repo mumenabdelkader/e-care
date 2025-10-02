@@ -11,7 +11,6 @@ class Routes {
   static const String resetPassword = 'resetPassword';
   static const String newPassword = 'newPassword';
   static const String patientInfo = 'patientInfo';
-  static const String profile = 'profile';
   static const String accountInformation = 'accountInformation';
   static const String editAccount = 'editAccount';
 }
