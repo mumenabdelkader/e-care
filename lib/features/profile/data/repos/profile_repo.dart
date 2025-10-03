@@ -9,6 +9,7 @@ abstract class ProfileRepo {
   Future<ApiResult> updatePatientPprofile(
     UpdataPatientProfileRequestBodyModel body,
   );
+  Future<ApiResult> getPatientProfile();
 }
 
 class ProfileRepoImpl implements ProfileRepo {
@@ -40,6 +41,16 @@ class ProfileRepoImpl implements ProfileRepo {
   ) async {
     try {
       final response = await _profileService.updatePatientPprofile(body: body);
+      return ApiResult.success(response);
+    } catch (e) {
+      return ApiResult.error(e);
+    }
+  }
+
+  @override
+  Future<ApiResult> getPatientProfile() async {
+    try {
+      final response = await _profileService.getPatientProfile();
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.error(e);

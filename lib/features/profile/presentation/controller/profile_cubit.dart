@@ -1,5 +1,6 @@
 import 'package:clinic/core/networking/api_error_handler.dart';
 import 'package:clinic/core/networking/api_error_model.dart';
+import 'package:clinic/features/profile/data/models/patient_profile_model.dart';
 import 'package:clinic/features/profile/data/models/patient_request_body_model.dart';
 import 'package:clinic/features/profile/data/models/patient_response_body_model.dart';
 import 'package:clinic/features/profile/data/models/updata_patient_profile_request_body_model.dart';
@@ -34,6 +35,19 @@ class ProfileCubit extends Cubit<ProfileState> {
       final result = await profileRepo.updatePatientPprofile(body);
       result.when(
         onSuccess: (data) => emit(ProfileUpdatedPatientSuccess(data)),
+        onError: (error) => emit(ProfileFailure(errorModel: error)),
+      );
+    } catch (e) {
+      emit(ProfileFailure(errorModel: ApiErrorHandler.handle(e)));
+    }
+  }
+
+  Future<void> getPatientPprofile() async {
+    emit(ProfileLoading());
+    try {
+      final result = await profileRepo.getPatientProfile();
+      result.when(
+        onSuccess: (data) => emit(GetProfilePatientSuccess(data)),
         onError: (error) => emit(ProfileFailure(errorModel: error)),
       );
     } catch (e) {

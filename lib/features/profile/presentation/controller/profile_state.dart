@@ -18,6 +18,12 @@ final class ProfileUpdatedPatientSuccess extends ProfileState {
   ProfileUpdatedPatientSuccess(this.data);
 }
 
+final class GetProfilePatientSuccess extends ProfileState {
+  final PatientProfileModel data;
+
+  GetProfilePatientSuccess(this.data);
+}
+
 final class ProfileFailure extends ProfileState {
   final ApiErrorModel errorModel;
 
