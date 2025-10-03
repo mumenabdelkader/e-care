@@ -10,6 +10,7 @@ import 'package:clinic/features/authentication/presentation/verify_otp_screen.da
 import 'package:clinic/features/home/root_screen.dart';
 import 'package:clinic/features/onboarding/get_started_screen.dart';
 import 'package:clinic/features/onboarding/on_boarding_screen.dart';
+import 'package:clinic/features/profile/data/models/patient_profile_model.dart';
 import 'package:clinic/features/profile/presentation/account_information_screen.dart';
 import 'package:clinic/features/profile/presentation/controller/profile_cubit.dart';
 import 'package:clinic/features/profile/presentation/create_patient_profile_screen.dart';
@@ -131,21 +132,27 @@ class AppRouter {
         );
 
       case Routes.accountInformation:
+        final patientProfileData = settings.arguments as PatientProfileModel;
         return MaterialPageRoute(
           builder:
               (_) => BlocProvider.value(
                 value: getIt<ProfileCubit>(),
-                child: AccountInformationScreen(),
+                child: AccountInformationScreen(
+                  patientProfileData: patientProfileData,
+                ),
               ),
           settings: settings,
         );
 
       case Routes.editAccount:
+        final patientProfileData = settings.arguments as PatientProfileModel;
         return MaterialPageRoute(
           builder:
               (_) => BlocProvider.value(
                 value: getIt<ProfileCubit>(),
-                child: EditAccountScreen(),
+                child: EditAccountScreen(
+                  patientProfileData: patientProfileData,
+                ),
               ),
           settings: settings,
         );

@@ -6,6 +6,7 @@ import 'package:clinic/core/theme/app_colors.dart';
 import 'package:clinic/core/widgets/app_dialog.dart';
 import 'package:clinic/core/widgets/custom_button.dart';
 import 'package:clinic/core/widgets/custom_text_form_field.dart';
+import 'package:clinic/features/profile/data/models/patient_profile_model.dart';
 import 'package:clinic/features/profile/data/models/updata_patient_profile_request_body_model.dart';
 import 'package:clinic/features/profile/presentation/controller/profile_cubit.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
 class EditAccountScreen extends StatefulWidget {
-  const EditAccountScreen({super.key});
+  const EditAccountScreen({super.key, required this.patientProfileData});
+  final PatientProfileModel patientProfileData;
 
   @override
   State<EditAccountScreen> createState() => _EditAccountScreenState();
@@ -24,36 +26,40 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   final _formKey = GlobalKey<FormState>();
 
   // Controllers
-  final TextEditingController _usernameController = TextEditingController(
-    text: "zhafira",
-  );
-  final TextEditingController _firstNameController = TextEditingController(
-    text: "Zhafira",
-  );
-  final TextEditingController _lastNameController = TextEditingController(
-    text: "Azalea",
-  );
-  final TextEditingController _dobController = TextEditingController(
-    text: "Feb 12, 1994",
-  );
-  final TextEditingController _phoneController = TextEditingController(
-    text: "+201017480870",
-  );
-  final TextEditingController _emailController = TextEditingController(
-    text: "ma8510007@gmail.com",
-  );
-  final TextEditingController _cityController = TextEditingController(
-    text: "Bandung",
-  );
-  final TextEditingController _provinceController = TextEditingController(
-    text: "West Java",
-  );
-  final TextEditingController _addressController = TextEditingController(
-    text: "Jl. Sekar Wangi 20 A, Bancangan",
-  );
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _dobController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _provinceController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
 
-  String _selectedGender = "Female";
-  DateTime? _selectedDate;
+  late String _selectedGender;
+  late DateTime _selectedDate;
+
+  late final PatientProfileModel profileData;
+
+  @override
+  void initState() {
+    super.initState();
+    profileData = widget.patientProfileData;
+    _usernameController.text = profileData.userName;
+    _firstNameController.text = profileData.firstName;
+    _lastNameController.text = profileData.lastName;
+    _addressController.text = profileData.address;
+    _emailController.text = profileData.email;
+    _dobController.text = _formattedDate(profileData.dateOfBirth);
+    _cityController.text = profileData.city;
+    _provinceController.text = profileData.province;
+    _phoneController.text = profileData.phoneNumber;
+    _selectedGender = profileData.gender;
+  }
+
+  String _formattedDate(DateTime date) {
+    return "${profileData.dateOfBirth.year}/${profileData.dateOfBirth.month}/${profileData.dateOfBirth.day}";
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -231,6 +237,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                         state.data.message ?? "Profile Updated Successfuly",
                         backgroundColor: AppColors.green,
                       );
+                      // to refresh cached data
+                      context.read<ProfileCubit>().getPatientPprofile();
+                      
                       context.pop();
                     }
                   },
@@ -265,8 +274,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
         address: _addressController.text,
         city: _cityController.text,
         province: _provinceController.text,
-        //TODO send real dob
-        dateOfBirth: _selectedDate ?? DateTime(2000),
+        dateOfBirth: _selectedDate,
         phoneNumber: _phoneController.text,
 
         gender: _selectedGender,

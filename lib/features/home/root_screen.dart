@@ -21,7 +21,10 @@ class _RootScreenState extends State<RootScreen> {
     Placeholder(),
     SizedBox.shrink(),
     Placeholder(),
-    BlocProvider.value(value: getIt<ProfileCubit>(), child: ProfileScreen()),
+    BlocProvider.value(
+      value: getIt<ProfileCubit>()..getPatientPprofile(),
+      child: ProfileScreen(),
+    ),
   ];
 
   @override

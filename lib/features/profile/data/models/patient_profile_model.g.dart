@@ -9,6 +9,7 @@ part of 'patient_profile_model.dart';
 PatientProfileModel _$PatientProfileModelFromJson(Map<String, dynamic> json) =>
     PatientProfileModel(
       patientId: json['patientId'] as String,
+      userName: json['userName'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       email: json['email'] as String,
@@ -19,15 +20,13 @@ PatientProfileModel _$PatientProfileModelFromJson(Map<String, dynamic> json) =>
       province: json['province'] as String,
       city: json['city'] as String,
       photoUrl: json['photoUrl'] as String,
-      success: json['success'] as bool,
-      message: json['message'],
-      errors: json['errors'],
     );
 
 Map<String, dynamic> _$PatientProfileModelToJson(
   PatientProfileModel instance,
 ) => <String, dynamic>{
   'patientId': instance.patientId,
+  'userName': instance.userName,
   'firstName': instance.firstName,
   'lastName': instance.lastName,
   'email': instance.email,
@@ -38,7 +37,4 @@ Map<String, dynamic> _$PatientProfileModelToJson(
   'province': instance.province,
   'city': instance.city,
   'photoUrl': instance.photoUrl,
-  'success': instance.success,
-  'message': instance.message,
-  'errors': instance.errors,
 };

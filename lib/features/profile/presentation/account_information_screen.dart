@@ -3,11 +3,25 @@ import 'package:clinic/core/extension/spacing.dart';
 import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
+import 'package:clinic/features/profile/data/models/patient_profile_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class AccountInformationScreen extends StatelessWidget {
-  const AccountInformationScreen({super.key});
+class AccountInformationScreen extends StatefulWidget {
+  const AccountInformationScreen({super.key, required this.patientProfileData});
+  final PatientProfileModel patientProfileData;
+
+  @override
+  State<AccountInformationScreen> createState() =>
+      _AccountInformationScreenState();
+}
+
+class _AccountInformationScreenState extends State<AccountInformationScreen> {
+  @override
+  void initState() {
+    // TODO: cach user data بدل profile data و call getProfile here
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +39,11 @@ class AccountInformationScreen extends StatelessWidget {
               color: AppColors.softGrey,
             ),
             child: GestureDetector(
-              onTap: () => context.pushNamed(Routes.editAccount),
+              onTap:
+                  () => context.pushNamed(
+                    Routes.editAccount,
+                    arguments: widget.patientProfileData,
+                  ),
               child: const Icon(Icons.mode_edit_outline_outlined),
             ),
           ),
@@ -48,10 +66,14 @@ class AccountInformationScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Row(
-                    children: const [
+                    children: [
                       Expanded(
-                        child: InfoItem(title: 'Ecare ID', value: '1092302'),
+                        child: InfoItem(
+                          title: 'Ecare ID',
+                          value: widget.patientProfileData.patientId,
+                        ),
                       ),
+                      //TODO display real username
                       Expanded(
                         child: InfoItem(title: 'Username', value: 'zhafira'),
                       ),
@@ -59,25 +81,38 @@ class AccountInformationScreen extends StatelessWidget {
                   ),
                   Divider(),
                   Row(
-                    children: const [
+                    children: [
                       Expanded(
-                        child: InfoItem(title: 'First Name', value: 'zhafira'),
+                        child: InfoItem(
+                          title: 'First Name',
+                          value: widget.patientProfileData.firstName,
+                        ),
                       ),
                       Expanded(
-                        child: InfoItem(title: 'Last Name', value: 'Azalea'),
+                        child: InfoItem(
+                          title: 'Last Name',
+                          value: widget.patientProfileData.lastName,
+                        ),
                       ),
                     ],
                   ),
                   Divider(),
                   Row(
-                    children: const [
+                    children: [
                       Expanded(
                         child: InfoItem(
                           title: 'Date of Birth',
-                          value: 'Feb 12, 1994',
+                          value: _formattedDate(
+                            widget.patientProfileData.dateOfBirth,
+                          ),
                         ),
                       ),
-                      Expanded(child: InfoItem(title: 'Gender', value: 'Male')),
+                      Expanded(
+                        child: InfoItem(
+                          title: 'Gender',
+                          value: widget.patientProfileData.gender,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -96,42 +131,52 @@ class AccountInformationScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Row(
-                    children: const [
+                    children: [
                       Expanded(
                         child: InfoItem(
                           title: 'Phone Number',
-                          value: '081892319321',
+                          value: widget.patientProfileData.phoneNumber,
                         ),
                       ),
                       Expanded(
                         child: InfoItem(
                           title: 'Email',
-                          value: 'zhafira@gmail.com',
+                          value: widget.patientProfileData.email,
                         ),
                       ),
                     ],
                   ),
                   Divider(),
                   Row(
-                    children: const [
+                    children: [
                       Expanded(
-                        child: InfoItem(title: 'Full Name', value: 'John Doe'),
+                        child: InfoItem(
+                          title: 'Full Name',
+                          value:
+                              "${widget.patientProfileData.firstName} ${widget.patientProfileData.lastName}",
+                        ),
                       ),
                       Expanded(
-                        child: InfoItem(title: 'City', value: 'Bandung'),
+                        child: InfoItem(
+                          title: 'City',
+                          value: widget.patientProfileData.city,
+                        ),
                       ),
                     ],
                   ),
                   Divider(),
                   Row(
-                    children: const [
+                    children: [
                       Expanded(
-                        child: InfoItem(title: 'Province', value: 'West Java'),
+                        child: InfoItem(
+                          title: 'Province',
+                          value: widget.patientProfileData.province,
+                        ),
                       ),
                       Expanded(
                         child: InfoItem(
                           title: 'Address',
-                          value: 'Jl. Sekar Wangi 20 A, Bancangan',
+                          value: widget.patientProfileData.address,
                         ),
                       ),
                     ],
@@ -143,6 +188,10 @@ class AccountInformationScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _formattedDate(DateTime date) {
+    return "${widget.patientProfileData.dateOfBirth.year}/${widget.patientProfileData.dateOfBirth.month}/${widget.patientProfileData.dateOfBirth.day}";
   }
 }
 

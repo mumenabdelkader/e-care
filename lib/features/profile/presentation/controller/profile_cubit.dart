@@ -1,6 +1,6 @@
 import 'package:clinic/core/networking/api_error_handler.dart';
 import 'package:clinic/core/networking/api_error_model.dart';
-import 'package:clinic/features/profile/data/models/patient_profile_model.dart';
+import 'package:clinic/features/profile/data/models/get_profile_response_body_model.dart';
 import 'package:clinic/features/profile/data/models/patient_request_body_model.dart';
 import 'package:clinic/features/profile/data/models/patient_response_body_model.dart';
 import 'package:clinic/features/profile/data/models/updata_patient_profile_request_body_model.dart';

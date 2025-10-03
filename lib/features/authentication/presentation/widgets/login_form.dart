@@ -83,7 +83,10 @@ class _LoginFormState extends State<LoginForm> {
                 state.data.message ?? "Login successfully",
                 backgroundColor: Colors.green,
               );
-              context.pushNamed(Routes.home);
+              context.pushAndRemoveUntil(
+                Routes.home,
+                predicate: (route) => false,
+              );
             }
           },
           builder: (context, state) {

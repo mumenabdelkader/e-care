@@ -116,7 +116,10 @@ class AuthRepoImpl implements AuthRepo {
   Future<ApiResult> logout() async {
     try {
       final response = await authService.logout();
-      await CacheHelper.deleteAllSecureData();      
+      await CacheHelper.deleteAllSecureData();
+      await CacheHelper.delete(key: CacheConstants.profileData);
+      await CacheHelper.delete(key: CacheConstants.profilePhoto);
+      
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.error(e);

@@ -5,6 +5,7 @@ part 'patient_profile_model.g.dart';
 @JsonSerializable()
 class PatientProfileModel {
   final String patientId;
+  final String userName;
   final String firstName;
   final String lastName;
   final String email;
@@ -15,12 +16,10 @@ class PatientProfileModel {
   final String province;
   final String city;
   final String photoUrl;
-  final bool success;
-  final dynamic message;
-  final dynamic errors;
 
   PatientProfileModel({
     required this.patientId,
+    required this.userName,
     required this.firstName,
     required this.lastName,
     required this.email,
@@ -31,9 +30,6 @@ class PatientProfileModel {
     required this.province,
     required this.city,
     required this.photoUrl,
-    required this.success,
-    required this.message,
-    required this.errors,
   });
   factory PatientProfileModel.fromJson(Map<String, dynamic> json) =>
       _$PatientProfileModelFromJson(json);

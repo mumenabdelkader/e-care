@@ -19,7 +19,7 @@ final class ProfileUpdatedPatientSuccess extends ProfileState {
 }
 
 final class GetProfilePatientSuccess extends ProfileState {
-  final PatientProfileModel data;
+  final GetProfileResponseBodyModel data;
 
   GetProfilePatientSuccess(this.data);
 }

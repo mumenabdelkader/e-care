@@ -1,5 +1,5 @@
 import 'package:clinic/core/networking/api_constant.dart';
-import 'package:clinic/features/profile/data/models/patient_profile_model.dart';
+import 'package:clinic/features/profile/data/models/get_profile_response_body_model.dart';
 import 'package:clinic/features/profile/data/models/patient_request_body_model.dart';
 import 'package:clinic/features/profile/data/models/patient_response_body_model.dart';
 import 'package:clinic/features/profile/data/models/updata_patient_profile_request_body_model.dart';
@@ -26,7 +26,7 @@ abstract class ProfileService {
   });
 
   @GET(ApiConstant.getPatientPprofileEP)
-  Future<PatientProfileModel> getPatientProfile();
+  Future<GetProfileResponseBodyModel> getPatientProfile();
 
   // @POST(ApiConstant.setPatientPprofilePhotoEP)
   // Future<void> setPatientPprofilePhoto();
