@@ -1,7 +1,7 @@
 import 'package:clinic/core/networking/dio_factory.dart';
 import 'package:clinic/features/authentication/data/repos/auth_repo.dart';
 import 'package:clinic/features/authentication/data/services/auth_service.dart';
-import 'package:clinic/features/authentication/presentation/controller/register/auth_cubit.dart';
+import 'package:clinic/features/authentication/presentation/controller/auth_cubit.dart';
 import 'package:clinic/features/profile/data/repos/profile_repo.dart';
 import 'package:clinic/features/profile/data/services/profile_service.dart';
 import 'package:clinic/features/profile/presentation/controller/profile_cubit.dart';

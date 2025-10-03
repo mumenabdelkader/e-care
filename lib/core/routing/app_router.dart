@@ -1,11 +1,10 @@
 import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/utils/di.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
-import 'package:clinic/features/authentication/presentation/controller/register/auth_cubit.dart';
+import 'package:clinic/features/authentication/presentation/controller/auth_cubit.dart';
 import 'package:clinic/features/authentication/presentation/forgot_password_screen.dart';
 import 'package:clinic/features/authentication/presentation/login_screen.dart';
 import 'package:clinic/features/authentication/presentation/new_password_screen.dart';
-import 'package:clinic/features/authentication/presentation/patient_information_screen.dart';
 import 'package:clinic/features/authentication/presentation/register_screen.dart';
 import 'package:clinic/features/authentication/presentation/verify_otp_screen.dart';
 import 'package:clinic/features/home/root_screen.dart';
@@ -13,6 +12,7 @@ import 'package:clinic/features/onboarding/get_started_screen.dart';
 import 'package:clinic/features/onboarding/on_boarding_screen.dart';
 import 'package:clinic/features/profile/presentation/account_information_screen.dart';
 import 'package:clinic/features/profile/presentation/controller/profile_cubit.dart';
+import 'package:clinic/features/profile/presentation/create_patient_profile_screen.dart';
 import 'package:clinic/features/profile/presentation/edit_account_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -120,12 +120,12 @@ class AppRouter {
           settings: settings,
         );
 
-      case Routes.patientInfo:
+      case Routes.createPatientProfile:
         return MaterialPageRoute(
           builder:
               (_) => BlocProvider.value(
                 value: getIt<ProfileCubit>(),
-                child: PatientInformationScreen(),
+                child: CreatePatientProfileScreen(),
               ),
           settings: settings,
         );

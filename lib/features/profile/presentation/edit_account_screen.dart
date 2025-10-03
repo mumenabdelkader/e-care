@@ -11,6 +11,7 @@ import 'package:clinic/features/profile/presentation/controller/profile_cubit.da
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
 class EditAccountScreen extends StatefulWidget {
   const EditAccountScreen({super.key});
@@ -23,9 +24,6 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   final _formKey = GlobalKey<FormState>();
 
   // Controllers
-  final TextEditingController _idController = TextEditingController(
-    text: "1092302",
-  );
   final TextEditingController _usernameController = TextEditingController(
     text: "zhafira",
   );
@@ -54,18 +52,21 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
     text: "Jl. Sekar Wangi 20 A, Bancangan",
   );
 
-  String _gender = "Female";
+  String _selectedGender = "Female";
+  DateTime? _selectedDate;
 
-  Future<void> _pickDate() async {
-    DateTime? picked = await showDatePicker(
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime(1994, 2, 12),
+      initialDate: DateTime(2000),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
-    if (picked != null) {
+
+    if (pickedDate != null) {
       setState(() {
-        _dobController.text = "${picked.day}/${picked.month}/${picked.year}";
+        _selectedDate = pickedDate;
+        _dobController.text = DateFormat('yyyy/MM/dd').format(pickedDate);
       });
     }
   }
@@ -136,8 +137,6 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                 child: Text("Personal", style: AppStyles.font16W700Grey),
               ),
               VerticalSpacing(16),
-
-              _buildTextField("Ecare ID", _idController, readOnly: true),
               _buildTextField("Username", _usernameController),
               _buildTextField("First Name", _firstNameController),
               _buildTextField("Last Name", _lastNameController),
@@ -154,7 +153,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.calendar_today_outlined),
-                    onPressed: _pickDate,
+                    onPressed: () {
+                      _selectDate(context);
+                    },
                   ),
                   filled: true,
                   fillColor: AppColors.softGrey,
@@ -176,16 +177,18 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                   Expanded(
                     child: RadioListTile<String>(
                       value: "Female",
-                      groupValue: _gender,
-                      onChanged: (val) => setState(() => _gender = val!),
+                      groupValue: _selectedGender,
+                      onChanged:
+                          (val) => setState(() => _selectedGender = val!),
                       title: const Text("Female"),
                     ),
                   ),
                   Expanded(
                     child: RadioListTile<String>(
                       value: "Male",
-                      groupValue: _gender,
-                      onChanged: (val) => setState(() => _gender = val!),
+                      groupValue: _selectedGender,
+                      onChanged:
+                          (val) => setState(() => _selectedGender = val!),
                       title: const Text("Male"),
                     ),
                   ),
@@ -262,11 +265,11 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
         address: _addressController.text,
         city: _cityController.text,
         province: _provinceController.text,
-        //TODO recive dob from controller
-        dateOfBirth: DateTime(2000),
+        //TODO send real dob
+        dateOfBirth: _selectedDate ?? DateTime(2000),
         phoneNumber: _phoneController.text,
 
-        gender: _gender,
+        gender: _selectedGender,
       ),
     );
   }

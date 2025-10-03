@@ -11,17 +11,19 @@ import 'package:clinic/features/profile/data/models/patient_request_body_model.d
 import 'package:clinic/features/profile/presentation/controller/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
-class PatientInformationScreen extends StatefulWidget {
-  const PatientInformationScreen({super.key});
+class CreatePatientProfileScreen extends StatefulWidget {
+  const CreatePatientProfileScreen({super.key});
 
   @override
-  State<PatientInformationScreen> createState() =>
-      _PatientInformationScreenState();
+  State<CreatePatientProfileScreen> createState() =>
+      _CreatePatientProfileScreenState();
 }
 
-class _PatientInformationScreenState extends State<PatientInformationScreen> {
+class _CreatePatientProfileScreenState
+    extends State<CreatePatientProfileScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _firstNameController = TextEditingController();
@@ -91,6 +93,13 @@ class _PatientInformationScreenState extends State<PatientInformationScreen> {
     );
   }
 
+  void _pickProfilePhoto() {
+    // TODO: implement with image_picker / file picker
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Change profile photo tapped")),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,6 +116,45 @@ class _PatientInformationScreenState extends State<PatientInformationScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Center(
+                    child: Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 45.r,
+                          backgroundColor: AppColors.softGrey,
+                          backgroundImage: const NetworkImage(
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw0JfCLG0-cgSR4OxwJxYjDmaDNTFLzKYpNw&s", // replace with user photo
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: _pickProfilePhoto,
+                            child: Container(
+                              padding: EdgeInsets.all(6.w),
+                              decoration: BoxDecoration(
+                                color: AppColors.primary,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: AppColors.white,
+                                  width: 2,
+                                ),
+                              ),
+                              child: Icon(
+                                Icons.camera_alt,
+                                size: 18.sp,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  VerticalSpacing(24),
+
+                  // ===== Personal Section =====
                   _buildLabel("First Name"),
                   _buildTextField(
                     _firstNameController,

@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/extension/spacing.dart';
 import '../../../core/styles/app_styles.dart';
 import '../../../core/utils/validation_utils.dart';
-import 'controller/register/auth_cubit.dart';
+import 'controller/auth_cubit.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();

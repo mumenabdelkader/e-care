@@ -10,7 +10,7 @@ class Routes {
   static const String verifyPasswordRestOtp = 'verifyPasswordRestOtp';
   static const String resetPassword = 'resetPassword';
   static const String newPassword = 'newPassword';
-  static const String patientInfo = 'patientInfo';
+  static const String createPatientProfile = 'patientInfo';
   static const String accountInformation = 'accountInformation';
   static const String editAccount = 'editAccount';
 }
