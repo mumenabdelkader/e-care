@@ -1,5 +1,4 @@
 import 'package:clinic/core/theme/app_colors.dart';
-import 'package:clinic/core/utils/di.dart';
 import 'package:clinic/features/home/home_screen.dart';
 import 'package:clinic/features/profile/presentation/controller/profile_cubit.dart';
 import 'package:clinic/features/profile/presentation/profile_screen.dart';
@@ -21,11 +20,14 @@ class _RootScreenState extends State<RootScreen> {
     Placeholder(),
     SizedBox.shrink(),
     Placeholder(),
-    BlocProvider.value(
-      value: getIt<ProfileCubit>()..getPatientPprofile(),
-      child: ProfileScreen(),
-    ),
+    ProfileScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProfileCubit>().getPatientProfile();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -117,7 +117,11 @@ class AppRouter {
 
       case Routes.home:
         return MaterialPageRoute(
-          builder: (_) => RootScreen(),
+          builder:
+              (_) => BlocProvider.value(
+                value: getIt<ProfileCubit>(),
+                child: RootScreen(),
+              ),
           settings: settings,
         );
 

@@ -21,11 +21,11 @@ void _setupAuth() {
   getIt.registerLazySingleton<AuthRepo>(
     () => AuthRepoImpl(authService: getIt()),
   );
-  getIt.registerLazySingleton<AuthCubit>(() => AuthCubit(getIt()));
+  getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt()));
 }
 
 void _setupProfile() {
   getIt.registerLazySingleton<ProfileService>(() => ProfileService(getIt()));
   getIt.registerLazySingleton<ProfileRepo>(() => ProfileRepoImpl(getIt()));
-  getIt.registerLazySingleton<ProfileCubit>(() => ProfileCubit(getIt()));
+  getIt.registerFactory<ProfileCubit>(() => ProfileCubit(getIt()));
 }

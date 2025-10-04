@@ -1,12 +1,14 @@
+import 'dart:io';
+
 import 'package:clinic/core/networking/api_constant.dart';
 import 'package:clinic/features/profile/data/models/get_profile_response_body_model.dart';
 import 'package:clinic/features/profile/data/models/patient_request_body_model.dart';
 import 'package:clinic/features/profile/data/models/patient_response_body_model.dart';
+import 'package:clinic/features/profile/data/models/photo_response_body_model.dart';
 import 'package:clinic/features/profile/data/models/updata_patient_profile_request_body_model.dart';
 import 'package:clinic/features/profile/data/models/updata_patient_profile_response_model.dart';
 import 'package:dio/dio.dart';
-import 'package:retrofit/error_logger.dart';
-import 'package:retrofit/http.dart';
+import 'package:retrofit/retrofit.dart';
 
 part 'profile_service.g.dart';
 
@@ -16,7 +18,6 @@ abstract class ProfileService {
 
   @POST(ApiConstant.createPatientPprofileEP)
   Future<PatientResponseBodyModel> createPatientProfile({
-    // @Header("Authorization") required String token,
     @Body() required PatientRequestBodyModel body,
   });
 
@@ -28,9 +29,9 @@ abstract class ProfileService {
   @GET(ApiConstant.getPatientPprofileEP)
   Future<GetProfileResponseBodyModel> getPatientProfile();
 
-  // @POST(ApiConstant.setPatientPprofilePhotoEP)
-  // Future<void> setPatientPprofilePhoto();
+  @POST(ApiConstant.setPatientPprofilePhotoEP)
+  Future<PhotoResponseBodyModel> setPatientPprofilePhoto({@Part(name: "photo") required File photo});
 
-  // @DELETE(ApiConstant.reomvePatientPprofilePhotoEP)
-  // Future<void> reomvePatientPprofilePhoto();
+  @DELETE(ApiConstant.reomvePatientPprofilePhotoEP)
+  Future<PhotoResponseBodyModel> reomvePatientPprofilePhoto();
 }

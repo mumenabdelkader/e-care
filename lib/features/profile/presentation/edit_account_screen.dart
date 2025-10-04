@@ -1,3 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:io';
+
 import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/show_snack_bar.dart';
 import 'package:clinic/core/extension/spacing.dart';
@@ -12,6 +16,7 @@ import 'package:clinic/features/profile/presentation/controller/profile_cubit.da
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class EditAccountScreen extends StatefulWidget {
@@ -39,7 +44,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   late String _selectedGender;
   late DateTime _selectedDate;
 
-  late final PatientProfileModel profileData;
+  late PatientProfileModel profileData;
 
   @override
   void initState() {
@@ -51,37 +56,11 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
     _addressController.text = profileData.address;
     _emailController.text = profileData.email;
     _dobController.text = _formattedDate(profileData.dateOfBirth);
+    _selectedDate = profileData.dateOfBirth;
     _cityController.text = profileData.city;
     _provinceController.text = profileData.province;
     _phoneController.text = profileData.phoneNumber;
     _selectedGender = profileData.gender;
-  }
-
-  String _formattedDate(DateTime date) {
-    return "${profileData.dateOfBirth.year}/${profileData.dateOfBirth.month}/${profileData.dateOfBirth.day}";
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime(2000),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-
-    if (pickedDate != null) {
-      setState(() {
-        _selectedDate = pickedDate;
-        _dobController.text = DateFormat('yyyy/MM/dd').format(pickedDate);
-      });
-    }
-  }
-
-  void _pickProfilePhoto() {
-    // TODO: implement with image_picker / file picker
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Change profile photo tapped")),
-    );
   }
 
   @override
@@ -99,42 +78,78 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // ===== Profile Photo Section =====
-              Center(
-                child: Stack(
-                  children: [
-                    CircleAvatar(
-                      radius: 45.r,
-                      backgroundColor: AppColors.softGrey,
-                      backgroundImage: const NetworkImage(
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw0JfCLG0-cgSR4OxwJxYjDmaDNTFLzKYpNw&s", // replace with user photo
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: GestureDetector(
-                        onTap: _pickProfilePhoto,
-                        child: Container(
-                          padding: EdgeInsets.all(6.w),
-                          decoration: BoxDecoration(
-                            color: AppColors.primary,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppColors.white,
-                              width: 2,
+              BlocConsumer<ProfileCubit, ProfileState>(
+                listener: (context, state) {
+                  if (state is ProfileFailure) {
+                    showErrorDialog(context, state.errorModel);
+                  }
+                  if (state is ProfilePhotoUploadedSuccess) {
+                    context.showSnackBar(
+                      "Profile photo updated successfully",
+                      backgroundColor: AppColors.green,
+                    );
+                  }
+                  if (state is ProfilePhotoRemovedSuccess) {
+                    context.showSnackBar(
+                      "Profile photo removed successfully",
+                      backgroundColor: AppColors.green,
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  if (state is ProfileLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (state is GetProfilePatientSuccess) {
+                    profileData = state.data.profile;
+                  }
+
+                  return Center(
+                    child: Stack(
+                      children: [
+                        GestureDetector(
+                          onTap: () => _pickProfilePhoto(context),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(90.r),
+                            child: Image.network(
+                              profileData.photoUrl.isEmpty
+                                  ? "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
+                                  : profileData.photoUrl,
+                              fit: BoxFit.cover,
+                              width: 90.w,
+                              height: 90.h,
                             ),
                           ),
-                          child: Icon(
-                            Icons.camera_alt,
-                            size: 18.sp,
-                            color: AppColors.white,
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: () => _deleteProfilePhoto(context),
+                            child: Container(
+                              padding: EdgeInsets.all(6.w),
+                              decoration: BoxDecoration(
+                                color: AppColors.red,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: AppColors.white,
+                                  width: 2,
+                                ),
+                              ),
+                              child: Icon(
+                                Icons.delete,
+                                size: 18.sp,
+                                color: AppColors.white,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
               ),
+
               VerticalSpacing(24),
 
               // ===== Personal Section =====
@@ -238,8 +253,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                         backgroundColor: AppColors.green,
                       );
                       // to refresh cached data
-                      context.read<ProfileCubit>().getPatientPprofile();
-                      
+                      context.read<ProfileCubit>().getPatientProfile();
+
                       context.pop();
                     }
                   },
@@ -262,6 +277,82 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void _deleteProfilePhoto(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text("Remove Profile Photo"),
+          content: const Text(
+            "Are you sure you want to remove your profile photo?",
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("Cancel"),
+              onPressed: () {
+                dialogContext.pop();
+              },
+            ),
+            TextButton(
+              child: const Text("Remove", style: TextStyle(color: Colors.red)),
+              onPressed: () async {
+                await context.read<ProfileCubit>().removeProfilePhoto();
+                if (mounted) {
+                  dialogContext.pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _pickProfilePhoto(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder:
+          (ctx) => Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.camera_alt),
+                  title: const Text('Take Photo'),
+                  onTap: () async {
+                    final image = await ImagePicker().pickImage(
+                      source: ImageSource.camera,
+                    );
+                    if (image != null) {
+                      context.read<ProfileCubit>().uploadProfilePhoto(
+                        File(image.path),
+                      );
+                    }
+                    if (mounted) Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.photo_library),
+                  title: const Text('Choose from Gallery'),
+                  onTap: () async {
+                    final image = await ImagePicker().pickImage(
+                      source: ImageSource.gallery,
+                    );
+                    if (image != null) {
+                      context.read<ProfileCubit>().uploadProfilePhoto(
+                        File(image.path),
+                      );
+                    }
+                    if (mounted) context.pop(context);
+                  },
+                ),
+              ],
+            ),
+          ),
     );
   }
 
@@ -313,5 +404,25 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
         ],
       ),
     );
+  }
+
+  String _formattedDate(DateTime date) {
+    return "${profileData.dateOfBirth.year}/${profileData.dateOfBirth.month}/${profileData.dateOfBirth.day}";
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime(2000),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        _selectedDate = pickedDate;
+        _dobController.text = DateFormat('yyyy/MM/dd').format(pickedDate);
+      });
+    }
   }
 }

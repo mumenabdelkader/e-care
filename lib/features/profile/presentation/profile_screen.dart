@@ -26,7 +26,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late PatientProfileModel patientData;
+  PatientProfileModel? patientData;
 
   @override
   void initState() {
@@ -68,103 +68,117 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _profileInfo(),
-            VerticalSpacing(24),
-            Text("General", style: AppStyles.font16W700Grey),
+      body:
+          patientData == null
+              ? Center(child: CircularProgressIndicator())
+              : Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _profileInfo(),
+                    VerticalSpacing(24),
+                    Text("General", style: AppStyles.font16W700Grey),
 
-            _profileSection(
-              title: "Account Information",
-              subtitle: "Change your account information",
-              icon: Icon(Icons.person, color: AppColors.primary, size: 25.sp),
-              onTap: () {
-                context.pushNamed(
-                  Routes.accountInformation,
-                  arguments: patientData,
-                );
-              },
-            ),
-            Divider(),
+                    _profileSection(
+                      title: "Account Information",
+                      subtitle: "Change your account information",
+                      icon: Icon(
+                        Icons.person,
+                        color: AppColors.primary,
+                        size: 25.sp,
+                      ),
+                      onTap: () {
+                        context.pushNamed(
+                          Routes.accountInformation,
+                          arguments: patientData,
+                        );
+                      },
+                    ),
+                    Divider(),
 
-            _profileSection(
-              title: "Insurance Detail",
-              subtitle: "Add your insurance info",
-              icon: Icon(Icons.payment, color: AppColors.green, size: 25.sp),
-            ),
-            Divider(),
+                    _profileSection(
+                      title: "Insurance Detail",
+                      subtitle: "Add your insurance info",
+                      icon: Icon(
+                        Icons.payment,
+                        color: AppColors.green,
+                        size: 25.sp,
+                      ),
+                    ),
+                    Divider(),
 
-            _profileSection(
-              title: "Medical Records",
-              subtitle: "History about you medical records",
-              icon: Icon(
-                Icons.medication,
-                color: AppColors.yellow,
-                size: 25.sp,
-              ),
-            ),
-            Divider(),
+                    _profileSection(
+                      title: "Medical Records",
+                      subtitle: "History about you medical records",
+                      icon: Icon(
+                        Icons.medication,
+                        color: AppColors.yellow,
+                        size: 25.sp,
+                      ),
+                    ),
+                    Divider(),
 
-            _profileSection(
-              title: "Clinic Info",
-              subtitle: "Information about our Clinic",
-              icon: Icon(
-                Icons.medical_services,
-                color: Color(0xff8D43EC),
-                size: 25.sp,
-              ),
-            ),
-            Divider(),
+                    _profileSection(
+                      title: "Clinic Info",
+                      subtitle: "Information about our Clinic",
+                      icon: Icon(
+                        Icons.medical_services,
+                        color: Color(0xff8D43EC),
+                        size: 25.sp,
+                      ),
+                    ),
+                    Divider(),
 
-            _profileSection(
-              title: "Settings",
-              subtitle: "Manage & Settings",
-              icon: Icon(
-                Icons.settings,
-                color: AppColors.darkGrey,
-                size: 25.sp,
-              ),
-            ),
-            Divider(),
-            Align(
-              child: BlocProvider.value(
-                value: getIt<AuthCubit>(),
-                child: BlocConsumer<AuthCubit, AuthState>(
-                  listener: (context, state) {
-                    if (state is AuthFailure) {
-                      showErrorDialog(context, state.errorModel);
-                    }
-                    if (state is AuthLogoutSuccess) {
-                      context.showSnackBar(
-                        state.data.message ?? 'Logout Successfuly',
-                        backgroundColor: AppColors.green,
-                      );
-                      context.pushAndRemoveUntil(
-                        Routes.login,
-                        predicate: (route) => false,
-                      );
-                    }
-                  },
-                  builder: (context, state) {
-                    return TextButton(
-                      onPressed:
-                          state is AuthLoading
-                              ? null
-                              : () {
-                                context.read<AuthCubit>().logout();
-                              },
-                      child: Text("Logout", style: AppStyles.font24W700Red),
-                    );
-                  },
+                    _profileSection(
+                      title: "Settings",
+                      subtitle: "Manage & Settings",
+                      icon: Icon(
+                        Icons.settings,
+                        color: AppColors.darkGrey,
+                        size: 25.sp,
+                      ),
+                    ),
+                    Divider(),
+                    Align(
+                      child: BlocProvider.value(
+                        value: getIt<AuthCubit>(),
+                        child: BlocConsumer<AuthCubit, AuthState>(
+                          listener: (context, state) {
+                            if (state is AuthFailure) {
+                              showErrorDialog(context, state.errorModel);
+                            }
+                            if (state is AuthLogoutSuccess) {
+                              context.showSnackBar(
+                                state.data.message ?? 'Logout Successfuly',
+                                backgroundColor: AppColors.green,
+                              );
+                              context.pushAndRemoveUntil(
+                                Routes.login,
+                                predicate: (route) => false,
+                              );
+                            }
+                          },
+                          builder: (context, state) {
+                            return TextButton(
+                              onPressed:
+                                  state is AuthLoading
+                                      ? null
+                                      : () {
+                                        context.read<AuthCubit>().logout();
+                                      },
+                              child: Text(
+                                "Logout",
+                                style: AppStyles.font24W700Red,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -204,29 +218,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 60.r,
+          HorizontalSpacing(10),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(70.r),
             child: CachedNetworkImage(
               imageUrl:
-                  patientData.photoUrl.isEmpty
+                  patientData!.photoUrl.isEmpty
                       ? "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
-                      : patientData.photoUrl,
+                      : patientData!.photoUrl,
               fit: BoxFit.cover,
-              width: 60.w,
-              height: 60.h,
+              width: 80.w,
+              height: 80.h,
               errorWidget: (context, url, error) => Icon(Icons.error),
             ),
           ),
+          HorizontalSpacing(20),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "${patientData.firstName} ${patientData.lastName}",
+                "${patientData!.firstName} ${patientData!.lastName}",
                 style: AppStyles.font20W700White,
               ),
               VerticalSpacing(5),
-              Text(patientData.email, style: AppStyles.font14W400White),
+              Text(patientData!.email, style: AppStyles.font14W400White),
             ],
           ),
         ],

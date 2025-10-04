@@ -24,6 +24,14 @@ final class GetProfilePatientSuccess extends ProfileState {
   GetProfilePatientSuccess(this.data);
 }
 
+final class ProfilePhotoUploadedSuccess extends ProfileState {
+  ProfilePhotoUploadedSuccess(PhotoResponseBodyModel data);
+}
+
+final class ProfilePhotoRemovedSuccess extends ProfileState {
+  ProfilePhotoRemovedSuccess(PhotoResponseBodyModel data);
+}
+
 final class ProfileFailure extends ProfileState {
   final ApiErrorModel errorModel;
 

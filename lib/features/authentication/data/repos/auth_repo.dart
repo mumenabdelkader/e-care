@@ -43,6 +43,7 @@ class AuthRepoImpl implements AuthRepo {
   ) async {
     try {
       final response = await authService.login(body: body);
+      
       await CacheHelper.setSecureData(
         key: CacheConstants.accessToken,
         value: response.token!,

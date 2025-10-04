@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:clinic/core/networking/api_error_handler.dart';
 import 'package:clinic/core/networking/api_error_model.dart';
 import 'package:clinic/features/profile/data/models/get_profile_response_body_model.dart';
 import 'package:clinic/features/profile/data/models/patient_request_body_model.dart';
 import 'package:clinic/features/profile/data/models/patient_response_body_model.dart';
+import 'package:clinic/features/profile/data/models/photo_response_body_model.dart';
 import 'package:clinic/features/profile/data/models/updata_patient_profile_request_body_model.dart';
 import 'package:clinic/features/profile/data/models/updata_patient_profile_response_model.dart';
 import 'package:clinic/features/profile/data/repos/profile_repo.dart';
@@ -42,12 +45,44 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  Future<void> getPatientPprofile() async {
+  Future<void> getPatientProfile() async {
     emit(ProfileLoading());
     try {
       final result = await profileRepo.getPatientProfile();
       result.when(
         onSuccess: (data) => emit(GetProfilePatientSuccess(data)),
+        onError: (error) => emit(ProfileFailure(errorModel: error)),
+      );
+    } catch (e) {
+      emit(ProfileFailure(errorModel: ApiErrorHandler.handle(e)));
+    }
+  }
+
+  Future<void> uploadProfilePhoto(File file) async {
+    emit(ProfileLoading());
+    try {
+      final result = await profileRepo.uploadProfilePhoto(file);
+      result.when(
+        onSuccess: (data) {
+          emit(ProfilePhotoUploadedSuccess(data));
+          getPatientProfile();
+        },
+        onError: (error) => emit(ProfileFailure(errorModel: error)),
+      );
+    } catch (e) {
+      emit(ProfileFailure(errorModel: ApiErrorHandler.handle(e)));
+    }
+  }
+
+  Future<void> removeProfilePhoto() async {
+    emit(ProfileLoading());
+    try {
+      final result = await profileRepo.removeProfilePhoto();
+      result.when(
+        onSuccess: (data) {
+          emit(ProfilePhotoRemovedSuccess(data));
+          getPatientProfile();
+        },
         onError: (error) => emit(ProfileFailure(errorModel: error)),
       );
     } catch (e) {

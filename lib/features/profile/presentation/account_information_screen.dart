@@ -73,9 +73,11 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                           value: widget.patientProfileData.patientId,
                         ),
                       ),
-                      //TODO display real username
                       Expanded(
-                        child: InfoItem(title: 'Username', value: 'zhafira'),
+                        child: InfoItem(
+                          title: 'Username',
+                          value: widget.patientProfileData.patientId,
+                        ),
                       ),
                     ],
                   ),
