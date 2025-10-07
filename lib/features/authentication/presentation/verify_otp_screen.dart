@@ -12,7 +12,7 @@ import 'package:clinic/core/widgets/app_dialog.dart';
 import 'package:clinic/core/widgets/custom_button.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/verify_otp_request_body_model.dart';
-import 'package:clinic/features/authentication/presentation/controller/register/auth_cubit.dart';
+import 'package:clinic/features/authentication/presentation/controller/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -144,14 +144,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                     backgroundColor: AppColors.green,
                   );
                   _cacheData(state);
-                  context.pushNamed(
-                    Routes.patientInfo,
-                    arguments: {
-                      'isNewRegister': true,
-                      'registerData': widget.registerData,
-                      'forgotEmail': widget.forgotPasswordData,
-                    },
-                  );
+                  context.pushNamed(Routes.createPatientProfile);
                 }
                 if (state is AuthVerifyForgotPasswordOtpSuccess) {
                   context.showSnackBar(
