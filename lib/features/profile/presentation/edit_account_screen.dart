@@ -45,6 +45,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   late DateTime _selectedDate;
 
   late PatientProfileModel profileData;
+  String imageKey = DateTime.now().millisecondsSinceEpoch.toString();
 
   @override
   void initState() {
@@ -82,27 +83,26 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                 listener: (context, state) {
                   if (state is ProfileFailure) {
                     showErrorDialog(context, state.errorModel);
-                  }
-                  if (state is ProfilePhotoUploadedSuccess) {
+                  } else if (state is GetProfilePatientSuccess) {
                     context.showSnackBar(
-                      "Profile photo updated successfully",
+                      "Photo updated successfully",
                       backgroundColor: AppColors.green,
                     );
-                  }
-                  if (state is ProfilePhotoRemovedSuccess) {
-                    context.showSnackBar(
-                      "Profile photo removed successfully",
-                      backgroundColor: AppColors.green,
-                    );
+
+                    setState(() {
+                      profileData = state.data.profile;
+                      imageKey =
+                          DateTime.now().millisecondsSinceEpoch.toString();
+                    });
                   }
                 },
                 builder: (context, state) {
-                  if (state is ProfileLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (state is GetProfilePatientSuccess) {
-                    profileData = state.data.profile;
-                  }
+                  final defaultImageUrl =
+                      'https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png';
+                  final imageUrl =
+                      profileData.photoUrl.isNotEmpty
+                          ? profileData.photoUrl
+                          : defaultImageUrl;
 
                   return Center(
                     child: Stack(
@@ -111,14 +111,55 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                           onTap: () => _pickProfilePhoto(context),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(90.r),
-                            child: Image.network(
-                              profileData.photoUrl.isEmpty
-                                  ? "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
-                                  : profileData.photoUrl,
-                              fit: BoxFit.cover,
-                              width: 90.w,
-                              height: 90.h,
-                            ),
+                            child:
+                                state is ProfileLoading
+                                    ? CircleAvatar(
+                                      radius: 45.r,
+                                      backgroundColor: AppColors.softGrey,
+                                      child: CircularProgressIndicator(),
+                                    )
+                                    : Image.network(
+                                      imageUrl,
+                                      key: ValueKey('$imageUrl-$imageKey'),
+                                      width: 90.w,
+                                      height: 90.h,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (
+                                        context,
+                                        error,
+                                        stackTrace,
+                                      ) {
+                                        return Icon(
+                                          Icons.account_circle,
+                                          size: 90.sp,
+                                          color: AppColors.grey,
+                                        );
+                                      },
+                                      loadingBuilder: (
+                                        context,
+                                        child,
+                                        loadingProgress,
+                                      ) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        }
+                                        return Container(
+                                          width: 90.w,
+                                          height: 90.h,
+                                          decoration: BoxDecoration(
+                                            color: AppColors.softGrey,
+                                            borderRadius: BorderRadius.circular(
+                                              90.r,
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
                           ),
                         ),
                         Positioned(
@@ -347,7 +388,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                         File(image.path),
                       );
                     }
-                    if (mounted) context.pop(context);
+                    if (mounted) context.pop();
                   },
                 ),
               ],
@@ -367,7 +408,6 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
         province: _provinceController.text,
         dateOfBirth: _selectedDate,
         phoneNumber: _phoneController.text,
-
         gender: _selectedGender,
       ),
     );

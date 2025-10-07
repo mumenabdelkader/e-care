@@ -9,6 +9,7 @@ part of 'photo_response_body_model.dart';
 PhotoResponseBodyModel _$PhotoResponseBodyModelFromJson(
   Map<String, dynamic> json,
 ) => PhotoResponseBodyModel(
+  photoUrl: json['photoUrl'] as String?,
   success: json['success'] as bool,
   message: json['message'] as String,
   errors: json['errors'] as List<dynamic>?,
@@ -17,6 +18,7 @@ PhotoResponseBodyModel _$PhotoResponseBodyModelFromJson(
 Map<String, dynamic> _$PhotoResponseBodyModelToJson(
   PhotoResponseBodyModel instance,
 ) => <String, dynamic>{
+  'photoUrl': instance.photoUrl,
   'success': instance.success,
   'message': instance.message,
   'errors': instance.errors,

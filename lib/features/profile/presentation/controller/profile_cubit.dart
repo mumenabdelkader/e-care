@@ -63,11 +63,14 @@ class ProfileCubit extends Cubit<ProfileState> {
     try {
       final result = await profileRepo.uploadProfilePhoto(file);
       result.when(
-        onSuccess: (data) {
-          emit(ProfilePhotoUploadedSuccess(data));
-          getPatientProfile();
+        onSuccess: (data) async {
+          // الباك اند مش بيرجع photoUrl في الـ response
+          // عشان كده بنعمل getPatientProfile عشان نجيب الصورة الجديدة
+          await getPatientProfile();
         },
-        onError: (error) => emit(ProfileFailure(errorModel: error)),
+        onError: (error) {
+          emit(ProfileFailure(errorModel: error));
+        },
       );
     } catch (e) {
       emit(ProfileFailure(errorModel: ApiErrorHandler.handle(e)));
@@ -79,11 +82,31 @@ class ProfileCubit extends Cubit<ProfileState> {
     try {
       final result = await profileRepo.removeProfilePhoto();
       result.when(
-        onSuccess: (data) {
-          emit(ProfilePhotoRemovedSuccess(data));
-          getPatientProfile();
+        onSuccess: (data) async {
+          // الباك اند مش بيرجع photoUrl في الـ response
+          // عشان كده بنعمل getPatientProfile عشان نجيب البيانات المحدثة
+          await getPatientProfile();
         },
-        onError: (error) => emit(ProfileFailure(errorModel: error)),
+        onError: (error) {
+          emit(ProfileFailure(errorModel: error));
+        },
+      );
+    } catch (e) {
+      emit(ProfileFailure(errorModel: ApiErrorHandler.handle(e)));
+    }
+  }
+
+  Future<void> getProfilePhoto() async {
+    emit(ProfileLoading());
+    try {
+      final result = await profileRepo.getProfilePhoto();
+      result.when(
+        onSuccess: (data) {
+          emit(ProfilePhotoUpdated(data));
+        },
+        onError: (error) {
+          emit(ProfileFailure(errorModel: error));
+        },
       );
     } catch (e) {
       emit(ProfileFailure(errorModel: ApiErrorHandler.handle(e)));

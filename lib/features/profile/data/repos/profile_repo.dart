@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:clinic/core/constants/cache_constants.dart';
@@ -23,6 +22,7 @@ abstract class ProfileRepo {
   Future<ApiResult<GetProfileResponseBodyModel>> getPatientProfile();
   Future<ApiResult<PhotoResponseBodyModel>> uploadProfilePhoto(File imageFile);
   Future<ApiResult<PhotoResponseBodyModel>> removeProfilePhoto();
+  Future<ApiResult<PhotoResponseBodyModel>> getProfilePhoto();
 }
 
 class ProfileRepoImpl implements ProfileRepo {
@@ -58,20 +58,12 @@ class ProfileRepoImpl implements ProfileRepo {
   @override
   Future<ApiResult<GetProfileResponseBodyModel>> getPatientProfile() async {
     try {
-      log("Profile Repo getPatientProfile Before requesting");
       final response = await _profileService.getPatientProfile();
-      log("Profile Repo getPatientProfile Before Caching: $response");
 
       await CacheHelper.set(
         key: CacheConstants.profileData,
         value: jsonEncode(response.profile.toJson()),
       );
-
-      final data = jsonDecode(
-        CacheHelper.getString(key: CacheConstants.profileData)!,
-      );
-      log("Profile Repo getPatientProfile After Caching: $data");
-
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.error(e);
@@ -96,6 +88,21 @@ class ProfileRepoImpl implements ProfileRepo {
   Future<ApiResult<PhotoResponseBodyModel>> removeProfilePhoto() async {
     try {
       final response = await _profileService.reomvePatientPprofilePhoto();
+      return ApiResult.success(response);
+    } catch (e) {
+      return ApiResult.error(e);
+    }
+  }
+
+  @override
+  Future<ApiResult<PhotoResponseBodyModel>> getProfilePhoto() async {
+    try {
+      final response = await _profileService.getPatientPprofilePhoto();
+      await CacheHelper.set(
+        key: CacheConstants.profilePhoto,
+        value: response.photoUrl,
+      );
+
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.error(e);

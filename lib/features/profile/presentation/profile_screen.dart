@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clinic/core/constants/cache_constants.dart';
@@ -14,6 +13,7 @@ import 'package:clinic/core/utils/di.dart';
 import 'package:clinic/core/widgets/app_dialog.dart';
 import 'package:clinic/features/authentication/presentation/controller/auth_cubit.dart';
 import 'package:clinic/features/profile/data/models/patient_profile_model.dart';
+import 'package:clinic/features/profile/presentation/controller/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,8 +25,9 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
   PatientProfileModel? patientData;
+  String imageKey = DateTime.now().millisecondsSinceEpoch.toString();
 
   @override
   void initState() {
@@ -34,19 +35,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _getProfileData();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // ✅ Refresh data when coming back from other screens
+    _getProfileData();
+  }
+
   Future<void> _getProfileData() async {
     final cachedData = CacheHelper.getString(key: CacheConstants.profileData);
-    log("Profile Screen cachedData:$cachedData");
 
     if (cachedData != null) {
       final jsonData = jsonDecode(cachedData);
-      log("Profile Screen jsonData: $jsonData");
       setState(() {
         patientData = PatientProfileModel.fromJson(jsonData);
+        imageKey = DateTime.now().millisecondsSinceEpoch.toString();
       });
-      log("Profile Screen patientData: $patientData");
-    } else {
-      log("No cached profile data found");
     }
   }
 
@@ -68,117 +72,130 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-      body:
-          patientData == null
-              ? Center(child: CircularProgressIndicator())
-              : Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _profileInfo(),
-                    VerticalSpacing(24),
-                    Text("General", style: AppStyles.font16W700Grey),
-
-                    _profileSection(
-                      title: "Account Information",
-                      subtitle: "Change your account information",
-                      icon: Icon(
-                        Icons.person,
-                        color: AppColors.primary,
-                        size: 25.sp,
+      body: BlocListener<ProfileCubit, ProfileState>(
+        listener: (context, state) {
+          if (state is GetProfilePatientSuccess) {
+            setState(() {
+              patientData = state.data.profile;
+              imageKey = DateTime.now().millisecondsSinceEpoch.toString();
+            });
+          }
+        },
+        child:
+            patientData == null
+                ? Center(child: CircularProgressIndicator())
+                : Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20.w,
+                    vertical: 10.h,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _profileInfo(),
+                      VerticalSpacing(24),
+                      Text("General", style: AppStyles.font16W700Grey),
+                      _profileSection(
+                        title: "Account Information",
+                        subtitle: "Change your account information",
+                        icon: Icon(
+                          Icons.person,
+                          color: AppColors.primary,
+                          size: 25.sp,
+                        ),
+                        onTap: () async {
+                          // ✅ Navigate and refresh when back
+                          await context.pushNamed(
+                            Routes.accountInformation,
+                            arguments: patientData,
+                          );
+                          // ✅ Refresh data when coming back
+                          if (mounted) {
+                            _getProfileData();
+                          }
+                        },
                       ),
-                      onTap: () {
-                        context.pushNamed(
-                          Routes.accountInformation,
-                          arguments: patientData,
-                        );
-                      },
-                    ),
-                    Divider(),
-
-                    _profileSection(
-                      title: "Insurance Detail",
-                      subtitle: "Add your insurance info",
-                      icon: Icon(
-                        Icons.payment,
-                        color: AppColors.green,
-                        size: 25.sp,
-                      ),
-                    ),
-                    Divider(),
-
-                    _profileSection(
-                      title: "Medical Records",
-                      subtitle: "History about you medical records",
-                      icon: Icon(
-                        Icons.medication,
-                        color: AppColors.yellow,
-                        size: 25.sp,
-                      ),
-                    ),
-                    Divider(),
-
-                    _profileSection(
-                      title: "Clinic Info",
-                      subtitle: "Information about our Clinic",
-                      icon: Icon(
-                        Icons.medical_services,
-                        color: Color(0xff8D43EC),
-                        size: 25.sp,
-                      ),
-                    ),
-                    Divider(),
-
-                    _profileSection(
-                      title: "Settings",
-                      subtitle: "Manage & Settings",
-                      icon: Icon(
-                        Icons.settings,
-                        color: AppColors.darkGrey,
-                        size: 25.sp,
-                      ),
-                    ),
-                    Divider(),
-                    Align(
-                      child: BlocProvider.value(
-                        value: getIt<AuthCubit>(),
-                        child: BlocConsumer<AuthCubit, AuthState>(
-                          listener: (context, state) {
-                            if (state is AuthFailure) {
-                              showErrorDialog(context, state.errorModel);
-                            }
-                            if (state is AuthLogoutSuccess) {
-                              context.showSnackBar(
-                                state.data.message ?? 'Logout Successfuly',
-                                backgroundColor: AppColors.green,
-                              );
-                              context.pushAndRemoveUntil(
-                                Routes.login,
-                                predicate: (route) => false,
-                              );
-                            }
-                          },
-                          builder: (context, state) {
-                            return TextButton(
-                              onPressed:
-                                  state is AuthLoading
-                                      ? null
-                                      : () {
-                                        context.read<AuthCubit>().logout();
-                                      },
-                              child: Text(
-                                "Logout",
-                                style: AppStyles.font24W700Red,
-                              ),
-                            );
-                          },
+                      Divider(),
+                      _profileSection(
+                        title: "Insurance Detail",
+                        subtitle: "Add your insurance info",
+                        icon: Icon(
+                          Icons.payment,
+                          color: AppColors.green,
+                          size: 25.sp,
                         ),
                       ),
-                    ),
-                  ],
+                      Divider(),
+                      _profileSection(
+                        title: "Medical Records",
+                        subtitle: "History about you medical records",
+                        icon: Icon(
+                          Icons.medication,
+                          color: AppColors.yellow,
+                          size: 25.sp,
+                        ),
+                      ),
+                      Divider(),
+                      _profileSection(
+                        title: "Clinic Info",
+                        subtitle: "Information about our Clinic",
+                        icon: Icon(
+                          Icons.medical_services,
+                          color: Color(0xff8D43EC),
+                          size: 25.sp,
+                        ),
+                      ),
+                      Divider(),
+                      _profileSection(
+                        title: "Settings",
+                        subtitle: "Manage & Settings",
+                        icon: Icon(
+                          Icons.settings,
+                          color: AppColors.darkGrey,
+                          size: 25.sp,
+                        ),
+                      ),
+                      Divider(),
+                      Align(
+                        child: BlocProvider.value(
+                          value: getIt<AuthCubit>(),
+                          child: BlocConsumer<AuthCubit, AuthState>(
+                            listener: (context, state) {
+                              if (state is AuthFailure) {
+                                showErrorDialog(context, state.errorModel);
+                              }
+                              if (state is AuthLogoutSuccess) {
+                                context.showSnackBar(
+                                  state.data.message ?? 'Logout Successfuly',
+                                  backgroundColor: AppColors.green,
+                                );
+                                context.pushAndRemoveUntil(
+                                  Routes.login,
+                                  predicate: (route) => false,
+                                );
+                              }
+                            },
+                            builder: (context, state) {
+                              return TextButton(
+                                onPressed:
+                                    state is AuthLoading
+                                        ? null
+                                        : () {
+                                          context.read<AuthCubit>().logout();
+                                        },
+                                child: Text(
+                                  "Logout",
+                                  style: AppStyles.font24W700Red,
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+      ),
     );
   }
 
@@ -208,6 +225,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _profileInfo() {
+    final defaultImageUrl =
+        "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541";
+    final imageUrl =
+        patientData!.photoUrl.isEmpty ? defaultImageUrl : patientData!.photoUrl;
+
     return Container(
       height: 92.h,
       width: 335.w,
@@ -222,14 +244,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ClipRRect(
             borderRadius: BorderRadius.circular(70.r),
             child: CachedNetworkImage(
-              imageUrl:
-                  patientData!.photoUrl.isEmpty
-                      ? "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
-                      : patientData!.photoUrl,
+              key: ValueKey('$imageUrl-$imageKey'),
+              imageUrl: imageUrl,
               fit: BoxFit.cover,
               width: 80.w,
               height: 80.h,
-              errorWidget: (context, url, error) => Icon(Icons.error),
+              errorWidget: (context, url, error) {
+                return Icon(Icons.error, color: Colors.white);
+              },
+              placeholder:
+                  (context, url) => Container(
+                    width: 80.w,
+                    height: 80.h,
+                    color: AppColors.softGrey,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation(AppColors.white),
+                      ),
+                    ),
+                  ),
             ),
           ),
           HorizontalSpacing(20),

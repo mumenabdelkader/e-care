@@ -4,7 +4,9 @@ import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
 import 'package:clinic/features/profile/data/models/patient_profile_model.dart';
+import 'package:clinic/features/profile/presentation/controller/profile_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AccountInformationScreen extends StatefulWidget {
@@ -17,10 +19,12 @@ class AccountInformationScreen extends StatefulWidget {
 }
 
 class _AccountInformationScreenState extends State<AccountInformationScreen> {
+  late PatientProfileModel currentProfileData;
+
   @override
   void initState() {
-    // TODO: cach user data بدل profile data و call getProfile here
     super.initState();
+    currentProfileData = widget.patientProfileData;
   }
 
   @override
@@ -39,161 +43,177 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
               color: AppColors.softGrey,
             ),
             child: GestureDetector(
-              onTap:
-                  () => context.pushNamed(
-                    Routes.editAccount,
-                    arguments: widget.patientProfileData,
-                  ),
+              onTap: () async {
+                // Navigate to edit screen
+                await context.pushNamed(
+                  Routes.editAccount,
+                  arguments: currentProfileData,
+                );
+
+                // When we come back, request fresh data
+                if (mounted) {
+                  context.read<ProfileCubit>().getPatientProfile();
+                }
+              },
               child: const Icon(Icons.mode_edit_outline_outlined),
             ),
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Personal", style: AppStyles.font16W700Grey),
-            VerticalSpacing(20),
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
-              decoration: BoxDecoration(
-                color: AppColors.softGrey,
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InfoItem(
-                          title: 'Ecare ID',
-                          value: widget.patientProfileData.patientId,
-                        ),
-                      ),
-                      Expanded(
-                        child: InfoItem(
-                          title: 'Username',
-                          value: widget.patientProfileData.patientId,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Divider(),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InfoItem(
-                          title: 'First Name',
-                          value: widget.patientProfileData.firstName,
-                        ),
-                      ),
-                      Expanded(
-                        child: InfoItem(
-                          title: 'Last Name',
-                          value: widget.patientProfileData.lastName,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Divider(),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InfoItem(
-                          title: 'Date of Birth',
-                          value: _formattedDate(
-                            widget.patientProfileData.dateOfBirth,
+      body: BlocListener<ProfileCubit, ProfileState>(
+        listener: (context, state) {
+          if (state is GetProfilePatientSuccess) {
+            setState(() {
+              currentProfileData = state.data.profile;
+            });
+          }
+        },
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Personal", style: AppStyles.font16W700Grey),
+              VerticalSpacing(20),
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
+                decoration: BoxDecoration(
+                  color: AppColors.softGrey,
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InfoItem(
+                            title: 'Ecare ID',
+                            value: currentProfileData.patientId,
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: InfoItem(
-                          title: 'Gender',
-                          value: widget.patientProfileData.gender,
+                        Expanded(
+                          child: InfoItem(
+                            title: 'Username',
+                            value: currentProfileData.userName,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InfoItem(
+                            title: 'First Name',
+                            value: currentProfileData.firstName,
+                          ),
+                        ),
+                        Expanded(
+                          child: InfoItem(
+                            title: 'Last Name',
+                            value: currentProfileData.lastName,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InfoItem(
+                            title: 'Date of Birth',
+                            value: _formattedDate(
+                              currentProfileData.dateOfBirth,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: InfoItem(
+                            title: 'Gender',
+                            value: currentProfileData.gender,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            VerticalSpacing(30),
-            Text("Contact", style: AppStyles.font16W700Grey),
-            VerticalSpacing(20),
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
-              decoration: BoxDecoration(
-                color: AppColors.softGrey,
-                borderRadius: BorderRadius.circular(8.r),
+              VerticalSpacing(30),
+              Text("Contact", style: AppStyles.font16W700Grey),
+              VerticalSpacing(20),
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
+                decoration: BoxDecoration(
+                  color: AppColors.softGrey,
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InfoItem(
+                            title: 'Phone Number',
+                            value: currentProfileData.phoneNumber,
+                          ),
+                        ),
+                        Expanded(
+                          child: InfoItem(
+                            title: 'Email',
+                            value: currentProfileData.email,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InfoItem(
+                            title: 'Full Name',
+                            value:
+                                "${currentProfileData.firstName} ${currentProfileData.lastName}",
+                          ),
+                        ),
+                        Expanded(
+                          child: InfoItem(
+                            title: 'City',
+                            value: currentProfileData.city,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InfoItem(
+                            title: 'Province',
+                            value: currentProfileData.province,
+                          ),
+                        ),
+                        Expanded(
+                          child: InfoItem(
+                            title: 'Address',
+                            value: currentProfileData.address,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InfoItem(
-                          title: 'Phone Number',
-                          value: widget.patientProfileData.phoneNumber,
-                        ),
-                      ),
-                      Expanded(
-                        child: InfoItem(
-                          title: 'Email',
-                          value: widget.patientProfileData.email,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Divider(),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InfoItem(
-                          title: 'Full Name',
-                          value:
-                              "${widget.patientProfileData.firstName} ${widget.patientProfileData.lastName}",
-                        ),
-                      ),
-                      Expanded(
-                        child: InfoItem(
-                          title: 'City',
-                          value: widget.patientProfileData.city,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Divider(),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InfoItem(
-                          title: 'Province',
-                          value: widget.patientProfileData.province,
-                        ),
-                      ),
-                      Expanded(
-                        child: InfoItem(
-                          title: 'Address',
-                          value: widget.patientProfileData.address,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
   String _formattedDate(DateTime date) {
-    return "${widget.patientProfileData.dateOfBirth.year}/${widget.patientProfileData.dateOfBirth.month}/${widget.patientProfileData.dateOfBirth.day}";
+    return "${currentProfileData.dateOfBirth.year}/${currentProfileData.dateOfBirth.month}/${currentProfileData.dateOfBirth.day}";
   }
 }
 

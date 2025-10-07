@@ -4,11 +4,13 @@ part 'photo_response_body_model.g.dart';
 
 @JsonSerializable()
 class PhotoResponseBodyModel {
+  final String? photoUrl;
   final bool success;
   final String message;
   final List? errors;
 
   PhotoResponseBodyModel({
+    required this.photoUrl,
     required this.success,
     required this.message,
     required this.errors,

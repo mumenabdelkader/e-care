@@ -16,22 +16,27 @@ part 'profile_service.g.dart';
 abstract class ProfileService {
   factory ProfileService(Dio dio) = _ProfileService;
 
-  @POST(ApiConstant.createPatientPprofileEP)
+  @POST(ApiConstant.createPatientProfileEP)
   Future<PatientResponseBodyModel> createPatientProfile({
     @Body() required PatientRequestBodyModel body,
   });
 
-  @PUT(ApiConstant.updatePatientPprofileEP)
+  @PUT(ApiConstant.updatePatientProfileEP)
   Future<UpdataPatientProfileResponseModel> updatePatientPprofile({
     @Body() required UpdataPatientProfileRequestBodyModel body,
   });
 
-  @GET(ApiConstant.getPatientPprofileEP)
+  @GET(ApiConstant.getPatientProfileEP)
   Future<GetProfileResponseBodyModel> getPatientProfile();
 
-  @POST(ApiConstant.setPatientPprofilePhotoEP)
-  Future<PhotoResponseBodyModel> setPatientPprofilePhoto({@Part(name: "photo") required File photo});
+  @POST(ApiConstant.setPatientProfilePhotoEP)
+  Future<PhotoResponseBodyModel> setPatientPprofilePhoto({
+    @Part(name: "photo") required File photo,
+  });
 
-  @DELETE(ApiConstant.reomvePatientPprofilePhotoEP)
+  @DELETE(ApiConstant.reomvePatientProfilePhotoEP)
   Future<PhotoResponseBodyModel> reomvePatientPprofilePhoto();
+
+  @GET(ApiConstant.getPatientProfilePhotoEP)
+  Future<PhotoResponseBodyModel> getPatientPprofilePhoto();
 }
