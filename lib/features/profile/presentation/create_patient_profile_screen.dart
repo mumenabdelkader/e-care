@@ -7,21 +7,22 @@ import 'package:clinic/core/theme/app_colors.dart';
 import 'package:clinic/core/widgets/app_dialog.dart';
 import 'package:clinic/core/widgets/custom_button.dart';
 import 'package:clinic/core/widgets/custom_text_form_field.dart';
-import 'package:clinic/features/authentication/data/models/patient_request_body_model.dart';
-import 'package:clinic/features/authentication/presentation/controller/register/auth_cubit.dart';
+import 'package:clinic/features/profile/data/models/patient_request_body_model.dart';
+import 'package:clinic/features/profile/presentation/controller/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-class PatientInformationScreen extends StatefulWidget {
-  const PatientInformationScreen({super.key});
+class CreatePatientProfileScreen extends StatefulWidget {
+  const CreatePatientProfileScreen({super.key});
 
   @override
-  State<PatientInformationScreen> createState() =>
-      _PatientInformationScreenState();
+  State<CreatePatientProfileScreen> createState() =>
+      _CreatePatientProfileScreenState();
 }
 
-class _PatientInformationScreenState extends State<PatientInformationScreen> {
+class _CreatePatientProfileScreenState
+    extends State<CreatePatientProfileScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _firstNameController = TextEditingController();
@@ -69,7 +70,7 @@ class _PatientInformationScreenState extends State<PatientInformationScreen> {
       return;
     }
 
-    context.read<AuthCubit>().createPatientPprofile(
+    context.read<ProfileCubit>().createPatientPprofile(
       PatientRequestBodyModel(
         firstName: _firstNameController.text.trim(),
         lastName: _lastNameController.text.trim(),
@@ -107,6 +108,7 @@ class _PatientInformationScreenState extends State<PatientInformationScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // ===== Personal Section =====
                   _buildLabel("First Name"),
                   _buildTextField(
                     _firstNameController,
@@ -214,12 +216,12 @@ class _PatientInformationScreenState extends State<PatientInformationScreen> {
                   ),
 
                   const VerticalSpacing(24),
-                  BlocConsumer<AuthCubit, AuthState>(
+                  BlocConsumer<ProfileCubit, ProfileState>(
                     listener: (context, state) {
-                      if (state is AuthFailure) {
+                      if (state is ProfileFailure) {
                         showErrorDialog(context, state.errorModel);
                       }
-                      if (state is AuthCreatePatientProfileSuccess) {
+                      if (state is CreatedPatientProfileSuccess) {
                         context.showSnackBar(
                           state.data.message,
                           backgroundColor: AppColors.green,
@@ -233,7 +235,7 @@ class _PatientInformationScreenState extends State<PatientInformationScreen> {
                     builder:
                         (context, state) => CustomButton(
                           lable:
-                              state is AuthLoading
+                              state is ProfileLoading
                                   ? const Center(
                                     child: CircularProgressIndicator(),
                                   )
@@ -241,7 +243,7 @@ class _PatientInformationScreenState extends State<PatientInformationScreen> {
                                     'Continue',
                                     style: AppStyles.font14W700White,
                                   ),
-                          onPressed: state is AuthLoading ? null : _onSave,
+                          onPressed: state is ProfileLoading ? null : _onSave,
                         ),
                   ),
                 ],

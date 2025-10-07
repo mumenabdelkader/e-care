@@ -4,7 +4,6 @@ import 'package:clinic/core/utils/cache_helper.dart';
 import 'package:clinic/features/authentication/data/models/forgot_password_respons_body_model.dart';
 import 'package:clinic/features/authentication/data/models/login_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/login_respons_body_model.dart';
-import 'package:clinic/features/authentication/data/models/patient_request_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_response_body_model.dart';
 import 'package:clinic/features/authentication/data/models/reset_password_request_model.dart';
@@ -20,7 +19,7 @@ abstract class AuthRepo {
   Future<ApiResult> verifyRegisterOtp(VerifyOtpRequestBodyModel body);
   Future<ApiResult> verifyPasswordRestOtp(VerifyOtpRequestBodyModel body);
   Future<ApiResult> restPassword(ResetPasswordRequestModel body);
-  Future<ApiResult> createPatientPprofile(PatientRequestBodyModel body);
+  Future<ApiResult> logout();
 }
 
 class AuthRepoImpl implements AuthRepo {
@@ -44,6 +43,7 @@ class AuthRepoImpl implements AuthRepo {
   ) async {
     try {
       final response = await authService.login(body: body);
+      
       await CacheHelper.setSecureData(
         key: CacheConstants.accessToken,
         value: response.token!,
@@ -63,6 +63,14 @@ class AuthRepoImpl implements AuthRepo {
     try {
       final response = await authService.verifyRegisterOtp(body: body);
 
+      await CacheHelper.setSecureData(
+        key: CacheConstants.accessToken,
+        value: response.token!,
+      );
+      await CacheHelper.setSecureData(
+        key: CacheConstants.refreshToken,
+        value: response.refreshToken!,
+      );
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.error(e);
@@ -106,16 +114,12 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<ApiResult> createPatientPprofile(PatientRequestBodyModel body) async {
+  Future<ApiResult> logout() async {
     try {
-      final token = await CacheHelper.getSecureData(
-        key: CacheConstants.accessToken,
-      );
-
-      final response = await authService.createPatientProfile(
-        token: "Bearer $token",
-        body: body,
-      );
+      final response = await authService.logout();
+      await CacheHelper.deleteAllSecureData();
+      await CacheHelper.delete(key: CacheConstants.profileData);
+      
       return ApiResult.success(response);
     } catch (e) {
       return ApiResult.error(e);
