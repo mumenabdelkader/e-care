@@ -21,5 +21,9 @@ class ApiConstant {
       "/Profile/remove-patient-profile-photo";
   static const String updatePatientPprofileEP =
       "/Profile/update-patient-profile";
+  static const String getSpecialties =
+      "Booking/GetSpecialties";
   static const String getPatientPprofileEP = "/Profile/me";
+  static const String getAvailableDoctorsEP= "Booking/get-available-doctors?GeneralDoctorTypes={GeneralDoctorTypes}&SpecialtyId={SpecialtyId}&AppointmentTime={AppointmentTime}&InPerson={InPerson}&VideoCall={VideoCall}";
+
 }

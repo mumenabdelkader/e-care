@@ -1,6 +1,7 @@
 import 'package:clinic/core/routing/routes.dart';
 import 'package:clinic/core/utils/di.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
+import 'package:clinic/features/booking/presentation/booking_appointment_step_two.dart';
 import 'package:clinic/features/authentication/presentation/controller/register/auth_cubit.dart';
 import 'package:clinic/features/authentication/presentation/forgot_password_screen.dart';
 import 'package:clinic/features/authentication/presentation/login_screen.dart';
@@ -14,7 +15,9 @@ import 'package:clinic/features/onboarding/on_boarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../features/booking/presentation/booking_appointment_step_one.dart';
 import '../../features/authentication/presentation/reset_password_screen.dart';
+import '../../features/booking/presentation/widgets/bottom_niv_bar.dart';
 
 class AppRouter {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -118,7 +121,7 @@ class AppRouter {
 
       case Routes.home:
         return MaterialPageRoute(
-          builder: (_) => HomeScreen(),
+          builder: (_) => BottomNivBar(),
           settings: settings,
         );
 
@@ -131,7 +134,24 @@ class AppRouter {
               ),
           settings: settings,
         );
-
+      case Routes.bookingAppointmentStep1:
+        return MaterialPageRoute(
+          builder:
+              (_) => BlocProvider.value(
+            value: getIt<AuthCubit>(),
+            child: BookingAppointmentStepOne(),
+          ),
+          settings: settings,
+        );
+      case Routes.bookingAppointmentStep2:
+        return MaterialPageRoute(
+          builder:
+              (_) => BlocProvider.value(
+            value: getIt<AuthCubit>(),
+            child: BookingAppointmentStepTwo(),
+          ),
+          settings: settings,
+        );
       default:
         return MaterialPageRoute(
           builder:

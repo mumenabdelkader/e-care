@@ -13,4 +13,8 @@ class Routes {
   static const String resetPassword = 'resetPassword';
   static const String newPassword = 'newPassword';
   static const String patientInfo = 'patientInfo';
+  static const String bookingAppointmentStep1='bookingAppointmentStep1';
+  static const String bookingAppointmentStep2='bookingAppointmentStep2';
+
+
 }
