@@ -6,15 +6,19 @@ class Routes {
   static const String home = 'home';
   static const String forgotPassword = 'forgotPassword';
   static const String otpVerification = 'otpVerification';
-
   static const String verifyRegisterOtp = 'verifyRegisterOtp';
   static const String verifyPasswordRestOtp = 'verifyPasswordRestOtp';
-
   static const String resetPassword = 'resetPassword';
   static const String newPassword = 'newPassword';
+
   static const String patientInfo = 'patientInfo';
   static const String bookingAppointmentStep1='bookingAppointmentStep1';
   static const String bookingAppointmentStep2='bookingAppointmentStep2';
 
+
+
+  static const String createPatientProfile = 'patientInfo';
+  static const String accountInformation = 'accountInformation';
+  static const String editAccount = 'editAccount';
 
 }

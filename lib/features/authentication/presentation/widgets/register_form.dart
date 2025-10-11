@@ -9,7 +9,7 @@ import 'package:clinic/core/widgets/app_dialog.dart';
 import 'package:clinic/core/widgets/custom_button.dart';
 import 'package:clinic/core/widgets/custom_text_form_field.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
-import 'package:clinic/features/authentication/presentation/controller/register/auth_cubit.dart';
+import 'package:clinic/features/authentication/presentation/controller/auth_cubit.dart';
 import 'package:clinic/features/authentication/presentation/widgets/password_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

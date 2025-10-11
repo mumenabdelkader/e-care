@@ -2,8 +2,6 @@ import 'package:clinic/core/networking/api_constant.dart';
 import 'package:clinic/features/authentication/data/models/forgot_password_respons_body_model.dart';
 import 'package:clinic/features/authentication/data/models/login_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/login_respons_body_model.dart';
-import 'package:clinic/features/authentication/data/models/patient_request_body_model.dart';
-import 'package:clinic/features/authentication/data/models/patient_response_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_response_body_model.dart';
 import 'package:clinic/features/authentication/data/models/reset_password_request_model.dart';

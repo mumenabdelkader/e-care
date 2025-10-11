@@ -43,6 +43,12 @@ abstract class AppStyles {
     fontWeight: FontWeight.w700,
     color: AppColors.white,
   );
+  static TextStyle font14W700Black = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w700,
+    color: AppColors.black,
+  );
   static TextStyle font14W600Black = TextStyle(
     fontFamily: fontFamily,
     fontSize: 14.sp,
@@ -97,16 +103,46 @@ abstract class AppStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.black,
   );
+  static TextStyle font14W400White = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 14.sp,
+    fontWeight: FontWeight.w400,
+    color: AppColors.white,
+  );
   static TextStyle font32W700White = TextStyle(
     fontFamily: fontFamily,
     fontSize: 32.sp,
     fontWeight: FontWeight.w700,
     color: AppColors.white,
   );
+  static TextStyle font20W700White = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 20.sp,
+    fontWeight: FontWeight.w700,
+    color: AppColors.white,
+  );
+  static TextStyle font20W700Black = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 20.sp,
+    fontWeight: FontWeight.w700,
+    color: AppColors.black,
+  );
   static TextStyle font32W700Black = TextStyle(
     fontFamily: fontFamily,
     fontSize: 32.sp,
     fontWeight: FontWeight.w700,
     color: AppColors.black,
+  );
+  static TextStyle font24W700Red = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 24.sp,
+    fontWeight: FontWeight.w700,
+    color: AppColors.red,
+  );
+  static TextStyle font16W600Red = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w600,
+    color: AppColors.red,
   );
 }

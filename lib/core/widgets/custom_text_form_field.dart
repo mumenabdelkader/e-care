@@ -20,6 +20,7 @@ class CustomTextFormField extends StatelessWidget {
   final InputDecoration? decoration;
   final bool? readOnly;
   final void Function()? onTap;
+  final int? maxLines;
 
   const CustomTextFormField({
     super.key,
@@ -39,6 +40,7 @@ class CustomTextFormField extends StatelessWidget {
     this.decoration,
     this.readOnly,
     this.onTap,
+    this.maxLines = 1,
   });
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,7 @@ class CustomTextFormField extends StatelessWidget {
       maxLength: maxLength,
       readOnly: readOnly ?? false,
       onTap: onTap,
+      maxLines: maxLines,
       onTapOutside: (event) {
         FocusScope.of(context).unfocus();
       },

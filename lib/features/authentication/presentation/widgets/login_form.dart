@@ -9,7 +9,7 @@ import 'package:clinic/core/widgets/app_dialog.dart';
 import 'package:clinic/core/widgets/custom_button.dart';
 import 'package:clinic/core/widgets/custom_text_form_field.dart';
 import 'package:clinic/features/authentication/data/models/login_reqsuest_body_model.dart';
-import 'package:clinic/features/authentication/presentation/controller/register/auth_cubit.dart';
+import 'package:clinic/features/authentication/presentation/controller/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -83,7 +83,10 @@ class _LoginFormState extends State<LoginForm> {
                 state.data.message ?? "Login successfully",
                 backgroundColor: Colors.green,
               );
-              context.pushNamed(Routes.home);
+              context.pushAndRemoveUntil(
+                Routes.home,
+                predicate: (route) => false,
+              );
             }
           },
           builder: (context, state) {

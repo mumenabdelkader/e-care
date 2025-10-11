@@ -1,10 +1,8 @@
-import 'package:clinic/core/networking/api_error_handler.dart';
 import 'package:clinic/core/networking/api_error_model.dart';
 import 'package:clinic/features/authentication/data/models/forgot_password_respons_body_model.dart';
 import 'package:clinic/features/authentication/data/models/login_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/login_respons_body_model.dart';
-import 'package:clinic/features/authentication/data/models/patient_request_body_model.dart';
-import 'package:clinic/features/authentication/data/models/patient_response_body_model.dart';
+import 'package:clinic/features/authentication/data/models/logout_response_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_reqsuest_body_model.dart';
 import 'package:clinic/features/authentication/data/models/register_response_body_model.dart';
 import 'package:clinic/features/authentication/data/models/reset_password_request_model.dart';
@@ -103,16 +101,17 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future<void> createPatientPprofile(PatientRequestBodyModel body) async {
+  Future<void> logout() async {
     emit(AuthLoading());
-    try {
-      final result = await authRepo.createPatientPprofile(body);
-      result.when(
-        onSuccess: (data) => emit(AuthCreatePatientProfileSuccess(data)),
-        onError: (error) => emit(AuthFailure(errorModel: error)),
-      );
-    } catch (e) {
-      emit(AuthFailure(errorModel: ApiErrorHandler.handle(e)));
-    }
+
+    final result = await authRepo.logout();
+    result.when(
+      onSuccess: (data) {
+        emit(AuthLogoutSuccess(data));
+      },
+      onError: (error) {
+        emit(AuthFailure(errorModel: error));
+      },
+    );
   }
 }

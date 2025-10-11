@@ -1,11 +1,13 @@
 import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/widgets/custom_text_form_field.dart';
 import 'package:clinic/features/booking/presentation/booking_appointment_step_three.dart';
+import 'package:clinic/features/booking/presentation/controller/booking_cubit.dart';
 import 'package:clinic/features/booking/presentation/widgets/Custom_appoint_type.dart';
 import 'package:clinic/features/booking/presentation/widgets/custom_horizantel_choosing_doctor.dart';
 import 'package:clinic/features/booking/presentation/widgets/custom_radio_bottomsheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/extension/spacing.dart';
 import '../../../core/routing/routes.dart';
@@ -31,8 +33,12 @@ class BookingAppointmentStepTwo extends StatelessWidget {
            SliverToBoxAdapter(child: VerticalSpacing(16)),
            SliverToBoxAdapter(child: CustomTextFormField(controller: searchController,label: Text("Search doctor",style: AppStyles.font12W400Grey,),suffixIcon: Icon(Icons.search,color: Colors.black,) , )),
            SliverToBoxAdapter(child: VerticalSpacing(16)),
-           SliverList(delegate: SliverChildBuilderDelegate(
-             childCount: 10,
+           BlocProvider(
+  create: (context) => BookingCubit()..getSpecialties(),
+  child: BlocBuilder<BookingCubit, BookingState>(
+  builder: (context, state) {
+    return SliverList(delegate: SliverChildBuilderDelegate(
+             childCount:(state is BookingGetSpecialtiesSuccess)? state.specialties.length:0,
                  (context, index) =>
                Padding(
                  padding: const EdgeInsets.only(top: 8,bottom: 8),
@@ -53,7 +59,7 @@ class BookingAppointmentStepTwo extends StatelessWidget {
                                VerticalSpacing(30),
                                Text("Choose Type of Visit",style: AppStyles.font22W700Black,),
                                VerticalSpacing(24),
-                               CustomHorizentelChoosingDoctor(),
+                               (state is BookingGetSpecialtiesSuccess)?CustomHorizentelChoosingDoctor(name: state.specialties[index].name!, price: '3',specialty: "khgkhh",):Container(),
                                VerticalSpacing(17),
 
                                GestureDetector(
@@ -74,10 +80,13 @@ class BookingAppointmentStepTwo extends StatelessWidget {
                              ],
                            )),);
                    },
-                     child: CustomHorizentelChoosingDoctor()),
+                     child: (state is BookingGetSpecialtiesSuccess)?CustomHorizentelChoosingDoctor(name: state.specialties[index].name!, price: '3',specialty: "khgkhh",):Container(),),
                ),
            )
-           ),
+           );
+  },
+),
+),
 
 
          ],

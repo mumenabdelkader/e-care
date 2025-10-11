@@ -13,7 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/utils/validation_utils.dart';
 import '../../../core/widgets/custom_button.dart';
-import 'controller/register/auth_cubit.dart';
+import 'controller/auth_cubit.dart';
 
 class NewPasswordScreen extends StatefulWidget {
   final String email;

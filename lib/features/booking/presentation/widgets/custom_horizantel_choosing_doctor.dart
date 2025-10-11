@@ -4,6 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomHorizentelChoosingDoctor extends StatelessWidget{
+  String name;
+  String specialty;
+  String price;
+  CustomHorizentelChoosingDoctor({required this.name,required this.price,required this.specialty});
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -12,9 +16,9 @@ class CustomHorizentelChoosingDoctor extends StatelessWidget{
         backgroundImage: NetworkImage("https://i.pravatar.cc/100"),
 
       ),
-      title: Text("dr. Nirmala Azalea",style: AppStyles.font16W700black),
-      subtitle:       Text("Orthopedic",style: AppStyles.font12W400Grey,),
-      trailing: Text("\$12",style: AppStyles.font16W700black),
+      title: Text("$name",style: AppStyles.font16W700black),
+      subtitle:       Text("$specialty",style: AppStyles.font12W400Grey,),
+      trailing: Text("\$$price",style: AppStyles.font16W700black),
     );
   }
 
