@@ -22,7 +22,7 @@ class ECare extends StatelessWidget {
               themeMode: themeMode,
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
-              initialRoute: Routes.onboarding,
+              initialRoute: Routes.login,
               onGenerateRoute: AppRouter.onGenerateRoute,
             );
           },
@@ -31,3 +31,4 @@ class ECare extends StatelessWidget {
     );
   }
 }
+//ma8510007@gmial.com

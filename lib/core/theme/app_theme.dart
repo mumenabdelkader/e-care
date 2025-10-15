@@ -60,7 +60,7 @@ class AppTheme {
 
     // 💡 تخصيص TextTheme بالكامل
     textTheme: _buildTextTheme(AppColors.black, AppColors.grey),
-
+    dividerTheme: DividerThemeData(color: AppColors.darkGrey, thickness: 1.h),
     // تخصيص الأيقونات (افتراضي للون الأسود/الرئيسي)
     iconTheme: const IconThemeData(color: AppColors.black),
 
@@ -100,6 +100,7 @@ class AppTheme {
     // 💡 تخصيص TextTheme بالكامل
     textTheme: _buildTextTheme(AppColors.white, AppColors.grey),
 
+    dividerTheme: DividerThemeData(color: AppColors.softGrey, thickness: 1.h),
     // تخصيص الأيقونات (افتراضي للون الأبيض)
     iconTheme: const IconThemeData(color: AppColors.white),
 

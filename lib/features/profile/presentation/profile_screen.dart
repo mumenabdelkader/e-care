@@ -180,7 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
                       Align(
                         child: BlocProvider.value(
                           value: getIt<AuthCubit>(),
-                          child: BlocConsumer<AuthCubit, AuthState>(
+                          child: BlocListener<AuthCubit, AuthState>(
                             listener: (context, state) {
                               if (state is AuthFailure) {
                                 showErrorDialog(context, state.errorModel);
@@ -196,28 +196,96 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
                                 );
                               }
                             },
-                            builder: (context, state) {
-                              return TextButton(
-                                onPressed:
-                                    state is AuthLoading
-                                        ? null
-                                        : () {
-                                          context.read<AuthCubit>().logout();
-                                        },
-                                child: Text(
-                                  "Logout",
-
-                                  style: AppStyles.font24W700Red,
-                                ),
-                              );
-                            },
+                            child: SizedBox.shrink(),
                           ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: TextButton(
+                          onPressed: () {
+                            _confrimLogout(context);
+                          },
+                          child: Text("Logout", style: AppStyles.font24W700Red),
                         ),
                       ),
                     ],
                   ),
                 ),
       ),
+    );
+  }
+
+  _confrimLogout(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return Dialog(
+          child: Padding(
+            padding: EdgeInsets.all(20.w),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Logout",
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                VerticalSpacing(10),
+                Text(
+                  "Are you sure you want to logout?",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
+                ),
+                VerticalSpacing(20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(dialogContext).pop();
+                      },
+                      child: Text(
+                        "Cancel",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+                    BlocProvider.value(
+                      value: getIt<AuthCubit>(),
+                      child: BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, state) {
+                          return ElevatedButton(
+                            onPressed:
+                                state is AuthLoading
+                                    ? null
+                                    : () {
+                                      Navigator.of(dialogContext).pop();
+                                      context.read<AuthCubit>().logout();
+                                    },
+                            child:
+                                state is AuthLoading
+                                    ? SizedBox(
+                                      width: 16.w,
+                                      height: 16.h,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                    : Text(
+                                      "Logout",
+                                      style: AppStyles.font24W700Red,
+                                    ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
