@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:clinic/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,6 +20,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool? readOnly;
   final void Function()? onTap;
   final int? maxLines;
+  final TextStyle? style;
 
   const CustomTextFormField({
     super.key,
@@ -41,9 +41,14 @@ class CustomTextFormField extends StatelessWidget {
     this.readOnly,
     this.onTap,
     this.maxLines = 1,
+    this.style,
   });
+
   @override
   Widget build(BuildContext context) {
+    final dynamicGreyColor = Theme.of(context).hintColor;
+    final dynamicDividerColor = Theme.of(context).dividerColor;
+
     return TextFormField(
       controller: controller,
       keyboardType: keyboardType,
@@ -53,36 +58,44 @@ class CustomTextFormField extends StatelessWidget {
       readOnly: readOnly ?? false,
       onTap: onTap,
       maxLines: maxLines,
+      style: style ?? Theme.of(context).textTheme.bodyMedium,
       onTapOutside: (event) {
         FocusScope.of(context).unfocus();
       },
       decoration:
           decoration ??
           InputDecoration(
-            prefixIcon: Icon(prefixIcon, size: 25.sp, color: AppColors.grey),
+            prefixIcon: Icon(prefixIcon, size: 25.sp, color: dynamicGreyColor),
             prefixText: prefixText,
+
+            prefixStyle: Theme.of(context).textTheme.bodyMedium,
 
             label: label,
             filled: filled,
             fillColor: fillColor,
             contentPadding: contentPadding,
+
             border:
                 border ??
                 UnderlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.softGrey),
+                  borderSide: BorderSide(color: dynamicDividerColor),
                 ),
+
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.primary, width: 2.w),
             ),
+
             enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.softGrey),
+              borderSide: BorderSide(color: dynamicDividerColor),
             ),
+
             errorBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.red, width: 2.w),
             ),
             focusedErrorBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.red, width: 2.w),
             ),
+
             suffixIcon:
                 suffixIcon != null
                     ? Padding(

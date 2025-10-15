@@ -1,4 +1,5 @@
 import 'package:clinic/core/networking/dio_factory.dart';
+import 'package:clinic/core/theme/cubit/theme_cubit.dart';
 import 'package:clinic/features/authentication/data/repos/auth_repo.dart';
 import 'package:clinic/features/authentication/data/services/auth_service.dart';
 import 'package:clinic/features/authentication/presentation/controller/auth_cubit.dart';
@@ -13,6 +14,7 @@ GetIt getIt = GetIt.instance;
 void setupDependencyInjection() {
   _setupAuth();
   _setupProfile();
+  getIt.registerLazySingleton<ThemeCubit>(() => ThemeCubit());
 }
 
 void _setupAuth() {

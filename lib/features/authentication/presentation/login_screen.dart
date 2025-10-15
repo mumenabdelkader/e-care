@@ -14,17 +14,19 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
-      appBar: AppBar(leading: Container()),
       body: Padding(
         padding: EdgeInsets.only(left: 20.0.w, right: 20.w, top: 30.h),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Welcome Back!", style: AppStyles.font24W700Black),
+              VerticalSpacing(60),
+              Text("Welcome Back!", style: textTheme.displayLarge),
               VerticalSpacing(8),
-              Text("Sign In to your account", style: AppStyles.font16W400Grey),
+              Text("Sign In to your account", style: textTheme.bodyLarge),
               VerticalSpacing(25),
               CustomSignUpGoogle(),
               VerticalSpacing(17),
@@ -36,7 +38,6 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      // Navigate to Forgot Password screen
                       context.pushNamed(Routes.forgotPassword);
                     },
                     child: Text(
@@ -46,7 +47,6 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ],
               ),
-
               VerticalSpacing(58),
               Center(
                 child: RichText(
@@ -54,7 +54,7 @@ class LoginScreen extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: " Don't have account? ",
-                        style: AppStyles.font14W400Black,
+                        style: textTheme.bodyMedium,
                       ),
                       WidgetSpan(
                         child: GestureDetector(

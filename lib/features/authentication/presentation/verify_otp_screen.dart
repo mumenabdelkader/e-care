@@ -39,7 +39,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
   String _otp = '';
 
   Timer? _timer;
-  int _remainingSeconds = 300; // 5 minutes = 300 seconds
+  int _remainingSeconds = 300;
 
   @override
   void initState() {
@@ -55,30 +55,38 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    final secondaryTextColor = Theme.of(context).hintColor;
+
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text('Verify OTP')),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Verification", style: AppStyles.font24W700Black),
+            Text("Verification", style: textTheme.titleLarge),
             VerticalSpacing(10),
             RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
                     text: 'Go Check Your Email: ',
-                    style: AppStyles.font16W400Grey,
+                    style: textTheme.bodyLarge?.copyWith(
+                      color: secondaryTextColor,
+                    ),
                   ),
                   TextSpan(
                     text:
                         widget.registerData?.email ?? widget.forgotPasswordData,
-                    style: AppStyles.font14W600Black,
+                    style: textTheme.labelMedium,
                   ),
                   TextSpan(
                     text: ', we sent you an verify code',
-                    style: AppStyles.font16W400Grey,
+                    style: textTheme.bodyLarge?.copyWith(
+                      color: secondaryTextColor,
+                    ),
                   ),
                 ],
               ),
@@ -93,10 +101,12 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
               textFieldAlignment: MainAxisAlignment.spaceEvenly,
               outlineBorderRadius: 40.r,
               otpFieldStyle: OtpFieldStyle(
-                backgroundColor: AppColors.softGrey,
+                backgroundColor: Theme.of(
+                  context,
+                ).primaryColor.withOpacity(0.1),
                 focusBorderColor: AppColors.primary,
                 errorBorderColor: AppColors.red,
-                borderColor: AppColors.grey,
+                borderColor: Theme.of(context).dividerColor,
               ),
               keyboardType: TextInputType.number,
               onChanged: (pin) {
@@ -111,16 +121,14 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                   children: [
                     TextSpan(
                       text: "Resend code in ",
-                      style: AppStyles.font16W400Black,
+                      style: textTheme.bodyLarge,
                     ),
                     WidgetSpan(
                       alignment: PlaceholderAlignment.middle,
                       child: GestureDetector(
                         onTap:
                             _remainingSeconds == 0
-                                ? () {
-                                  _resendOtp(context);
-                                }
+                                ? () => _resendOtp(context)
                                 : null,
                         child: Text(
                           _remainingSeconds == 0 ? "Resend" : _formattedTime,
@@ -161,7 +169,11 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                 return CustomButton(
                   lable:
                       state is AuthLoading
-                          ? const Center(child: CircularProgressIndicator())
+                          ? const Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.white,
+                            ),
+                          )
                           : Text('Continue', style: AppStyles.font14W700White),
                   onPressed:
                       state is AuthLoading
