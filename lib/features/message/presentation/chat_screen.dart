@@ -70,6 +70,9 @@ class ChatScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextField(
+                    onTapOutside: (event) {
+                      FocusScope.of(context).unfocus();
+                    },
                     decoration: InputDecoration(
                       hintText: 'Type a message',
                       border: OutlineInputBorder(
