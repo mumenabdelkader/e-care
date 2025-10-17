@@ -15,6 +15,8 @@ import 'package:clinic/features/profile/presentation/account_information_screen.
 import 'package:clinic/features/profile/presentation/controller/profile_cubit.dart';
 import 'package:clinic/features/profile/presentation/create_patient_profile_screen.dart';
 import 'package:clinic/features/profile/presentation/edit_account_screen.dart';
+import 'package:clinic/features/profile/presentation/insurance_details_screen.dart';
+import 'package:clinic/features/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -158,6 +160,18 @@ class AppRouter {
                   patientProfileData: patientProfileData,
                 ),
               ),
+          settings: settings,
+        );
+
+      case Routes.insuranceDetails:
+        return MaterialPageRoute(
+          builder: (_) => InsuranceDetailsScreen(),
+          settings: settings,
+        );
+
+      case Routes.settings:
+        return MaterialPageRoute(
+          builder: (_) => SettingsScreen(),
           settings: settings,
         );
 

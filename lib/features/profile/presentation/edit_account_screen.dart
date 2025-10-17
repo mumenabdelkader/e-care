@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:io';
 
 import 'package:clinic/core/extension/navigation.dart';
@@ -30,7 +28,6 @@ class EditAccountScreen extends StatefulWidget {
 class _EditAccountScreenState extends State<EditAccountScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  // Controllers
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -66,9 +63,15 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    final surfaceColor = Theme.of(context).colorScheme.surface;
+
+    final hintColor = Theme.of(context).hintColor;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit Account", style: AppStyles.font20W700Black),
+        title: Text("Edit Account", style: textTheme.displaySmall),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -78,7 +81,6 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // ===== Profile Photo Section =====
               BlocConsumer<ProfileCubit, ProfileState>(
                 listener: (context, state) {
                   if (state is ProfileFailure) {
@@ -115,8 +117,11 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                                 state is ProfileLoading
                                     ? CircleAvatar(
                                       radius: 45.r,
-                                      backgroundColor: AppColors.softGrey,
-                                      child: CircularProgressIndicator(),
+
+                                      backgroundColor: surfaceColor,
+                                      child: CircularProgressIndicator(
+                                        color: hintColor,
+                                      ),
                                     )
                                     : Image.network(
                                       imageUrl,
@@ -132,7 +137,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                                         return Icon(
                                           Icons.account_circle,
                                           size: 90.sp,
-                                          color: AppColors.grey,
+
+                                          color: hintColor,
                                         );
                                       },
                                       loadingBuilder: (
@@ -147,7 +153,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                                           width: 90.w,
                                           height: 90.h,
                                           decoration: BoxDecoration(
-                                            color: AppColors.softGrey,
+                                            color: surfaceColor,
                                             borderRadius: BorderRadius.circular(
                                               90.r,
                                             ),
@@ -155,6 +161,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                                           child: Center(
                                             child: CircularProgressIndicator(
                                               strokeWidth: 2,
+                                              color: hintColor,
                                             ),
                                           ),
                                         );
@@ -162,29 +169,34 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                                     ),
                           ),
                         ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: GestureDetector(
-                            onTap: () => _deleteProfilePhoto(context),
-                            child: Container(
-                              padding: EdgeInsets.all(6.w),
-                              decoration: BoxDecoration(
-                                color: AppColors.red,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: AppColors.white,
-                                  width: 2,
+                        if (profileData.photoUrl.isNotEmpty)
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: GestureDetector(
+                              onTap: () => _deleteProfilePhoto(context),
+                              child: Container(
+                                padding: EdgeInsets.all(6.w),
+                                decoration: BoxDecoration(
+                                  color: AppColors.red,
+                                  shape: BoxShape.circle,
+
+                                  border: Border.all(
+                                    color:
+                                        Theme.of(
+                                          context,
+                                        ).scaffoldBackgroundColor,
+                                    width: 2,
+                                  ),
                                 ),
-                              ),
-                              child: Icon(
-                                Icons.delete,
-                                size: 18.sp,
-                                color: AppColors.white,
+                                child: Icon(
+                                  Icons.delete,
+                                  size: 18.sp,
+                                  color: AppColors.white,
+                                ),
                               ),
                             ),
                           ),
-                        ),
                       ],
                     ),
                   );
@@ -193,34 +205,54 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
 
               VerticalSpacing(24),
 
-              // ===== Personal Section =====
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text("Personal", style: AppStyles.font16W700Grey),
+
+                child: Text(
+                  "Personal",
+                  style: textTheme.titleLarge?.copyWith(color: hintColor),
+                ),
               ),
               VerticalSpacing(16),
-              _buildTextField("Username", _usernameController),
-              _buildTextField("First Name", _firstNameController),
-              _buildTextField("Last Name", _lastNameController),
+              _buildTextField(
+                "Username",
+                _usernameController,
+                textTheme,
+                surfaceColor,
+              ),
+              _buildTextField(
+                "First Name",
+                _firstNameController,
+                textTheme,
+                surfaceColor,
+              ),
+              _buildTextField(
+                "Last Name",
+                _lastNameController,
+                textTheme,
+                surfaceColor,
+              ),
 
-              // Date of Birth
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text("Date of Birth", style: AppStyles.font12W400Grey),
+
+                child: Text("Date of Birth", style: textTheme.titleSmall),
               ),
               VerticalSpacing(4),
               TextFormField(
                 controller: _dobController,
                 readOnly: true,
+                style: textTheme.bodyMedium,
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    icon: const Icon(Icons.calendar_today_outlined),
+                    icon: Icon(Icons.calendar_today_outlined, color: hintColor),
                     onPressed: () {
                       _selectDate(context);
                     },
                   ),
                   filled: true,
-                  fillColor: AppColors.softGrey,
+
+                  fillColor: surfaceColor,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.r),
                     borderSide: BorderSide.none,
@@ -229,10 +261,10 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
               ),
               VerticalSpacing(16),
 
-              // Gender
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text("Gender", style: AppStyles.font12W400Grey),
+
+                child: Text("Gender", style: textTheme.titleSmall),
               ),
               Row(
                 children: [
@@ -242,7 +274,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       groupValue: _selectedGender,
                       onChanged:
                           (val) => setState(() => _selectedGender = val!),
-                      title: const Text("Female"),
+                      title: Text("Female", style: textTheme.bodyMedium),
+                      activeColor: AppColors.primary,
                     ),
                   ),
                   Expanded(
@@ -251,34 +284,53 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       groupValue: _selectedGender,
                       onChanged:
                           (val) => setState(() => _selectedGender = val!),
-                      title: const Text("Male"),
+                      title: Text("Male", style: textTheme.bodyMedium),
+                      activeColor: AppColors.primary,
                     ),
                   ),
                 ],
               ),
               VerticalSpacing(20),
 
-              // ===== Contact Section =====
               Align(
                 alignment: Alignment.centerLeft,
-                child: Text("Contact", style: AppStyles.font16W700Grey),
+
+                child: Text(
+                  "Contact",
+                  style: textTheme.titleLarge?.copyWith(color: hintColor),
+                ),
               ),
               VerticalSpacing(16),
 
               _buildTextField(
                 "Phone Number",
                 _phoneController,
+                textTheme,
+                surfaceColor,
                 keyboardType: TextInputType.phone,
               ),
               _buildTextField(
                 "Email",
                 _emailController,
+                textTheme,
+                surfaceColor,
                 keyboardType: TextInputType.emailAddress,
                 readOnly: true,
               ),
-              _buildTextField("City", _cityController),
-              _buildTextField("Province", _provinceController),
-              _buildTextField("Address", _addressController, maxLines: 2),
+              _buildTextField("City", _cityController, textTheme, surfaceColor),
+              _buildTextField(
+                "Province",
+                _provinceController,
+                textTheme,
+                surfaceColor,
+              ),
+              _buildTextField(
+                "Address",
+                _addressController,
+                textTheme,
+                surfaceColor,
+                maxLines: 2,
+              ),
 
               VerticalSpacing(24),
               SizedBox(
@@ -293,7 +345,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                         state.data.message ?? "Profile Updated Successfuly",
                         backgroundColor: AppColors.green,
                       );
-                      // to refresh cached data
+
                       context.read<ProfileCubit>().getPatientProfile();
 
                       context.pop();
@@ -303,9 +355,14 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     return CustomButton(
                       lable:
                           state is ProfileLoading
-                              ? Center(child: CircularProgressIndicator())
+                              ? Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.white,
+                                ),
+                              )
                               : Text(
                                 'Save Changes',
+
                                 style: AppStyles.font14W700White,
                               ),
                       onPressed:
@@ -321,24 +378,111 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
     );
   }
 
+  Widget _buildTextField(
+    String label,
+    TextEditingController controller,
+    TextTheme textTheme,
+    Color surfaceColor, {
+    TextInputType keyboardType = TextInputType.text,
+    int maxLines = 1,
+    bool readOnly = false,
+  }) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 12.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(label, style: textTheme.titleSmall),
+          VerticalSpacing(4),
+          CustomTextFormField(
+            controller: controller,
+            keyboardType: keyboardType,
+            maxLines: maxLines,
+            readOnly: readOnly,
+            style: textTheme.bodyMedium,
+            decoration: InputDecoration(
+              filled: true,
+
+              fillColor: surfaceColor,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.r),
+                borderSide: BorderSide.none,
+              ),
+
+              hintStyle: textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).hintColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formattedDate(DateTime date) {
+    return "${profileData.dateOfBirth.year}/${profileData.dateOfBirth.month}/${profileData.dateOfBirth.day}";
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime(2000),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: Theme.of(context).colorScheme.copyWith(
+              primary: AppColors.primary,
+              onPrimary: AppColors.white,
+              surface: Theme.of(context).colorScheme.surface,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(foregroundColor: AppColors.primary),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        _selectedDate = pickedDate;
+        _dobController.text = DateFormat('yyyy/MM/dd').format(pickedDate);
+      });
+    }
+  }
+
   void _deleteProfilePhoto(BuildContext context) {
     showDialog(
       context: context,
+
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text("Remove Profile Photo"),
-          content: const Text(
+          title: Text(
+            "Remove Profile Photo",
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          content: Text(
             "Are you sure you want to remove your profile photo?",
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text("Cancel"),
+              child: Text(
+                "Cancel",
+                style: TextStyle(color: Theme.of(context).hintColor),
+              ),
               onPressed: () {
                 dialogContext.pop();
               },
             ),
             TextButton(
-              child: const Text("Remove", style: TextStyle(color: Colors.red)),
+              child: const Text(
+                "Remove",
+                style: TextStyle(color: AppColors.red),
+              ),
               onPressed: () async {
                 await context.read<ProfileCubit>().removeProfilePhoto();
                 if (mounted) {
@@ -355,6 +499,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   void _pickProfilePhoto(BuildContext context) {
     showModalBottomSheet(
       context: context,
+
       builder:
           (ctx) => Padding(
             padding: const EdgeInsets.all(16),
@@ -362,8 +507,14 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  leading: const Icon(Icons.camera_alt),
-                  title: const Text('Take Photo'),
+                  leading: Icon(
+                    Icons.camera_alt,
+                    color: Theme.of(context).hintColor,
+                  ),
+                  title: Text(
+                    'Take Photo',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                   onTap: () async {
                     final image = await ImagePicker().pickImage(
                       source: ImageSource.camera,
@@ -377,8 +528,14 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.photo_library),
-                  title: const Text('Choose from Gallery'),
+                  leading: Icon(
+                    Icons.photo_library,
+                    color: Theme.of(context).hintColor,
+                  ),
+                  title: Text(
+                    'Choose from Gallery',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                   onTap: () async {
                     final image = await ImagePicker().pickImage(
                       source: ImageSource.gallery,
@@ -398,71 +555,20 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   }
 
   void _updateProfile() {
-    context.read<ProfileCubit>().updatePatientPprofile(
-      UpdataPatientProfileRequestBodyModel(
-        userName: _usernameController.text,
-        firstName: _firstNameController.text,
-        lastName: _lastNameController.text,
-        address: _addressController.text,
-        city: _cityController.text,
-        province: _provinceController.text,
+    if (_formKey.currentState!.validate()) {
+      final updatedProfile = UpdataPatientProfileRequestBodyModel(
+        userName: _usernameController.text.trim(),
+        firstName: _firstNameController.text.trim(),
+        lastName: _lastNameController.text.trim(),
         dateOfBirth: _selectedDate,
-        phoneNumber: _phoneController.text,
         gender: _selectedGender,
-      ),
-    );
-  }
+        phoneNumber: _phoneController.text.trim(),
+        city: _cityController.text.trim(),
+        province: _provinceController.text.trim(),
+        address: _addressController.text.trim(),
+      );
 
-  Widget _buildTextField(
-    String label,
-    TextEditingController controller, {
-    TextInputType keyboardType = TextInputType.text,
-    int maxLines = 1,
-    bool readOnly = false,
-  }) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 12.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label, style: AppStyles.font12W400Grey),
-          VerticalSpacing(4),
-          CustomTextFormField(
-            controller: controller,
-            keyboardType: keyboardType,
-            maxLines: maxLines,
-            readOnly: readOnly,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: AppColors.softGrey,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.r),
-                borderSide: BorderSide.none,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _formattedDate(DateTime date) {
-    return "${profileData.dateOfBirth.year}/${profileData.dateOfBirth.month}/${profileData.dateOfBirth.day}";
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime(2000),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-
-    if (pickedDate != null) {
-      setState(() {
-        _selectedDate = pickedDate;
-        _dobController.text = DateFormat('yyyy/MM/dd').format(pickedDate);
-      });
+      context.read<ProfileCubit>().updatePatientPprofile(updatedProfile);
     }
   }
 }

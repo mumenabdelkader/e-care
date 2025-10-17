@@ -12,19 +12,14 @@ class GetStartedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       body: Container(
         width: double.infinity,
         height: double.infinity,
         padding: EdgeInsets.only(top: 20.h),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.centerLeft,
-            colors: [Colors.blue.shade200, Colors.white],
-            stops: const [0.1, 0.9],
-          ),
-        ),
+
         child: Column(
           children: [
             Image.asset(AppAssets.appLogo, height: 70.h, width: 163.w),
@@ -45,12 +40,14 @@ class GetStartedScreen extends StatelessWidget {
                     Text(
                       "Improve the Quality\nof Service for Patient\nHappiness",
                       textAlign: TextAlign.center,
-                      style: AppStyles.font32W700Black,
+
+                      style: textTheme.displayLarge?.copyWith(fontSize: 32.sp),
                     ),
                     VerticalSpacing(35),
                     CustomButton(
                       lable: Text(
                         "Get Started",
+
                         style: AppStyles.font14W700White,
                       ),
                       onPressed: () {

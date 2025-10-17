@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clinic/core/constants/cache_constants.dart';
 import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/show_snack_bar.dart';
@@ -14,6 +13,8 @@ import 'package:clinic/core/widgets/app_dialog.dart';
 import 'package:clinic/features/authentication/presentation/controller/auth_cubit.dart';
 import 'package:clinic/features/profile/data/models/patient_profile_model.dart';
 import 'package:clinic/features/profile/presentation/controller/profile_cubit.dart';
+import 'package:clinic/features/profile/presentation/widgets/profile_info.dart';
+import 'package:clinic/features/profile/presentation/widgets/profile_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // ✅ Refresh data when coming back from other screens
+
     _getProfileData();
   }
 
@@ -56,9 +57,13 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
+    final hintColor = Theme.of(context).hintColor;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile", style: AppStyles.font32W700Black),
+        title: Text("Profile", style: textTheme.displayLarge),
         actions: [
           Container(
             width: 42.w,
@@ -66,8 +71,10 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
             margin: EdgeInsets.symmetric(horizontal: 10.w),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppColors.softGrey,
+
+              color: surfaceColor,
             ),
+
             child: Icon(Icons.notifications_none),
           ),
         ],
@@ -92,10 +99,17 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _profileInfo(),
+                      ProfileInfo(
+                        imageKey: imageKey,
+                        patientData: patientData!,
+                      ),
                       VerticalSpacing(24),
-                      Text("General", style: AppStyles.font16W700Grey),
-                      _profileSection(
+
+                      Text(
+                        "General",
+                        style: textTheme.titleLarge?.copyWith(color: hintColor),
+                      ),
+                      ProfileSection(
                         title: "Account Information",
                         subtitle: "Change your account information",
                         icon: Icon(
@@ -104,19 +118,17 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
                           size: 25.sp,
                         ),
                         onTap: () async {
-                          // ✅ Navigate and refresh when back
                           await context.pushNamed(
                             Routes.accountInformation,
                             arguments: patientData,
                           );
-                          // ✅ Refresh data when coming back
                           if (mounted) {
                             _getProfileData();
                           }
                         },
                       ),
-                      Divider(),
-                      _profileSection(
+                      Divider(color: Theme.of(context).dividerColor),
+                      ProfileSection(
                         title: "Insurance Detail",
                         subtitle: "Add your insurance info",
                         icon: Icon(
@@ -124,9 +136,12 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
                           color: AppColors.green,
                           size: 25.sp,
                         ),
+                        onTap: () {
+                          context.pushNamed(Routes.insuranceDetails);
+                        },
                       ),
-                      Divider(),
-                      _profileSection(
+                      Divider(color: Theme.of(context).dividerColor),
+                      ProfileSection(
                         title: "Medical Records",
                         subtitle: "History about you medical records",
                         icon: Icon(
@@ -134,9 +149,10 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
                           color: AppColors.yellow,
                           size: 25.sp,
                         ),
+                        onTap: () {},
                       ),
-                      Divider(),
-                      _profileSection(
+                      Divider(color: Theme.of(context).dividerColor),
+                      ProfileSection(
                         title: "Clinic Info",
                         subtitle: "Information about our Clinic",
                         icon: Icon(
@@ -144,22 +160,27 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
                           color: Color(0xff8D43EC),
                           size: 25.sp,
                         ),
+                        onTap: () {},
                       ),
-                      Divider(),
-                      _profileSection(
+                      Divider(color: Theme.of(context).dividerColor),
+                      ProfileSection(
                         title: "Settings",
                         subtitle: "Manage & Settings",
                         icon: Icon(
                           Icons.settings,
-                          color: AppColors.darkGrey,
+
+                          color: hintColor,
                           size: 25.sp,
                         ),
+                        onTap: () {
+                          context.pushNamed(Routes.settings);
+                        },
                       ),
-                      Divider(),
+                      Divider(color: Theme.of(context).dividerColor),
                       Align(
                         child: BlocProvider.value(
                           value: getIt<AuthCubit>(),
-                          child: BlocConsumer<AuthCubit, AuthState>(
+                          child: BlocListener<AuthCubit, AuthState>(
                             listener: (context, state) {
                               if (state is AuthFailure) {
                                 showErrorDialog(context, state.errorModel);
@@ -175,21 +196,17 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
                                 );
                               }
                             },
-                            builder: (context, state) {
-                              return TextButton(
-                                onPressed:
-                                    state is AuthLoading
-                                        ? null
-                                        : () {
-                                          context.read<AuthCubit>().logout();
-                                        },
-                                child: Text(
-                                  "Logout",
-                                  style: AppStyles.font24W700Red,
-                                ),
-                              );
-                            },
+                            child: SizedBox.shrink(),
                           ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: TextButton(
+                          onPressed: () {
+                            _confrimLogout(context);
+                          },
+                          child: Text("Logout", style: AppStyles.font24W700Red),
                         ),
                       ),
                     ],
@@ -199,88 +216,76 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
     );
   }
 
-  Widget _profileSection({
-    required String title,
-    required String subtitle,
-    required Icon icon,
-    void Function()? onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: ListTile(
-        leading: Container(
-          width: 40.w,
-          height: 40.h,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: AppColors.softGrey,
-          ),
-          child: icon,
-        ),
-        title: Text(title, style: AppStyles.font14W700Black),
-        subtitle: Text(subtitle, style: AppStyles.font12W400Grey),
-        trailing: Icon(Icons.chevron_right_sharp),
-      ),
-    );
-  }
-
-  Widget _profileInfo() {
-    final defaultImageUrl =
-        "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541";
-    final imageUrl =
-        patientData!.photoUrl.isEmpty ? defaultImageUrl : patientData!.photoUrl;
-
-    return Container(
-      height: 92.h,
-      width: 335.w,
-      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
-      decoration: BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Row(
-        children: [
-          HorizontalSpacing(10),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(70.r),
-            child: CachedNetworkImage(
-              key: ValueKey('$imageUrl-$imageKey'),
-              imageUrl: imageUrl,
-              fit: BoxFit.cover,
-              width: 80.w,
-              height: 80.h,
-              errorWidget: (context, url, error) {
-                return Icon(Icons.error, color: Colors.white);
-              },
-              placeholder:
-                  (context, url) => Container(
-                    width: 80.w,
-                    height: 80.h,
-                    color: AppColors.softGrey,
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation(AppColors.white),
+  _confrimLogout(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        return Dialog(
+          child: Padding(
+            padding: EdgeInsets.all(20.w),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Logout",
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                VerticalSpacing(10),
+                Text(
+                  "Are you sure you want to logout?",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
+                ),
+                VerticalSpacing(20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(dialogContext).pop();
+                      },
+                      child: Text(
+                        "Cancel",
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),
-                  ),
+                    BlocProvider.value(
+                      value: getIt<AuthCubit>(),
+                      child: BlocBuilder<AuthCubit, AuthState>(
+                        builder: (context, state) {
+                          return ElevatedButton(
+                            onPressed:
+                                state is AuthLoading
+                                    ? null
+                                    : () {
+                                      Navigator.of(dialogContext).pop();
+                                      context.read<AuthCubit>().logout();
+                                    },
+                            child:
+                                state is AuthLoading
+                                    ? SizedBox(
+                                      width: 16.w,
+                                      height: 16.h,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                    : Text(
+                                      "Logout",
+                                      style: AppStyles.font24W700Red,
+                                    ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-          HorizontalSpacing(20),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "${patientData!.firstName} ${patientData!.lastName}",
-                style: AppStyles.font20W700White,
-              ),
-              VerticalSpacing(5),
-              Text(patientData!.email, style: AppStyles.font14W400White),
-            ],
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

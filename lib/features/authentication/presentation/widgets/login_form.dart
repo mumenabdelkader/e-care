@@ -31,6 +31,8 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Column(
       children: [
         Form(
@@ -39,7 +41,7 @@ class _LoginFormState extends State<LoginForm> {
             children: [
               CustomTextFormField(
                 controller: emailController,
-                label: Text("email", style: AppStyles.font12W400Grey),
+                label: Text("email", style: textTheme.titleSmall),
                 prefixIcon: Icons.email_outlined,
                 validator: (String? value) {
                   return ValidationUtils.getEmailValidationMessage(value);
@@ -49,7 +51,7 @@ class _LoginFormState extends State<LoginForm> {
               CustomTextFormField(
                 controller: passwordController,
                 obscureText: obscureText,
-                label: Text("password", style: AppStyles.font12W400Grey),
+                label: Text("password", style: textTheme.titleSmall),
                 prefixIcon: Icons.lock_outline_sharp,
                 suffixIcon: IconButton(
                   onPressed: () {
@@ -59,7 +61,8 @@ class _LoginFormState extends State<LoginForm> {
                   },
                   icon: Icon(
                     obscureText ? Icons.visibility_off : Icons.visibility,
-                    color: AppColors.grey,
+
+                    color: Theme.of(context).hintColor,
                   ),
                 ),
                 validator: (String? value) {
@@ -72,7 +75,6 @@ class _LoginFormState extends State<LoginForm> {
           ),
         ),
         VerticalSpacing(16),
-
         BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthFailure) {
@@ -93,7 +95,11 @@ class _LoginFormState extends State<LoginForm> {
             return CustomButton(
               lable:
                   state is AuthLoading
-                      ? Center(child: CircularProgressIndicator())
+                      ? Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.white,
+                        ),
+                      )
                       : Text("login", style: AppStyles.font14W700White),
               onPressed:
                   state is AuthLoading
