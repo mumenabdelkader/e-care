@@ -3,4 +3,5 @@ class CacheConstants {
   static const String refreshToken = "RefreshToken";
   static const String profileData = "profileData";
   static const String profilePhoto = "profilePhoto";
+  static const String isDarkMode = "isDarkMode";
 }

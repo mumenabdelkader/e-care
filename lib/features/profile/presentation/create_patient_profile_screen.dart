@@ -36,11 +36,29 @@ class _CreatePatientProfileScreenState
   DateTime? _selectedDate;
 
   Future<void> _selectDate(BuildContext context) async {
+    // 💡 تخصيص showDatePicker theme ليتوافق مع الوضع الداكن
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime(2000),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            // لضمان أن الـ DatePicker يستخدم الـ primaryColor الخاص بك في كلا الوضعين
+            colorScheme: Theme.of(context).colorScheme.copyWith(
+              primary: AppColors.primary,
+              onPrimary: AppColors.white,
+              surface:
+                  Theme.of(context).colorScheme.surface, // لون خلفية الـ dialog
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(foregroundColor: AppColors.primary),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
 
     if (pickedDate != null) {
@@ -94,9 +112,14 @@ class _CreatePatientProfileScreenState
 
   @override
   Widget build(BuildContext context) {
+    // جلب TextTheme
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("Patient Information", style: AppStyles.font22W700Black),
+        // 💡 قبل: AppStyles.font22W700Black
+        // 💡 الآن: textTheme.displayMedium
+        title: Text("Patient Information", style: textTheme.displayMedium),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -109,10 +132,11 @@ class _CreatePatientProfileScreenState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // ===== Personal Section =====
-                  _buildLabel("First Name"),
+                  _buildLabel("First Name", textTheme),
                   _buildTextField(
                     _firstNameController,
                     "Enter first name",
+                    textTheme,
                     validator:
                         (value) =>
                             value == null || value.trim().isEmpty
@@ -121,10 +145,11 @@ class _CreatePatientProfileScreenState
                   ),
 
                   const VerticalSpacing(16),
-                  _buildLabel("Last Name"),
+                  _buildLabel("Last Name", textTheme),
                   _buildTextField(
                     _lastNameController,
                     "Enter last name",
+                    textTheme,
                     validator:
                         (value) =>
                             value == null || value.trim().isEmpty
@@ -133,16 +158,20 @@ class _CreatePatientProfileScreenState
                   ),
 
                   const VerticalSpacing(16),
-                  _buildLabel("Gender"),
+                  _buildLabel("Gender", textTheme),
                   DropdownButtonFormField<String>(
-                    decoration: _inputDecoration(),
-                    value: _selectedGender,
+                    decoration: _inputDecoration(context), // 💡 استخدام context
+                    initialValue: _selectedGender,
+                    // 💡 يجب تخصيص ستايل النصوص داخل الـ DropdownMenu
                     items:
                         ["Male", "Female"]
                             .map(
                               (gender) => DropdownMenuItem(
                                 value: gender,
-                                child: Text(gender),
+                                child: Text(
+                                  gender,
+                                  style: textTheme.bodyMedium,
+                                ),
                               ),
                             )
                             .toList(),
@@ -154,11 +183,14 @@ class _CreatePatientProfileScreenState
                     validator:
                         (value) =>
                             value == null ? "Please select gender" : null,
-                    hint: const Text("Select gender"),
+                    hint: Text(
+                      "Select gender",
+                      style: textTheme.bodyMedium,
+                    ), // 💡 تخصيص hint style
                   ),
 
                   const VerticalSpacing(16),
-                  _buildLabel("Date of Birth"),
+                  _buildLabel("Date of Birth", textTheme),
                   CustomTextFormField(
                     controller: _dobController,
                     readOnly: true,
@@ -168,17 +200,25 @@ class _CreatePatientProfileScreenState
                             _selectedDate == null
                                 ? "Please select your date of birth"
                                 : null,
-                    decoration: _inputDecoration().copyWith(
+                    // 💡 استخدام context
+                    decoration: _inputDecoration(context).copyWith(
                       hintText: "mm/dd/yyyy",
-                      suffixIcon: const Icon(Icons.calendar_today_outlined),
+                      suffixIcon: Icon(
+                        Icons.calendar_today_outlined,
+                        color:
+                            Theme.of(
+                              context,
+                            ).hintColor, // 💡 لون الأيقونة ديناميكي
+                      ),
                     ),
                   ),
 
                   const VerticalSpacing(16),
-                  _buildLabel("Address (Optional)"),
+                  _buildLabel("Address (Optional)", textTheme),
                   _buildTextField(
                     _addressController,
                     "Enter address",
+                    textTheme,
                     validator: null,
                   ),
 
@@ -189,10 +229,11 @@ class _CreatePatientProfileScreenState
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildLabel("Province (Optional)"),
+                            _buildLabel("Province (Optional)", textTheme),
                             _buildTextField(
                               _provinceController,
                               "Enter province",
+                              textTheme,
                               validator: null,
                             ),
                           ],
@@ -203,10 +244,11 @@ class _CreatePatientProfileScreenState
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildLabel("City (Optional)"),
+                            _buildLabel("City (Optional)", textTheme),
                             _buildTextField(
                               _cityController,
                               "Enter city",
+                              textTheme,
                               validator: null,
                             ),
                           ],
@@ -237,10 +279,13 @@ class _CreatePatientProfileScreenState
                           lable:
                               state is ProfileLoading
                                   ? const Center(
-                                    child: CircularProgressIndicator(),
+                                    child: CircularProgressIndicator(
+                                      color: AppColors.white,
+                                    ),
                                   )
                                   : Text(
                                     'Continue',
+                                    // 💡 النمط الثابت (White) يتم الحفاظ عليه في AppStyles
                                     style: AppStyles.font14W700White,
                                   ),
                           onPressed: state is ProfileLoading ? null : _onSave,
@@ -255,35 +300,46 @@ class _CreatePatientProfileScreenState
     );
   }
 
-  Widget _buildLabel(String text) {
+  // 💡 تم تعديل الدالة لتستخدم TextTheme
+  Widget _buildLabel(String text, TextTheme textTheme) {
     return Text(
       text,
-      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+      style: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
     );
   }
 
+  // 💡 تم تعديل الدالة لتستخدم TextTheme
   Widget _buildTextField(
     TextEditingController controller,
-    String hint, {
+    String hint,
+    TextTheme textTheme, {
     String? Function(String?)? validator,
   }) {
     return CustomTextFormField(
       controller: controller,
       validator: validator,
-      label: Text(hint, style: AppStyles.font12W400Grey),
-      decoration: _inputDecoration().copyWith(hintText: hint),
+      label: Text(hint, style: textTheme.titleSmall), // 💡 استخدام titleSmall
+      decoration: _inputDecoration(context).copyWith(hintText: hint),
+      // 💡 تخصيص لون النص المدخل ديناميكياً
+      style: textTheme.bodyMedium,
     );
   }
 
-  InputDecoration _inputDecoration() {
+  // 💡 تم تعديل الدالة لتستخدم BuildContext لتعريف الألوان ديناميكياً
+  InputDecoration _inputDecoration(BuildContext context) {
     return InputDecoration(
       filled: true,
-      fillColor: Colors.grey.shade200,
+      // 💡 لون خلفية حقل الإدخال ديناميكي
+      fillColor: Theme.of(context).colorScheme.surface,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide.none,
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+      // 💡 لون الـ hint style ديناميكي
+      hintStyle: Theme.of(
+        context,
+      ).textTheme.bodyMedium?.copyWith(color: Theme.of(context).hintColor),
     );
   }
 }

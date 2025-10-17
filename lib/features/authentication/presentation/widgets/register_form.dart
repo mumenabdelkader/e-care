@@ -33,6 +33,8 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Column(
       children: [
         Form(
@@ -42,7 +44,7 @@ class _RegisterFormState extends State<RegisterForm> {
               CustomTextFormField(
                 controller: nameController,
                 keyboardType: TextInputType.name,
-                label: Text("username", style: AppStyles.font12W400Grey),
+                label: Text("username", style: textTheme.titleSmall),
                 prefixIcon: Icons.person_outline,
                 validator: (String? value) {
                   return ValidationUtils.getNameValidationMessage(value);
@@ -51,7 +53,7 @@ class _RegisterFormState extends State<RegisterForm> {
               VerticalSpacing(10),
               CustomTextFormField(
                 controller: phoneController,
-                label: Text("phone number", style: AppStyles.font12W400Grey),
+                label: Text("phone number", style: textTheme.titleSmall),
                 prefixIcon: Icons.phone_outlined,
                 prefixText: "+20 ",
                 maxLength: 11,
@@ -65,7 +67,7 @@ class _RegisterFormState extends State<RegisterForm> {
               VerticalSpacing(10),
               CustomTextFormField(
                 controller: emailController,
-                label: Text("email", style: AppStyles.font12W400Grey),
+                label: Text("email", style: textTheme.titleSmall),
                 prefixIcon: Icons.email_outlined,
                 keyboardType: TextInputType.emailAddress,
                 validator: (String? value) {
@@ -73,6 +75,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 },
               ),
               VerticalSpacing(10),
+
               PasswordTextField(passwordController: passwordController),
             ],
           ),
@@ -93,16 +96,18 @@ class _RegisterFormState extends State<RegisterForm> {
               child: RichText(
                 text: TextSpan(
                   text: "I agree to the ",
-                  style: AppStyles.font14W600Black,
+                  style: textTheme.labelMedium,
                   children: [
                     TextSpan(
                       text: "Terms of Service ",
-                      style: AppStyles.font14W400Black,
+
+                      style: textTheme.bodyMedium,
                     ),
-                    TextSpan(text: "and \n", style: AppStyles.font14W400Black),
+                    TextSpan(text: "and \n", style: textTheme.bodyMedium),
                     TextSpan(
                       text: "Privacy Policy",
-                      style: AppStyles.font14W400Black,
+
+                      style: textTheme.bodyMedium,
                     ),
                   ],
                 ),
@@ -135,7 +140,11 @@ class _RegisterFormState extends State<RegisterForm> {
             return CustomButton(
               lable:
                   state is AuthLoading
-                      ? Center(child: CircularProgressIndicator())
+                      ? Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.white,
+                        ),
+                      )
                       : Text("Sign Up", style: AppStyles.font14W700White),
               onPressed:
                   state is AuthLoading

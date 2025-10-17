@@ -14,6 +14,8 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(left: 20.0.w, right: 20.w, top: 70.h),
@@ -21,11 +23,11 @@ class RegisterScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Sign Up", style: AppStyles.font24W700Black),
+              Text("Sign Up", style: textTheme.displayLarge),
               VerticalSpacing(8),
               Text(
                 "Create account and enjoy all services",
-                style: AppStyles.font16W400Grey,
+                style: textTheme.bodyLarge,
               ),
               VerticalSpacing(25),
               CustomSignUpGoogle(),
@@ -39,7 +41,7 @@ class RegisterScreen extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: " Have an account? ",
-                        style: AppStyles.font14W400Black,
+                        style: textTheme.bodyMedium,
                       ),
                       WidgetSpan(
                         child: GestureDetector(

@@ -1,5 +1,3 @@
-import 'package:clinic/core/styles/app_styles.dart';
-import 'package:clinic/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -8,14 +6,23 @@ class CustomDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final dividerColor = Theme.of(context).dividerColor;
+
     return Row(
       children: [
-        const Expanded(child: Divider(color: AppColors.softGrey, thickness: 2)),
+        Expanded(child: Divider(color: dividerColor, thickness: 2)),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8.0.w),
-          child: Text("OR", style: AppStyles.font16W700Grey),
+          child: Text(
+            "OR",
+            style: textTheme.titleLarge?.copyWith(
+              color: Theme.of(context).hintColor,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
         ),
-        Expanded(child: Divider(color: AppColors.softGrey, thickness: 2)),
+        Expanded(child: Divider(color: dividerColor, thickness: 2)),
       ],
     );
   }

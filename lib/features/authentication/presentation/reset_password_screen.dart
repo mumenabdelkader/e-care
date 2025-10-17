@@ -20,6 +20,8 @@ class ResetPasswordScreen extends StatelessWidget {
   ResetPasswordScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -27,18 +29,18 @@ class ResetPasswordScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Reset Password", style: AppStyles.font24W700Black),
+            Text("Reset Password", style: textTheme.displayLarge),
             VerticalSpacing(8),
             Text(
               "Enter your email, we will send a verification code to email",
-              style: AppStyles.font16W400Grey,
+              style: textTheme.bodyLarge,
             ),
             VerticalSpacing(26),
             Form(
               key: _formKey,
               child: CustomTextFormField(
                 controller: emailController,
-                label: Text("Type your email", style: AppStyles.font12W400Grey),
+                label: Text("Type your email", style: textTheme.titleSmall),
                 prefixIcon: Icons.email_outlined,
                 validator: (String? value) {
                   return ValidationUtils.getEmailValidationMessage(value);
@@ -62,7 +64,6 @@ class ResetPasswordScreen extends StatelessWidget {
                       'isNewRegister': false,
                       'registerData': null,
                       'forgotPasswordData': emailController.text.trim(),
-                      // "\"${emailController.text.trim()}\"",
                     },
                   );
                 }
@@ -71,7 +72,11 @@ class ResetPasswordScreen extends StatelessWidget {
                 return CustomButton(
                   lable:
                       state is AuthLoading
-                          ? Center(child: CircularProgressIndicator())
+                          ? Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                            ),
+                          )
                           : Text("Send Code", style: AppStyles.font14W700White),
                   onPressed:
                       state is AuthLoading

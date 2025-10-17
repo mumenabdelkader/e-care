@@ -35,6 +35,8 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -43,11 +45,12 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("New Password", style: AppStyles.font24W700Black),
+              Text("New Password", style: textTheme.displayLarge),
               VerticalSpacing(8),
+
               Text(
                 "Create a new password that is safe and easy to remember",
-                style: AppStyles.font16W400Grey,
+                style: textTheme.bodyLarge,
               ),
               VerticalSpacing(26),
               Form(
@@ -57,10 +60,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                     CustomTextFormField(
                       controller: newPasswordController,
                       obscureText: newObscureText,
-                      label: Text(
-                        "New password",
-                        style: AppStyles.font12W400Grey,
-                      ),
+                      label: Text("New password", style: textTheme.titleSmall),
                       prefixIcon: Icons.lock_outline_sharp,
                       suffixIcon: IconButton(
                         onPressed: () {
@@ -72,7 +72,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                           newObscureText
                               ? Icons.visibility_off
                               : Icons.visibility,
-                          color: AppColors.grey,
+                          color: Theme.of(context).hintColor,
                         ),
                       ),
                       validator: (String? value) {
@@ -87,7 +87,8 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       obscureText: confirmObscureText,
                       label: Text(
                         "confirm password",
-                        style: AppStyles.font12W400Grey,
+
+                        style: textTheme.titleSmall,
                       ),
                       prefixIcon: Icons.lock_outline_sharp,
                       suffixIcon: IconButton(
@@ -100,7 +101,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                           confirmObscureText
                               ? Icons.visibility_off
                               : Icons.visibility,
-                          color: AppColors.grey,
+                          color: Theme.of(context).hintColor,
                         ),
                       ),
                       validator: (String? value) {
@@ -120,7 +121,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   }
                   if (state is AuthRestPasswordSuccess) {
                     context.showSnackBar(
-                      state.data.message ?? "Login successfully",
+                      state.data.message ?? "Password reset successfully",
                       backgroundColor: Colors.green,
                     );
                     context.pushAndRemoveUntil(
@@ -133,7 +134,11 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   return CustomButton(
                     lable:
                         state is AuthLoading
-                            ? Center(child: CircularProgressIndicator())
+                            ? Center(
+                              child: CircularProgressIndicator(
+                                color: AppColors.white,
+                              ),
+                            )
                             : Text(
                               "Confirm New Password",
                               style: AppStyles.font14W700White,

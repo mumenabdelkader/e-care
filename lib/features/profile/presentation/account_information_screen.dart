@@ -1,8 +1,6 @@
 import 'package:clinic/core/extension/navigation.dart';
 import 'package:clinic/core/extension/spacing.dart';
 import 'package:clinic/core/routing/routes.dart';
-import 'package:clinic/core/styles/app_styles.dart';
-import 'package:clinic/core/theme/app_colors.dart';
 import 'package:clinic/features/profile/data/models/patient_profile_model.dart';
 import 'package:clinic/features/profile/presentation/controller/profile_cubit.dart';
 import 'package:flutter/material.dart';
@@ -29,10 +27,12 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Account Information", style: AppStyles.font20W700Black),
+        title: Text("Account Information"),
         actions: [
           Container(
             width: 42.w,
@@ -40,21 +40,21 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
             margin: EdgeInsets.symmetric(horizontal: 10.w),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: AppColors.softGrey,
+
+              color: Theme.of(context).colorScheme.surface,
             ),
             child: GestureDetector(
               onTap: () async {
-                // Navigate to edit screen
                 await context.pushNamed(
                   Routes.editAccount,
                   arguments: currentProfileData,
                 );
 
-                // When we come back, request fresh data
                 if (mounted) {
                   context.read<ProfileCubit>().getPatientProfile();
                 }
               },
+
               child: const Icon(Icons.mode_edit_outline_outlined),
             ),
           ),
@@ -73,13 +73,18 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Personal", style: AppStyles.font16W700Grey),
+              Text(
+                "Personal",
+                style: textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).hintColor,
+                ),
+              ),
               VerticalSpacing(20),
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
                 decoration: BoxDecoration(
-                  color: AppColors.softGrey,
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Column(
@@ -100,7 +105,7 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                         ),
                       ],
                     ),
-                    Divider(),
+                    Divider(color: Theme.of(context).dividerColor),
                     Row(
                       children: [
                         Expanded(
@@ -117,7 +122,7 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                         ),
                       ],
                     ),
-                    Divider(),
+                    Divider(color: Theme.of(context).dividerColor),
                     Row(
                       children: [
                         Expanded(
@@ -140,13 +145,19 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                 ),
               ),
               VerticalSpacing(30),
-              Text("Contact", style: AppStyles.font16W700Grey),
+
+              Text(
+                "Contact",
+                style: textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).hintColor,
+                ),
+              ),
               VerticalSpacing(20),
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 10.h),
                 decoration: BoxDecoration(
-                  color: AppColors.softGrey,
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Column(
@@ -167,7 +178,7 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                         ),
                       ],
                     ),
-                    Divider(),
+                    Divider(color: Theme.of(context).dividerColor),
                     Row(
                       children: [
                         Expanded(
@@ -185,7 +196,7 @@ class _AccountInformationScreenState extends State<AccountInformationScreen> {
                         ),
                       ],
                     ),
-                    Divider(),
+                    Divider(color: Theme.of(context).dividerColor),
                     Row(
                       children: [
                         Expanded(
@@ -225,14 +236,17 @@ class InfoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 4.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: AppStyles.font12W400Grey),
+          Text(title, style: textTheme.titleSmall),
           VerticalSpacing(4),
-          Text(value, style: AppStyles.font14W700Black),
+
+          Text(value, style: textTheme.titleMedium),
         ],
       ),
     );

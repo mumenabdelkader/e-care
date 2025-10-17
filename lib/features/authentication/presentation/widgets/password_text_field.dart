@@ -1,5 +1,4 @@
 import 'package:clinic/core/extension/spacing.dart';
-import 'package:clinic/core/styles/app_styles.dart';
 import 'package:clinic/core/theme/app_colors.dart';
 import 'package:clinic/core/utils/validation_utils.dart';
 import 'package:clinic/core/widgets/custom_text_form_field.dart';
@@ -50,11 +49,14 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
   }
 
   Widget _buildFlag(String text, bool condition) {
+    final successColor = AppColors.green;
+    final defaultColor = Theme.of(context).hintColor;
+
     return Row(
       children: [
         Icon(
           condition ? Icons.check_circle : Icons.radio_button_unchecked,
-          color: condition ? Colors.green : Colors.grey,
+          color: condition ? successColor : defaultColor,
           size: 18.sp,
         ),
         const HorizontalSpacing(8),
@@ -62,10 +64,10 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
           text,
           style: TextStyle(
             fontSize: 14,
-            color: condition ? Colors.green : Colors.grey,
+            color: condition ? successColor : defaultColor,
             fontWeight: condition ? FontWeight.bold : FontWeight.normal,
-            decoration:
-                condition ? TextDecoration.lineThrough : TextDecoration.none,
+
+            decoration: TextDecoration.none,
           ),
         ),
       ],
@@ -74,6 +76,8 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -81,7 +85,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
           controller: widget.passwordController,
           obscureText: obscureText,
           keyboardType: TextInputType.visiblePassword,
-          label: Text("Password", style: AppStyles.font12W400Grey),
+          label: Text("Password", style: textTheme.titleSmall),
           prefixIcon: Icons.lock_outline_sharp,
           suffixIcon: IconButton(
             onPressed: () {
@@ -91,10 +95,10 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
             },
             icon: Icon(
               obscureText ? Icons.visibility_off : Icons.visibility,
-              color: AppColors.grey,
+
+              color: Theme.of(context).hintColor,
             ),
           ),
-
           validator: (String? value) {
             return ValidationUtils.getBasicPasswordValidationMessage(value);
           },
