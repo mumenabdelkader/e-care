@@ -22,7 +22,7 @@ class ECare extends StatelessWidget {
               themeMode: themeMode,
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
-              initialRoute: Routes.login,
+              initialRoute: Routes.home,
               onGenerateRoute: AppRouter.onGenerateRoute,
             );
           },

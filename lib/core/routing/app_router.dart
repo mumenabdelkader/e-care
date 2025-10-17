@@ -8,6 +8,8 @@ import 'package:clinic/features/authentication/presentation/new_password_screen.
 import 'package:clinic/features/authentication/presentation/register_screen.dart';
 import 'package:clinic/features/authentication/presentation/verify_otp_screen.dart';
 import 'package:clinic/features/home/root_screen.dart';
+import 'package:clinic/features/message/presentation/chat_screen.dart';
+import 'package:clinic/features/message/presentation/new_chat_screen.dart';
 import 'package:clinic/features/onboarding/get_started_screen.dart';
 import 'package:clinic/features/onboarding/on_boarding_screen.dart';
 import 'package:clinic/features/profile/data/models/patient_profile_model.dart';
@@ -172,6 +174,18 @@ class AppRouter {
       case Routes.settings:
         return MaterialPageRoute(
           builder: (_) => SettingsScreen(),
+          settings: settings,
+        );
+
+      case Routes.chat:
+        return MaterialPageRoute(
+          builder: (_) => ChatScreen(),
+          settings: settings,
+        );
+
+      case Routes.newChat:
+        return MaterialPageRoute(
+          builder: (_) => NewChatScreen(),
           settings: settings,
         );
 
