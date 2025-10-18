@@ -49,7 +49,7 @@ class AppTheme {
     // 💡 تحديد لون الـ Hint/الرمادي الثانوي
     hintColor: AppColors.grey,
     // 💡 تحديد لون الفواصل/الحدود
-    dividerColor: AppColors.softGrey,
+    dividerColor: AppColors.darkGrey.withOpacity(0.1),
 
     // تخصيص AppBar
     appBarTheme: AppBarTheme(
@@ -88,7 +88,7 @@ class AppTheme {
     // 💡 تحديد لون الـ Hint/الرمادي الثانوي
     hintColor: AppColors.grey,
     // 💡 تحديد لون الفواصل/الحدود
-    dividerColor: AppColors.darkGrey,
+    dividerColor: AppColors.selver.withOpacity(0.1),
 
     // تخصيص AppBar
     appBarTheme: AppBarTheme(

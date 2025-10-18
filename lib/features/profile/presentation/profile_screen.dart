@@ -149,7 +149,9 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
                           color: AppColors.yellow,
                           size: 25.sp,
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          context.pushNamed(Routes.medicalRecords);
+                        },
                       ),
                       Divider(color: Theme.of(context).dividerColor),
                       ProfileSection(
@@ -160,7 +162,9 @@ class _ProfileScreenState extends State<ProfileScreen> with RouteAware {
                           color: Color(0xff8D43EC),
                           size: 25.sp,
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          context.pushNamed(Routes.clinicInfo);
+                        },
                       ),
                       Divider(color: Theme.of(context).dividerColor),
                       ProfileSection(
