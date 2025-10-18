@@ -16,6 +16,8 @@ class Routes {
   static const String accountInformation = 'accountInformation';
   static const String editAccount = 'editAccount';
   static const String insuranceDetails = 'insuranceDetails';
+  static const String clinicInfo = 'clinicInfo';
+  static const String medicalRecords = 'medicalRecords';
   static const String settings = 'settings';
 
   //!message

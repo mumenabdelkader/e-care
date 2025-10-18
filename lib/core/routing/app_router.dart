@@ -14,10 +14,12 @@ import 'package:clinic/features/onboarding/get_started_screen.dart';
 import 'package:clinic/features/onboarding/on_boarding_screen.dart';
 import 'package:clinic/features/profile/data/models/patient_profile_model.dart';
 import 'package:clinic/features/profile/presentation/account_information_screen.dart';
+import 'package:clinic/features/profile/presentation/clinic_info_screen.dart';
 import 'package:clinic/features/profile/presentation/controller/profile_cubit.dart';
 import 'package:clinic/features/profile/presentation/create_patient_profile_screen.dart';
 import 'package:clinic/features/profile/presentation/edit_account_screen.dart';
 import 'package:clinic/features/profile/presentation/insurance_details_screen.dart';
+import 'package:clinic/features/profile/presentation/medical_record_screen.dart';
 import 'package:clinic/features/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -168,6 +170,18 @@ class AppRouter {
       case Routes.insuranceDetails:
         return MaterialPageRoute(
           builder: (_) => InsuranceDetailsScreen(),
+          settings: settings,
+        );
+
+      case Routes.medicalRecords:
+        return MaterialPageRoute(
+          builder: (_) => MedicalRecordScreen(),
+          settings: settings,
+        );
+
+      case Routes.clinicInfo:
+        return MaterialPageRoute(
+          builder: (_) => ClinicInfoScreen(),
           settings: settings,
         );
 
