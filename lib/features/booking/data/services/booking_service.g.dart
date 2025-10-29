@@ -20,7 +20,7 @@ class _BookingService implements BookingService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<GetSpecialtiesResposeModel> getSpecialties({
+  Future<List<GetSpecialtiesResposeModel>> getSpecialties({
     required String? token,
   }) async {
     final _extra = <String, dynamic>{};
@@ -29,20 +29,27 @@ class _BookingService implements BookingService {
     final _headers = <String, dynamic>{r'Authorization': token};
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<GetSpecialtiesResposeModel>(
+    final _options = _setStreamType<List<GetSpecialtiesResposeModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'Booking/GetSpecialties',
+            '/Booking/GetSpecialties',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late GetSpecialtiesResposeModel _value;
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<GetSpecialtiesResposeModel> _value;
     try {
-      _value = GetSpecialtiesResposeModel.fromJson(_result.data!);
+      _value =
+          _result.data!
+              .map(
+                (dynamic i) => GetSpecialtiesResposeModel.fromJson(
+                  i as Map<String, dynamic>,
+                ),
+              )
+              .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -51,40 +58,113 @@ class _BookingService implements BookingService {
   }
 
   @override
-  Future<GetAvailableDoctorsResponseModel> getAvailableDoctors({
+  Future<List<GetAvailableDoctorsResponseModel>> getAvailableDoctors({
     required String? token,
-    required bool GeneralDoctorTypes,
-    required int SpecialtyId,
-    required String AppointmentTime,
-    required bool InPerson,
-    required bool VideoCall,
+    required bool generalDoctorTypes,
+    required int specialtyId,
+    required String appointmentTime,
+    required bool inPerson,
+    required bool videoCall,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
-      r'GeneralDoctorTypes': GeneralDoctorTypes,
-      r'SpecialtyId': SpecialtyId,
-      r'AppointmentTime': AppointmentTime,
-      r'InPerson': InPerson,
-      r'VideoCall': VideoCall,
+      r'GeneralDoctorTypes': generalDoctorTypes,
+      r'SpecialtyId': specialtyId,
+      r'AppointmentTime': appointmentTime,
+      r'InPerson': inPerson,
+      r'VideoCall': videoCall,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{r'Authorization': token};
     _headers.removeWhere((k, v) => v == null);
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<GetAvailableDoctorsResponseModel>(
+    final _options = _setStreamType<List<GetAvailableDoctorsResponseModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            'Booking/get-available-doctors?GeneralDoctorTypes={GeneralDoctorTypes}&SpecialtyId={SpecialtyId}&AppointmentTime={AppointmentTime}&InPerson={InPerson}&VideoCall={VideoCall}',
+            '/Booking/get-available-doctors',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<GetAvailableDoctorsResponseModel> _value;
+    try {
+      _value =
+          _result.data!
+              .map(
+                (dynamic i) => GetAvailableDoctorsResponseModel.fromJson(
+                  i as Map<String, dynamic>,
+                ),
+              )
+              .toList();
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<AvailableSlotsResponsModel> availableSlots({
+    required String? token,
+    required String doctorId,
+    required String date,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'date': date};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<AvailableSlotsResponsModel>(
+      Options(method: 'GET', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'Booking/${doctorId}/available-slots',
             queryParameters: queryParameters,
             data: _data,
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late GetAvailableDoctorsResponseModel _value;
+    late AvailableSlotsResponsModel _value;
     try {
-      _value = GetAvailableDoctorsResponseModel.fromJson(_result.data!);
+      _value = AvailableSlotsResponsModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<BookAppointmentResponsModel> bookAppointmet({
+    required String? token,
+    required BookApointmentRequestModel body,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _options = _setStreamType<BookAppointmentResponsModel>(
+      Options(method: 'POST', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            'Booking/BookAppointement',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late BookAppointmentResponsModel _value;
+    try {
+      _value = BookAppointmentResponsModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

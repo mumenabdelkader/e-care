@@ -25,11 +25,15 @@ class ApiConstant {
       "/Profile/update-patient-profile";
 
   static const String getSpecialties =
-      "Booking/GetSpecialties";
+      "/Booking/GetSpecialties";
   static const String getPatientPprofileEP = "/Profile/me";
-  static const String getAvailableDoctorsEP= "Booking/get-available-doctors?GeneralDoctorTypes={GeneralDoctorTypes}&SpecialtyId={SpecialtyId}&AppointmentTime={AppointmentTime}&InPerson={InPerson}&VideoCall={VideoCall}";
+  static const String getAvailableDoctorsEP= "/Booking/get-available-doctors";
 
 
   static const String getPatientProfileEP = "/Profile/me";
+// In ApiConstant class
+  static const String availableSlots = "Booking/{doctorId}/available-slots";
+  static const String bookAppointement = "Booking/BookAppointement";
 
 }
+//winnyf3danimation@gmail.com

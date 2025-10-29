@@ -15,6 +15,15 @@ final class BookingGetAvailableDoctorsSuccess extends BookingState {
   BookingGetAvailableDoctorsSuccess(this.AvailableDoctors);
 }
 
+final class BookingAvailableSlotsSuccess extends BookingState {
+  AvailableSlotsResponsModel availableSlots;
+  BookingAvailableSlotsSuccess(this.availableSlots);
+}
+final class BookAppointementSuccess extends BookingState {
+  BookAppointmentResponsModel bookAppointmentResponsModel;
+  BookAppointementSuccess(this.bookAppointmentResponsModel);
+}
+
 final class BookingFailure extends BookingState {
   final String error;
   BookingFailure(this.error);

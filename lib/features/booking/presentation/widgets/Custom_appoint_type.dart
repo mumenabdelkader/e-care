@@ -24,7 +24,7 @@ class CustomAppointType extends StatelessWidget{
        Switch(
          // activeColor: Colors.blue,
          activeTrackColor: Colors.blue,
-         value: true, onChanged: (value) => !value,)
+         value: true, onChanged: (value) => isCecked,)
       ],
     );
   }

@@ -2,6 +2,9 @@ import 'package:clinic/core/networking/dio_factory.dart';
 import 'package:clinic/features/authentication/data/repos/auth_repo.dart';
 import 'package:clinic/features/authentication/data/services/auth_service.dart';
 import 'package:clinic/features/authentication/presentation/controller/auth_cubit.dart';
+import 'package:clinic/features/booking/data/repos/booking_repo.dart';
+import 'package:clinic/features/booking/data/services/booking_service.dart';
+import 'package:clinic/features/booking/presentation/controller/booking_cubit.dart';
 import 'package:clinic/features/profile/data/repos/profile_repo.dart';
 import 'package:clinic/features/profile/data/services/profile_service.dart';
 import 'package:clinic/features/profile/presentation/controller/profile_cubit.dart';
@@ -13,6 +16,7 @@ GetIt getIt = GetIt.instance;
 void setupDependencyInjection() {
   _setupAuth();
   _setupProfile();
+  _setupBooking();
 }
 
 void _setupAuth() {
@@ -28,4 +32,9 @@ void _setupProfile() {
   getIt.registerLazySingleton<ProfileService>(() => ProfileService(getIt()));
   getIt.registerLazySingleton<ProfileRepo>(() => ProfileRepoImpl(getIt()));
   getIt.registerFactory<ProfileCubit>(() => ProfileCubit(getIt()));
+}
+void _setupBooking() {
+  getIt.registerLazySingleton<BookingService>(() => BookingService(getIt()));
+  getIt.registerLazySingleton<BookingRepo>(() => BookingRepoImpl(getIt()));
+  getIt.registerFactory<BookingCubit>(() => BookingCubit(getIt()));
 }

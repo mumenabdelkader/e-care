@@ -179,15 +179,15 @@ class AppRouter {
           ),
           settings: settings,
         );
-      case Routes.bookingAppointmentStep2:
-        return MaterialPageRoute(
-          builder:
-              (_) => BlocProvider.value(
-            value: getIt<AuthCubit>(),
-            child: BookingAppointmentStepTwo(),
-          ),
-          settings: settings,
-        );
+      // case Routes.bookingAppointmentStep2:
+      //   return MaterialPageRoute(
+      //     builder:
+      //         (_) => BlocProvider.value(
+      //       value: getIt<AuthCubit>(),
+      //       child: BookingAppointmentStepTwo(),
+      //     ),
+      //     settings: settings,
+      //   );
       default:
         return MaterialPageRoute(
           builder:
